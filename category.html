@@ -2,63 +2,39 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="AI News Factory — category news, analysis and intelligence.">
 <meta name="theme-color" content="#080808">
 <title>Category | AI News Factory</title>
 <link rel="stylesheet" href="assets/css/style.css">
+
 <style>
-.category-page{
-  max-width:1400px;
-  margin:0 auto;
-  padding:70px 24px 100px;
-}
-.category-header{
-  padding-bottom:40px;
-  margin-bottom:45px;
-  border-bottom:1px solid rgba(128,128,128,.25);
-}
-.category-kicker{
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.18em;
-  opacity:.6;
-  margin-bottom:15px;
-}
-.category-title{
-  margin:0;
-  font-family:Georgia,serif;
-  font-size:clamp(46px,7vw,90px);
-  line-height:.98;
-  letter-spacing:-.05em;
-}
-.category-description{
-  max-width:700px;
-  margin:22px 0 0;
-  font-size:17px;
-  line-height:1.7;
-  opacity:.65;
-}
-.category-count{
-  margin-top:18px;
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.12em;
-  opacity:.5;
-}
-.category-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:24px;
-}
+.category-page{max-width:1400px;margin:auto;padding:70px 24px 100px}
+.category-header{padding-bottom:40px;margin-bottom:45px;border-bottom:1px solid rgba(128,128,128,.25)}
+.category-kicker{font-size:12px;text-transform:uppercase;letter-spacing:.18em;opacity:.6;margin-bottom:15px}
+.category-title{margin:0;font-family:Georgia,serif;font-size:clamp(46px,7vw,90px);line-height:.98;letter-spacing:-.05em}
+.category-description{max-width:700px;margin:22px 0 0;font-size:17px;line-height:1.7;opacity:.65}
+.category-count{margin-top:18px;font-size:12px;text-transform:uppercase;letter-spacing:.12em;opacity:.5}
+
+.category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
 .category-card{
+  position:relative;
   border:1px solid rgba(128,128,128,.25);
   overflow:hidden;
-  transition:transform .2s ease,border-color .2s ease;
+  transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
+  background:rgba(128,128,128,.025)
 }
 .category-card:hover{
-  transform:translateY(-5px);
-  border-color:rgba(180,0,0,.6);
+  transform:translateY(-6px);
+  border-color:rgba(180,0,0,.65);
+  box-shadow:0 18px 45px rgba(0,0,0,.2)
+}
+.category-card-link{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  text-indent:-9999px
 }
 .category-card-visual{
   min-height:210px;
@@ -68,46 +44,35 @@
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
+  overflow:hidden
 }
 .category-card-visual img{
   width:100%;
-  height:100%;
-  min-height:210px;
+  height:210px;
   object-fit:cover;
-  display:block;
+  display:block
 }
 .category-card-placeholder{
   font-family:Georgia,serif;
   font-size:35px;
-  opacity:.25;
+  opacity:.25
 }
-.category-card-content{
-  padding:24px;
-}
+.category-card-content{padding:24px}
 .category-card-category{
   font-size:10px;
   text-transform:uppercase;
   letter-spacing:.15em;
   opacity:.55;
-  margin-bottom:12px;
+  margin-bottom:12px
 }
 .category-card h2{
   margin:0 0 14px;
   font-family:Georgia,serif;
   font-size:25px;
-  line-height:1.15;
+  line-height:1.15
 }
-.category-card h2 a{
-  color:inherit;
-  text-decoration:none;
-}
-.category-card-excerpt{
-  font-size:14px;
-  line-height:1.6;
-  opacity:.62;
-  margin:0 0 18px;
-}
+.category-card h2 a{color:inherit;text-decoration:none;position:relative;z-index:2}
+.category-card-excerpt{font-size:14px;line-height:1.6;opacity:.62;margin:0 0 18px}
 .category-card-meta{
   display:flex;
   justify-content:space-between;
@@ -115,35 +80,65 @@
   font-size:11px;
   text-transform:uppercase;
   letter-spacing:.08em;
-  opacity:.45;
+  opacity:.45
 }
-.category-empty{
-  padding:100px 20px;
-  text-align:center;
-  border:1px solid rgba(128,128,128,.2);
+.category-empty{padding:100px 20px;text-align:center;border:1px solid rgba(128,128,128,.2)}
+.category-empty h2{font-family:Georgia,serif;font-size:38px}
+.category-empty a{color:inherit}
+
+.category-nav{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:0 0 35px
 }
-.category-empty h2{
-  font-family:Georgia,serif;
-  font-size:38px;
-}
-.category-empty a{
+.category-nav a{
+  padding:9px 14px;
+  border:1px solid rgba(128,128,128,.25);
   color:inherit;
+  text-decoration:none;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  transition:.2s ease
 }
+.category-nav a:hover,
+.category-nav a.active{
+  border-color:#b40000;
+  background:rgba(180,0,0,.1)
+}
+
+.back-to-top{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:44px;
+  height:44px;
+  border:1px solid rgba(128,128,128,.4);
+  background:#080808;
+  color:#fff;
+  cursor:pointer;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(10px);
+  transition:.25s ease;
+  z-index:100
+}
+.back-to-top.is-visible{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0)
+}
+
 @media(max-width:1000px){
-  .category-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
+  .category-grid{grid-template-columns:repeat(2,1fr)}
 }
-@media(max-width:650px){
-  .category-page{
-    padding:45px 18px 70px;
-  }
-  .category-grid{
-    grid-template-columns:1fr;
-  }
-  .category-title{
-    font-size:50px;
-  }
+@media(max-width:760px){
+  .category-page{padding:45px 18px 70px}
+  .category-grid{grid-template-columns:1fr}
+  .category-title{font-size:50px}
+  .category-nav{overflow-x:auto;flex-wrap:nowrap;padding-bottom:5px}
+  .category-nav a{white-space:nowrap}
 }
 </style>
 </head>
@@ -153,29 +148,73 @@
 <header class="site-header">
   <div class="header-inner">
 
-    <div class="live-indicator">
+    <div class="live-indicator" data-live-indicator>
       <span class="live-dot"></span>
       LIVE NEWSROOM
     </div>
 
-    <div class="header-date" data-current-date>
+    <div class="header-date" id="headerDate" data-current-date>
       Loading...
     </div>
 
-    <button
-      class="theme-toggle"
-      id="themeToggle"
-      type="button"
-      aria-label="Toggle theme">
-      ◐
-    </button>
+    <div class="header-actions">
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false">
+        ☰
+      </button>
+
+      <button
+        class="search-toggle"
+        id="searchButton"
+        type="button"
+        aria-label="Search">
+        ⌕
+      </button>
+
+      <button
+        class="theme-toggle"
+        id="themeToggle"
+        type="button"
+        aria-label="Toggle theme">
+        ◐
+      </button>
+
+    </div>
 
   </div>
+
+  <nav class="main-nav">
+
+    <a href="index.html">Home</a>
+    <a href="category.html?category=Latest">Latest</a>
+    <a href="category.html?category=AI">AI</a>
+    <a href="category.html?category=Technology">Technology</a>
+    <a href="category.html?category=Business">Business</a>
+    <a href="category.html?category=Science">Science</a>
+    <a href="category.html?category=World">World</a>
+
+  </nav>
 </header>
 
 <main id="categoryContainer">
 
   <div class="category-page">
+
+    <nav class="category-nav" aria-label="News categories">
+
+      <a href="category.html?category=Latest">Latest</a>
+      <a href="category.html?category=AI">AI</a>
+      <a href="category.html?category=Technology">Technology</a>
+      <a href="category.html?category=Business">Business</a>
+      <a href="category.html?category=Science">Science</a>
+      <a href="category.html?category=World">World</a>
+
+    </nav>
 
     <div class="category-header">
 
@@ -223,345 +262,365 @@
 
 </footer>
 
+<button
+  class="back-to-top"
+  id="backToTop"
+  data-back-to-top
+  type="button"
+  aria-label="Back to top">
+  ↑
+</button>
+
 <script src="assets/js/app.js"></script>
 
 <script>
+document.addEventListener("DOMContentLoaded",async()=>{
 
-document.addEventListener("DOMContentLoaded", async () => {
+const container=document.getElementById("categoryContainer");
+const params=new URLSearchParams(location.search);
+const requested=params.get("category")||"Latest";
+const category=requested.trim()||"Latest";
 
-  const container =
-    document.getElementById("categoryContainer");
+try{
 
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
+const response=await fetch(
+"data/articles.json?v="+Date.now(),
+{cache:"no-store"}
+);
 
-  const requestedCategory =
-    params.get("category");
+if(!response.ok)throw new Error("Unable to load article data.");
 
-  const category =
-    requestedCategory
-      ? decodeURIComponent(requestedCategory)
-      : "Latest";
+const data=await response.json();
+const articles=Array.isArray(data)?data:[];
 
-  try {
+let stories;
 
-    const response =
-      await fetch("data/articles.json");
+if(
+category.toLowerCase()==="latest"||
+category.toLowerCase()==="all"
+){
 
-    if (!response.ok) {
-      throw new Error(
-        "Unable to load article data."
-      );
-    }
+stories=[...articles].sort(sortByDate);
 
-    const articles =
-      await response.json();
+}else{
 
-    let filteredArticles;
+stories=articles
+.filter(a=>
+String(a.category||"")
+.toLowerCase()===category.toLowerCase()
+)
+.sort(sortByDate);
 
-    if (
-      category.toLowerCase() ===
-      "latest"
-    ) {
+}
 
-      filteredArticles =
-        [...articles].sort(
-          (a,b) =>
-            new Date(b.date) -
-            new Date(a.date)
-        );
+renderCategory(category,stories);
+activateCategoryNav(category);
 
-    } else {
+}catch(error){
 
-      filteredArticles =
-        articles.filter(
-          article =>
-            String(
-              article.category || ""
-            ).toLowerCase() ===
-            category.toLowerCase()
-        );
+console.error("Category loading error:",error);
 
-    }
+container.innerHTML=`
+<div class="category-page">
+<div class="category-empty">
+<h2>Unable to load stories</h2>
+<p>Please refresh the page and try again.</p>
+<p><a href="index.html">← Return home</a></p>
+</div>
+</div>
+`;
 
-    renderCategory(
-      category,
-      filteredArticles
-    );
+}
 
-  } catch (error) {
+function sortByDate(a,b){
 
-    console.error(
-      "Category loading error:",
-      error
-    );
+const dateA=new Date(
+a.published_at||a.date||a.created_at||0
+).getTime();
 
-    container.innerHTML = `
+const dateB=new Date(
+b.published_at||b.date||b.created_at||0
+).getTime();
 
-      <div class="category-page">
+return dateB-dateA;
 
-        <div class="category-empty">
+}
 
-          <h2>
-            Unable to load stories
-          </h2>
+function renderCategory(name,stories){
 
-          <p>
-            Please refresh the page and try again.
-          </p>
+const description=getDescription(name);
 
-          <p>
-            <a href="index.html">
-              ← Return home
-            </a>
-          </p>
+if(!stories.length){
 
-        </div>
+container.innerHTML=`
+<div class="category-page">
 
-      </div>
+<nav class="category-nav" aria-label="News categories">
+${categoryLinks(name)}
+</nav>
 
-    `;
+<div class="category-header">
 
-  }
+<div class="category-kicker">
+AI News Factory
+</div>
 
-  function renderCategory(
-    categoryName,
-    stories
-  ) {
+<h1 class="category-title">
+${escapeHtml(name)}
+</h1>
 
-    const description =
-      getDescription(categoryName);
+<p class="category-description">
+${escapeHtml(description)}
+</p>
 
-    if (!stories.length) {
+<div class="category-count">
+0 STORIES
+</div>
 
-      container.innerHTML = `
+</div>
 
-        <div class="category-page">
+<div class="category-empty">
 
-          <div class="category-header">
+<h2>No stories yet</h2>
 
-            <div class="category-kicker">
-              AI News Factory
-            </div>
+<p>
+There are currently no published stories in this category.
+</p>
 
-            <h1 class="category-title">
-              ${escapeHtml(categoryName)}
-            </h1>
+<p>
+<a href="index.html">
+← Return to homepage
+</a>
+</p>
 
-            <p class="category-description">
-              ${escapeHtml(description)}
-            </p>
+</div>
 
-          </div>
+</div>
+`;
 
-          <div class="category-empty">
+return;
+}
 
-            <h2>
-              No stories yet
-            </h2>
+container.innerHTML=`
+<div class="category-page">
+
+<nav class="category-nav" aria-label="News categories">
+${categoryLinks(name)}
+</nav>
 
-            <p>
-              There are currently no published
-              stories in this category.
-            </p>
+<div class="category-header">
 
-            <p>
-              <a href="index.html">
-                ← Return to homepage
-              </a>
-            </p>
+<div class="category-kicker">
+AI News Factory
+</div>
 
-          </div>
+<h1 class="category-title">
+${escapeHtml(name)}
+</h1>
 
-        </div>
+<p class="category-description">
+${escapeHtml(description)}
+</p>
 
-      `;
+<div class="category-count">
+${stories.length}
+${stories.length===1?"STORY":"STORIES"}
+</div>
 
-      return;
-    }
+</div>
 
-    container.innerHTML = `
+<div class="category-grid">
 
-      <div class="category-page">
+${stories.map(createCard).join("")}
 
-        <div class="category-header">
+</div>
 
-          <div class="category-kicker">
-            AI News Factory
-          </div>
+</div>
+`;
 
-          <h1 class="category-title">
-            ${escapeHtml(categoryName)}
-          </h1>
+}
 
-          <p class="category-description">
-            ${escapeHtml(description)}
-          </p>
+function categoryLinks(active){
 
-          <div class="category-count">
-            ${stories.length}
-            ${stories.length === 1 ? "STORY" : "STORIES"}
-          </div>
+const categories=[
+"Latest",
+"AI",
+"Technology",
+"Business",
+"Science",
+"World"
+];
 
-        </div>
+return categories.map(name=>`
 
-        <div class="category-grid">
+<a
+href="category.html?category=${encodeURIComponent(name)}"
+class="${name.toLowerCase()===active.toLowerCase()?"active":""}">
+${escapeHtml(name)}
+</a>
 
-          ${stories.map(
-            article =>
-              createCard(article)
-          ).join("")}
+`).join("");
 
-        </div>
+}
 
-      </div>
+function createCard(article){
 
-    `;
+const slug=article.slug||article.id||"";
+const title=article.title||"Untitled story";
+const categoryName=article.category||"News";
+const excerpt=article.excerpt||article.summary||"";
+const image=article.image||article.image_url||"";
+const date=article.published_at||article.date||article.created_at||"";
+const readTime=
+article.read_time||
+article.readTime||
+article.reading_time||
+"5 min read";
 
-  }
+const visual=image
+?`
+<div class="category-card-visual">
+<img
+src="${escapeHtml(image)}"
+alt="${escapeHtml(title)}"
+loading="lazy"
+onerror="this.parentElement.innerHTML='<div class=&quot;category-card-placeholder&quot;>NEWS</div>'">
+</div>
+`
+:`
+<div class="category-card-visual">
+<div class="category-card-placeholder">
+${escapeHtml(categoryName)}
+</div>
+</div>
+`;
 
-  function createCard(article) {
+return`
+<article class="category-card">
 
-    const visual =
-      article.image
-        ? `
-          <div class="category-card-visual">
+<a
+class="category-card-link"
+href="article.html?slug=${encodeURIComponent(slug)}"
+aria-label="Read ${escapeHtml(title)}">
+Read article
+</a>
 
-            <img
-              src="${escapeHtml(article.image)}"
-              alt="${escapeHtml(article.title)}">
+${visual}
 
-          </div>
-        `
-        : `
-          <div class="category-card-visual">
+<div class="category-card-content">
 
-            <div class="category-card-placeholder">
-              ${escapeHtml(article.category || "NEWS")}
-            </div>
+<div class="category-card-category">
+${escapeHtml(categoryName)}
+</div>
 
-          </div>
-        `;
+<h2>
+<a href="article.html?slug=${encodeURIComponent(slug)}">
+${escapeHtml(title)}
+</a>
+</h2>
 
-    return `
+<p class="category-card-excerpt">
+${escapeHtml(excerpt)}
+</p>
 
-      <article class="category-card">
+<div class="category-card-meta">
 
-        ${visual}
+<span>
+${formatDate(date)}
+</span>
 
-        <div class="category-card-content">
+<span>
+${escapeHtml(readTime)}
+</span>
 
-          <div class="category-card-category">
-            ${escapeHtml(article.category || "News")}
-          </div>
+</div>
 
-          <h2>
+</div>
 
-            <a
-              href="article.html?slug=${encodeURIComponent(article.slug)}">
+</article>
+`;
 
-              ${escapeHtml(article.title)}
+}
 
-            </a>
+function getDescription(name){
 
-          </h2>
+const key=name.toLowerCase();
 
-          <p class="category-card-excerpt">
-            ${escapeHtml(article.excerpt || "")}
-          </p>
+const descriptions={
 
-          <div class="category-card-meta">
+ai:
+"Artificial intelligence, machine learning, AI agents, models and the technologies reshaping the future.",
 
-            <span>
-              ${formatDate(article.date)}
-            </span>
+technology:
+"Technology, innovation, digital infrastructure and the developments changing how the world works.",
 
-            <span>
-              ${escapeHtml(article.readTime || "5 min read")}
-            </span>
+business:
+"Markets, companies, industries, economic developments and the forces shaping global business.",
 
-          </div>
+science:
+"Scientific discoveries, research, breakthroughs and the evidence behind important developments.",
 
-        </div>
+world:
+"Important developments, events and stories from around the world, with context beyond the headline.",
 
-      </article>
+politics:
+"Political developments, public policy, leadership and the decisions shaping societies.",
 
-    `;
+latest:
+"The latest stories published by AI News Factory across our global newsroom.",
 
-  }
+all:
+"Explore every published story from the AI News Factory newsroom."
+};
 
-  function getDescription(name) {
+return descriptions[key]||
+"News, analysis and intelligent reporting from the AI News Factory newsroom.";
 
-    const descriptions = {
+}
 
-      "AI":
-        "Artificial intelligence, machine learning, AI agents, models and the technologies reshaping the future.",
+function formatDate(value){
 
-      "Technology":
-        "Technology, innovation, digital infrastructure and the developments changing how the world works.",
+if(!value)return"";
 
-      "Business":
-        "Markets, companies, industries, economic developments and the forces shaping global business.",
+const date=new Date(value);
 
-      "Science":
-        "Scientific discoveries, research, breakthroughs and the evidence behind important developments.",
+if(Number.isNaN(date.getTime()))return String(value);
 
-      "World":
-        "Important developments, events and stories from around the world, with context beyond the headline.",
+return date.toLocaleDateString("en-US",{
+year:"numeric",
+month:"short",
+day:"numeric"
+});
 
-      "Politics":
-        "Political developments, public policy, leadership and the decisions shaping societies.",
+}
 
-      "Latest":
-        "The latest stories published by AI News Factory across our global newsroom."
-    };
+function activateCategoryNav(active){
 
-    return (
-      descriptions[name] ||
-      "News, analysis and intelligent reporting from the AI News Factory newsroom."
-    );
+document.querySelectorAll(".category-nav a").forEach(link=>{
 
-  }
+const url=new URL(link.href,location.href);
+const value=url.searchParams.get("category")||"Latest";
 
-  function formatDate(value) {
-
-    if (!value) {
-      return "";
-    }
-
-    const date =
-      new Date(value + "T00:00:00");
-
-    if (Number.isNaN(date.getTime())) {
-      return value;
-    }
-
-    return date.toLocaleDateString(
-      "en-US",
-      {
-        year:"numeric",
-        month:"short",
-        day:"numeric"
-      }
-    );
-
-  }
-
-  function escapeHtml(value) {
-
-    return String(value ?? "")
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
-
-  }
+if(value.toLowerCase()===active.toLowerCase()){
+link.classList.add("active");
+}
 
 });
 
+}
+
+function escapeHtml(value){
+
+return String(value??"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+});
 </script>
 
 </body>
