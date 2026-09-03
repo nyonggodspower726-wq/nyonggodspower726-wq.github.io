@@ -1,5 +1,30 @@
 [
   {
+    "id": "test-news-001",
+    "slug": "ai-news-factory-test-publication",
+    "title": "AI News Factory Test Publication",
+    "category": "Technology",
+    "excerpt": "This is a live test from AI News Factory.",
+    "content": "<p>This is a live test article published by AI News Factory.</p><p>If you can see this article, GitHub publishing is working.</p>",
+    "author": "AI News Factory",
+    "published_at": "2026-09-03T19:00:00Z",
+    "read_time": "1 min read",
+    "featured": false,
+    "image": "",
+    "image_url": "",
+    "image_alt": "",
+    "image_caption": "",
+    "image_credit": "",
+    "tags": [
+      "AI News Factory",
+      "Test"
+    ],
+    "keywords": [],
+    "sources": [],
+    "source_url": "",
+    "seo": {}
+  },
+  {
     "id": "ai-agents-2026",
     "slug": "ai-agents-are-changing-how-people-work",
     "title": "AI Agents Are Changing How People Work — And the Shift Is Only Beginning",
@@ -158,4 +183,4 @@
       }
     ]
   }
-    ]
+]
