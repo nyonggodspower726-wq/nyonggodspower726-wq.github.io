@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Search AI News Factory for intelligent news, analysis and reporting.">
+<meta name="theme-color" content="#080808">
+<title>Search | AI News Factory</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.search-page{
+  max-width:1250px;
+  margin:0 auto;
+  padding:70px 24px 100px;
+}
+.search-header{
+  padding-bottom:40px;
+  border-bottom:1px solid rgba(128,128,128,.25);
+  margin-bottom:40px;
+}
+.search-kicker{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  opacity:.55;
+  margin-bottom:15px;
+}
+.search-title{
+  margin:0 0 30px;
+  font-family:Georgia,serif;
+  font-size:clamp(48px,7vw,82px);
+  line-height:1;
+  letter-spacing:-.05em;
+}
+.search-form{
+  display:flex;
+  max-width:850px;
+  gap:10px;
+}
+.search-form input{
+  flex:1;
+  min-width:0;
+  padding:17px 18px;
+  border:1px solid rgba(128,128,128,.35);
+  background:transparent;
+  color:inherit;
+  font-size:16px;
+  outline:none;
+}
+.search-form input:focus{
+  border-color:rgba(180,0,0,.75);
+}
+.search-form button{
+  padding:0 28px;
+  border:0;
+  background:#b00000;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+.search-summary{
+  margin-bottom:25px;
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  opacity:.55;
+}
+.search-results{
+  display:grid;
+  gap:18px;
+}
+.search-result{
+  display:grid;
+  grid-template-columns:230px 1fr;
+  gap:25px;
+  padding:20px 0;
+  border-bottom:1px solid rgba(128,128,128,.2);
+}
+.search-result-visual{
+  min-height:150px;
+  background:
+    radial-gradient(circle at 30% 30%,rgba(180,0,0,.4),transparent 38%),
+    linear-gradient(135deg,#1a1a1a,#050505);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.search-result-visual img{
+  width:100%;
+  height:100%;
+  min-height:150px;
+  object-fit:cover;
+}
+.search-result-placeholder{
+  font-family:Georgia,serif;
+  font-size:25px;
+  opacity:.25;
+}
+.search-result-category{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  opacity:.55;
+  margin-bottom:10px;
+}
+.search-result h2{
+  margin:0 0 10px;
+  font-family:Georgia,serif;
+  font-size:27px;
+  line-height:1.15;
+}
+.search-result h2 a{
+  color:inherit;
+  text-decoration:none;
+}
+.search-result h2 a:hover{
+  text-decoration:underline;
+}
+.search-result-excerpt{
+  margin:0 0 15px;
+  font-size:14px;
+  line-height:1.65;
+  opacity:.65;
+}
+.search-result-meta{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  opacity:.45;
+}
+.search-empty{
+  padding:90px 20px;
+  text-align:center;
+  border:1px solid rgba(128,128,128,.2);
+}
+.search-empty h2{
+  font-family:Georgia,serif;
+  font-size:38px;
+  margin:0 0 15px;
+}
+.search-empty p{
+  opacity:.6;
+}
+.search-empty a{
+  color:inherit;
+}
+@media(max-width:700px){
+  .search-page{
+    padding:45px 18px 70px;
+  }
+  .search-form{
+    flex-direction:column;
+  }
+  .search-form button{
+    min-height:50px;
+  }
+  .search-result{
+    grid-template-columns:1fr;
+  }
+  .search-result-visual{
+    min-height:210px;
+  }
+  .search-result-visual img{
+    min-height:210px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+
+    <div class="live-indicator">
+      <span class="live-dot"></span>
+      LIVE NEWSROOM
+    </div>
+
+    <div class="header-date" data-current-date>
+      Loading...
+    </div>
+
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      type="button"
+      aria-label="Toggle theme">
+      ◐
+    </button>
+
+  </div>
+</header>
+
+<main id="searchContainer">
+
+  <div class="search-page">
+
+    <div class="search-header">
+
+      <div class="search-kicker">
+        AI News Factory
+      </div>
+
+      <h1 class="search-title">
+        Search the Newsroom
+      </h1>
+
+      <form
+        class="search-form"
+        id="searchForm">
+
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Search stories, topics or keywords..."
+          autocomplete="off">
+
+        <button type="submit">
+          SEARCH
+        </button>
+
+      </form>
+
+    </div>
+
+    <div id="searchSummary" class="search-summary">
+      Loading...
+    </div>
+
+    <div id="searchResults" class="search-results">
+      <p>Loading stories...</p>
+    </div>
+
+  </div>
+
+</main>
+
+<footer class="site-footer">
+
+  <div class="footer-inner">
+
+    <div>
+      <strong>AI NEWS FACTORY</strong>
+      <p>INTELLIGENCE. CONTEXT. TRUTH.</p>
+    </div>
+
+    <div>
+      © <span data-current-year></span>
+      AI News Factory
+    </div>
+
+  </div>
+
+</footer>
+
+<script src="assets/js/app.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const form =
+    document.getElementById("searchForm");
+
+  const input =
+    document.getElementById("searchInput");
+
+  const summary =
+    document.getElementById("searchSummary");
+
+  const results =
+    document.getElementById("searchResults");
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const initialQuery =
+    params.get("q") || "";
+
+  input.value = initialQuery;
+
+  let articles = [];
+
+  try {
+
+    const response =
+      await fetch("data/articles.json");
+
+    if (!response.ok) {
+      throw new Error(
+        "Unable to load articles."
+      );
+    }
+
+    articles =
+      await response.json();
+
+    performSearch(initialQuery);
+
+  } catch (error) {
+
+    console.error(
+      "Search loading error:",
+      error
+    );
+
+    summary.textContent =
+      "SEARCH UNAVAILABLE";
+
+    results.innerHTML = `
+
+      <div class="search-empty">
+
+        <h2>
+          Unable to load the newsroom
+        </h2>
+
+        <p>
+          Please refresh the page and try again.
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+  form.addEventListener(
+    "submit",
+    (event) => {
+
+      event.preventDefault();
+
+      const query =
+        input.value.trim();
+
+      if (!query) {
+
+        history.replaceState(
+          {},
+          "",
+          "search.html"
+        );
+
+        performSearch("");
+
+        return;
+      }
+
+      const url =
+        "search.html?q=" +
+        encodeURIComponent(query);
+
+      history.pushState(
+        {},
+        "",
+        url
+      );
+
+      performSearch(query);
+
+    }
+  );
+
+  function performSearch(query) {
+
+    const cleanQuery =
+      String(query || "")
+        .trim()
+        .toLowerCase();
+
+    if (!cleanQuery) {
+
+      summary.textContent =
+        articles.length +
+        " STORIES IN THE NEWSROOM";
+
+      renderResults(
+        [...articles]
+          .sort(sortByDate)
+      );
+
+      return;
+    }
+
+    const words =
+      cleanQuery
+        .split(/\s+/)
+        .filter(Boolean);
+
+    const matches =
+      articles.filter(
+        article => {
+
+          const searchableText = [
+
+            article.title,
+
+            article.category,
+
+            article.excerpt,
+
+            article.author,
+
+            ...(Array.isArray(article.tags)
+              ? article.tags
+              : [])
+
+          ]
+            .join(" ")
+            .toLowerCase();
+
+          return words.every(
+            word =>
+              searchableText.includes(word)
+          );
+
+        }
+      );
+
+    summary.textContent =
+      matches.length +
+      (
+        matches.length === 1
+          ? " RESULT"
+          : " RESULTS"
+      ) +
+      " FOR “" +
+      query.toUpperCase() +
+      "”";
+
+    renderResults(matches);
+
+  }
+
+  function renderResults(items) {
+
+    if (!items.length) {
+
+      results.innerHTML = `
+
+        <div class="search-empty">
+
+          <h2>
+            No stories found
+          </h2>
+
+          <p>
+            Try another keyword, topic or category.
+          </p>
+
+          <p>
+            <a href="index.html">
+              ← Return to AI News Factory
+            </a>
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+    }
+
+    results.innerHTML =
+      items
+        .sort(sortByDate)
+        .map(createResult)
+        .join("");
+
+  }
+
+  function createResult(article) {
+
+    const visual =
+      article.image
+        ? `
+          <div class="search-result-visual">
+
+            <img
+              src="${escapeHtml(article.image)}"
+              alt="${escapeHtml(article.title)}">
+
+          </div>
+        `
+        : `
+          <div class="search-result-visual">
+
+            <div class="search-result-placeholder">
+              ${escapeHtml(article.category || "NEWS")}
+            </div>
+
+          </div>
+        `;
+
+    return `
+
+      <article class="search-result">
+
+        ${visual}
+
+        <div>
+
+          <div class="search-result-category">
+            ${escapeHtml(article.category || "News")}
+          </div>
+
+          <h2>
+
+            <a
+              href="article.html?slug=${encodeURIComponent(article.slug)}">
+
+              ${escapeHtml(article.title)}
+
+            </a>
+
+          </h2>
+
+          <p class="search-result-excerpt">
+            ${escapeHtml(article.excerpt || "")}
+          </p>
+
+          <div class="search-result-meta">
+
+            <span>
+              ${formatDate(article.date)}
+            </span>
+
+            <span>
+              ${escapeHtml(article.author || "AI News Factory Desk")}
+            </span>
+
+            <span>
+              ${escapeHtml(article.readTime || "5 min read")}
+            </span>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    `;
+
+  }
+
+  function sortByDate(a,b) {
+
+    return (
+      new Date(b.date || 0) -
+      new Date(a.date || 0)
+    );
+
+  }
+
+  function formatDate(value) {
+
+    if (!value) {
+      return "";
+    }
+
+    const date =
+      new Date(value + "T00:00:00");
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return date.toLocaleDateString(
+      "en-US",
+      {
+        year:"numeric",
+        month:"short",
+        day:"numeric"
+      }
+    );
+
+  }
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+
+  }
+
+});
+
+</script>
+
+</body>
+  </html>
