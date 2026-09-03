@@ -3,623 +3,1205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <meta name="description" content="AI News Factory — intelligent, verified news and stories from around the world.">
 <meta name="theme-color" content="#0a0a0a">
+
 <link rel="stylesheet" href="assets/css/style.css">
+
 <title>AI News Factory — Independent Digital News</title>
 </head>
+
 <body>
+
 <div id="app">
+
+<!-- ================= HEADER ================= -->
 <header class="site-header">
-<div class="header-top">
-<div class="header-left">
-<span class="live-dot"></span>
-<span>LIVE NEWSROOM</span>
-</div>
-<div class="header-date" id="headerDate">Loading...</div>
-<div class="header-right">
-<button class="icon-button" id="searchButton" aria-label="Search">
-<span>⌕</span>
-</button>
-<button class="icon-button" id="themeButton" aria-label="Toggle theme">
-<span>◐</span>
-</button>
-</div>
-</div>
-<div class="masthead">
-<div class="brand-block">
-<div class="brand-mark">ANF</div>
-<div>
-<h1>AI NEWS FACTORY</h1>
-<p>INTELLIGENCE. CONTEXT. TRUTH.</p>
-</div>
-</div>
-<div class="edition">
-<span>GLOBAL EDITION</span>
-<strong>24/7</strong>
-</div>
-</div>
-<nav class="main-nav" aria-label="Primary navigation">
-<a href="index.html" class="active">Home</a>
-<a href="category.html?category=world">World</a>
-<a href="category.html?category=politics">Politics</a>
-<a href="category.html?category=technology">Technology</a>
-<a href="category.html?category=business">Business</a>
-<a href="category.html?category=science">Science</a>
-<a href="category.html?category=culture">Culture</a>
-<a href="category.html?category=investigations">Investigations</a>
-<a href="category.html?category=opinion">Opinion</a>
-</nav>
+
+  <div class="header-top">
+
+    <div class="header-left">
+      <span class="live-dot"></span>
+      <span>LIVE NEWSROOM</span>
+    </div>
+
+    <div class="header-date" id="headerDate">
+      Loading...
+    </div>
+
+    <div class="header-right">
+
+      <button
+        class="icon-button"
+        id="searchButton"
+        aria-label="Search"
+        type="button">
+        <span>⌕</span>
+      </button>
+
+      <button
+        class="icon-button"
+        id="themeButton"
+        aria-label="Toggle theme"
+        type="button">
+        <span>◐</span>
+      </button>
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        type="button">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- MASTHEAD -->
+  <div class="masthead">
+
+    <div class="brand-block">
+
+      <div class="brand-mark">
+        ANF
+      </div>
+
+      <div>
+        <h1>AI NEWS FACTORY</h1>
+        <p>INTELLIGENCE. CONTEXT. TRUTH.</p>
+      </div>
+
+    </div>
+
+    <div class="edition">
+      <span>GLOBAL EDITION</span>
+      <strong>24/7</strong>
+    </div>
+
+  </div>
+
+
+  <!-- NAVIGATION -->
+  <nav class="main-nav" aria-label="Primary navigation">
+
+    <a href="index.html" class="active">Home</a>
+
+    <a href="category.html?category=world">
+      World
+    </a>
+
+    <a href="category.html?category=politics">
+      Politics
+    </a>
+
+    <a href="category.html?category=technology">
+      Technology
+    </a>
+
+    <a href="category.html?category=business">
+      Business
+    </a>
+
+    <a href="category.html?category=science">
+      Science
+    </a>
+
+    <a href="category.html?category=culture">
+      Culture
+    </a>
+
+    <a href="category.html?category=investigations">
+      Investigations
+    </a>
+
+    <a href="category.html?category=opinion">
+      Opinion
+    </a>
+
+  </nav>
+
 </header>
+
+
+<!-- ================= BREAKING NEWS ================= -->
 <div class="breaking-bar">
-<div class="breaking-label">
-<span class="pulse"></span>
-BREAKING
+
+  <div class="breaking-label">
+    <span class="live-dot"></span>
+    BREAKING
+  </div>
+
+  <div class="breaking-content" id="breakingContent">
+    <span>Loading latest developments...</span>
+  </div>
+
 </div>
-<div class="breaking-track">
-<div class="breaking-content" id="breakingContent">
-<span>Newsroom intelligence updated continuously</span>
-<span>•</span>
-<span>Independent reporting and verified sources</span>
-<span>•</span>
-<span>Stories that matter, without the noise</span>
-</div>
-</div>
-</div>
+
+
+<!-- ================= MAIN ================= -->
 <main>
+
+
+<!-- ================= HERO SECTION ================= -->
 <section class="hero-section">
-<div class="section-kicker">
-<span>THE LEAD</span>
-<div></div>
-<span id="heroTime">JUST NOW</span>
-</div>
-<div class="hero-grid">
-<article class="hero-story" id="heroStory">
-<div class="hero-image image-placeholder" id="heroImage">
-<div class="image-overlay"></div>
-<div class="image-label">FEATURED</div>
-</div>
-<div class="hero-copy">
-<div class="story-meta">
-<span class="category" id="heroCategory">AI</span>
-<span>•</span>
-<span id="heroReadTime">5 MIN READ</span>
-</div>
-<h2 id="heroTitle">
-Loading the latest newsroom story...
-</h2>
-<p class="hero-excerpt" id="heroExcerpt">
-Loading the latest verified story from AI News Factory.
-</p>
-<div class="story-footer">
-<span id="heroAuthor">AI News Factory Desk</span>
-<span>●</span>
-<span id="heroDate">Updated moments ago</span>
-</div>
-</div>
-</article>
-<div class="side-stories" id="sideStories">
-<article class="side-story">
-<div class="small-image image-placeholder">
-<div class="image-overlay"></div>
-</div>
-<div class="side-copy">
-<div class="story-meta">
-<span class="category">NEWS</span>
-<span>•</span>
-<span>LOADING</span>
-</div>
-<h3>Loading latest story...</h3>
-<p>Newsroom · Today</p>
-</div>
-</article>
-<article class="side-story">
-<div class="small-image image-placeholder">
-<div class="image-overlay"></div>
-</div>
-<div class="side-copy">
-<div class="story-meta">
-<span class="category">NEWS</span>
-<span>•</span>
-<span>LOADING</span>
-</div>
-<h3>Loading latest story...</h3>
-<p>Newsroom · Today</p>
-</div>
-</article>
-<article class="side-story">
-<div class="small-image image-placeholder">
-<div class="image-overlay"></div>
-</div>
-<div class="side-copy">
-<div class="story-meta">
-<span class="category">NEWS</span>
-<span>•</span>
-<span>LOADING</span>
-</div>
-<h3>Loading latest story...</h3>
-<p>Newsroom · Today</p>
-</div>
-</article>
-</div>
-</div>
+
+  <div class="hero-grid">
+
+    <!-- MAIN STORY -->
+    <article
+      class="hero-story"
+      id="heroStory"
+      tabindex="0"
+      role="link"
+      aria-label="Featured story">
+
+      <div
+        class="hero-image image-placeholder"
+        id="heroImage">
+
+        <div class="image-overlay"></div>
+
+        <div class="hero-label">
+          <span>FEATURED</span>
+        </div>
+
+      </div>
+
+
+      <div class="hero-content">
+
+        <div class="story-meta">
+
+          <span
+            class="category"
+            id="heroCategory">
+            NEWS
+          </span>
+
+          <span>•</span>
+
+          <span id="heroReadTime">
+            5 MIN READ
+          </span>
+
+        </div>
+
+
+        <h2 id="heroTitle">
+          Loading the latest story...
+        </h2>
+
+
+        <p id="heroExcerpt">
+          AI News Factory is preparing the latest verified developments from around the world.
+        </p>
+
+
+        <div class="story-byline">
+
+          <span id="heroAuthor">
+            AI News Factory Desk
+          </span>
+
+          <span>•</span>
+
+          <span id="heroDate">
+            Today
+          </span>
+
+          <span>•</span>
+
+          <span id="heroTime">
+            JUST NOW
+          </span>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <!-- SIDE STORIES -->
+    <div
+      class="side-stories"
+      id="sideStories">
+
+      <article class="side-story">
+
+        <div class="small-image image-placeholder">
+          <div class="image-overlay"></div>
+        </div>
+
+        <div class="side-copy">
+
+          <div class="story-meta">
+            <span class="category">NEWS</span>
+            <span>•</span>
+            <span>4 MIN READ</span>
+          </div>
+
+          <h3>
+            Loading latest story...
+          </h3>
+
+          <p>
+            AI News Factory Desk
+          </p>
+
+        </div>
+
+      </article>
+
+
+      <article class="side-story">
+
+        <div class="small-image image-placeholder">
+          <div class="image-overlay"></div>
+        </div>
+
+        <div class="side-copy">
+
+          <div class="story-meta">
+            <span class="category">NEWS</span>
+            <span>•</span>
+            <span>5 MIN READ</span>
+          </div>
+
+          <h3>
+            Loading latest story...
+          </h3>
+
+          <p>
+            AI News Factory Desk
+          </p>
+
+        </div>
+
+      </article>
+
+
+      <article class="side-story">
+
+        <div class="small-image image-placeholder">
+          <div class="image-overlay"></div>
+        </div>
+
+        <div class="side-copy">
+
+          <div class="story-meta">
+            <span class="category">NEWS</span>
+            <span>•</span>
+            <span>6 MIN READ</span>
+          </div>
+
+          <h3>
+            Loading latest story...
+          </h3>
+
+          <p>
+            AI News Factory Desk
+          </p>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
 </section>
-<section class="latest-section">
-<div class="section-heading">
-<div>
-<span class="eyebrow">NEWSROOM</span>
-<h2>Latest Stories</h2>
-</div>
-<a href="category.html?category=all" class="view-all">
-View all stories →
-</a>
-</div>
-<div class="latest-layout">
-<div class="latest-feed" id="latestFeed">
-<article class="news-card featured-card">
-<div class="card-image image-placeholder">
-<div class="image-overlay"></div>
-</div>
-<div class="card-content">
-<div class="story-meta">
-<span class="category">NEWS</span>
-<span>•</span>
-<span>LOADING</span>
-</div>
-<h3>Loading the latest stories...</h3>
-<p>
-Our newsroom intelligence system is preparing the latest verified developments.
-</p>
-</div>
-</article>
-</div>
-<aside class="trending">
-<div class="trending-heading">
-<span class="eyebrow">MOST READ</span>
-<h2>Trending Now</h2>
-</div>
-<div class="trend-list" id="trendList">
-<a href="#" class="trend-item">
-<span class="trend-number">01</span>
-<div>
-<span class="trend-category">NEWS</span>
-<h3>Loading trending stories...</h3>
-</div>
-</a>
-</div>
-</aside>
-</div>
+
+
+<!-- ================= LATEST STORIES ================= -->
+<section class="content-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <span class="section-kicker">
+        THE NEWSROOM
+      </span>
+
+      <h2>
+        Latest Stories
+      </h2>
+
+    </div>
+
+    <a
+      href="category.html?category=all"
+      class="section-link">
+      View all stories →
+    </a>
+
+  </div>
+
+
+  <div
+    class="latest-grid"
+    id="latestFeed">
+
+    <a href="#" class="news-card featured-card">
+
+      <div class="card-image image-placeholder">
+        <div class="image-overlay"></div>
+      </div>
+
+      <div class="card-content">
+
+        <div class="story-meta">
+          <span class="category">NEWS</span>
+          <span>•</span>
+          <span>5 MIN READ</span>
+        </div>
+
+        <h3>
+          Loading latest stories...
+        </h3>
+
+        <p>
+          Stories from the AI News Factory newsroom will appear here.
+        </p>
+
+      </div>
+
+    </a>
+
+  </div>
+
 </section>
-<section class="intelligence-banner">
-<div class="intelligence-label">
-<span class="ai-symbol">✦</span>
-<span>
-AI NEWS<br>
-INTELLIGENCE
-</span>
-</div>
-<div class="intelligence-main">
-<span class="eyebrow">THE SIGNAL</span>
-<h2>Beyond the headline.</h2>
-<p>
-We don't just collect stories. We connect developments, examine claims, compare sources and surface the context behind the news.
-</p>
-</div>
-<div class="intelligence-action">
-<a href="search.html">
-Explore our approach →
-</a>
-</div>
+
+
+<!-- ================= TRENDING ================= -->
+<section class="content-section trending-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <span class="section-kicker">
+        WHAT MATTERS NOW
+      </span>
+
+      <h2>
+        Trending
+      </h2>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="trend-list"
+    id="trendList">
+
+    <a href="#" class="trend-item">
+
+      <span class="trend-number">
+        01
+      </span>
+
+      <div>
+
+        <span class="trend-category">
+          NEWS
+        </span>
+
+        <h3>
+          Loading trending stories...
+        </h3>
+
+      </div>
+
+    </a>
+
+  </div>
+
 </section>
-<section class="category-section">
-<div class="section-heading">
-<div>
-<span class="eyebrow">EXPLORE</span>
-<h2>News by Category</h2>
-</div>
-</div>
-<div class="category-grid" id="categoryGrid">
-<a href="category.html?category=world" class="category-card category-world">
-<span class="category-number">01</span>
-<div>
-<span>GLOBAL</span>
-<h3>World</h3>
-<p>Stories beyond borders.</p>
-</div>
-<span class="arrow">↗</span>
-</a>
-<a href="category.html?category=politics" class="category-card">
-<span class="category-number">02</span>
-<div>
-<span>POWER</span>
-<h3>Politics</h3>
-<p>Decisions shaping society.</p>
-</div>
-<span class="arrow">↗</span>
-</a>
-<a href="category.html?category=technology" class="category-card">
-<span class="category-number">03</span>
-<div>
-<span>INNOVATION</span>
-<h3>Technology</h3>
-<p>The future taking shape.</p>
-</div>
-<span class="arrow">↗</span>
-</a>
-<a href="category.html?category=business" class="category-card">
-<span class="category-number">04</span>
-<div>
-<span>MARKETS</span>
-<h3>Business</h3>
-<p>Money, markets and power.</p>
-</div>
-<span class="arrow">↗</span>
-</a>
-<a href="category.html?category=science" class="category-card">
-<span class="category-number">05</span>
-<div>
-<span>DISCOVERY</span>
-<h3>Science</h3>
-<p>Understanding our world.</p>
-</div>
-<span class="arrow">↗</span>
-</a>
-<a href="category.html?category=investigations" class="category-card">
-<span class="category-number">06</span>
-<div>
-<span>INVESTIGATION</span>
-<h3>Investigations</h3>
-<p>Stories worth looking deeper into.</p>
-</div>
-<span class="arrow">↗</span>
-</a>
-</div>
+
+
+<!-- ================= INTELLIGENCE BANNER ================= -->
+<section class="intelligence-section">
+
+  <div class="intelligence-inner">
+
+    <div class="intelligence-mark">
+      ANF
+    </div>
+
+    <div class="intelligence-copy">
+
+      <span class="section-kicker">
+        THE AI NEWS FACTORY METHOD
+      </span>
+
+      <h2>
+        News built for people who want more than a headline.
+      </h2>
+
+      <p>
+        We combine intelligent discovery, source analysis,
+        verification and editorial judgment to turn information
+        into stories worth understanding.
+      </p>
+
+    </div>
+
+    <a
+      href="search.html"
+      class="intelligence-link">
+      Explore our approach →
+    </a>
+
+  </div>
+
 </section>
+
+
+<!-- ================= CATEGORIES ================= -->
+<section class="content-section category-section">
+
+  <div class="section-header">
+
+    <div>
+
+      <span class="section-kicker">
+        EXPLORE
+      </span>
+
+      <h2>
+        Browse by Category
+      </h2>
+
+    </div>
+
+  </div>
+
+
+  <div class="category-grid">
+
+    <a
+      href="category.html?category=world"
+      class="category-card category-link"
+      data-category="world">
+
+      <span class="category-number">
+        01
+      </span>
+
+      <div>
+        <span>WORLD</span>
+        <h3>Global Affairs</h3>
+      </div>
+
+      <span class="category-arrow">
+        →
+      </span>
+
+    </a>
+
+
+    <a
+      href="category.html?category=politics"
+      class="category-card category-link"
+      data-category="politics">
+
+      <span class="category-number">
+        02
+      </span>
+
+      <div>
+        <span>POLITICS</span>
+        <h3>Power & Policy</h3>
+      </div>
+
+      <span class="category-arrow">
+        →
+      </span>
+
+    </a>
+
+
+    <a
+      href="category.html?category=technology"
+      class="category-card category-link"
+      data-category="technology">
+
+      <span class="category-number">
+        03
+      </span>
+
+      <div>
+        <span>TECHNOLOGY</span>
+        <h3>The Digital World</h3>
+      </div>
+
+      <span class="category-arrow">
+        →
+      </span>
+
+    </a>
+
+
+    <a
+      href="category.html?category=business"
+      class="category-card category-link"
+      data-category="business">
+
+      <span class="category-number">
+        04
+      </span>
+
+      <div>
+        <span>BUSINESS</span>
+        <h3>Markets & Economy</h3>
+      </div>
+
+      <span class="category-arrow">
+        →
+      </span>
+
+    </a>
+
+
+    <a
+      href="category.html?category=science"
+      class="category-card category-link"
+      data-category="science">
+
+      <span class="category-number">
+        05
+      </span>
+
+      <div>
+        <span>SCIENCE</span>
+        <h3>Discovery & Research</h3>
+      </div>
+
+      <span class="category-arrow">
+        →
+      </span>
+
+    </a>
+
+
+    <a
+      href="category.html?category=investigations"
+      class="category-card category-link"
+      data-category="investigations">
+
+      <span class="category-number">
+        06
+      </span>
+
+      <div>
+        <span>INVESTIGATIONS</span>
+        <h3>Deep Reporting</h3>
+      </div>
+
+      <span class="category-arrow">
+        →
+      </span>
+
+    </a>
+
+  </div>
+
+</section>
+
+
+<!-- ================= NEWSLETTER ================= -->
 <section class="newsletter-section">
-<div class="newsletter-inner">
-<div>
-<span class="eyebrow">THE DAILY BRIEF</span>
-<h2>
-The news that matters.<br>
-Delivered intelligently.
-</h2>
-</div>
-<div class="newsletter-right">
-<p>
-Get the most important stories, analysis and developments delivered without the noise.
-</p>
-<form class="newsletter-form" id="newsletterForm">
-<input
-type="email"
-name="email"
-placeholder="Your email address"
-aria-label="Email address"
-autocomplete="email"
-required
->
-<button type="submit">
-Subscribe →
-</button>
-</form>
-<span class="privacy-note">
-No spam. Unsubscribe anytime.
-</span>
-</div>
-</div>
+
+  <div class="newsletter-inner">
+
+    <div>
+
+      <span class="section-kicker">
+        THE DAILY BRIEF
+      </span>
+
+      <h2>
+        The news that deserves your attention.
+      </h2>
+
+      <p>
+        Get important stories, analysis and developments
+        delivered directly to your inbox.
+      </p>
+
+    </div>
+
+
+    <form
+      class="newsletter-form"
+      id="newsletterForm"
+      data-newsletter-form>
+
+      <div class="newsletter-input">
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Your email address"
+          aria-label="Email address"
+          autocomplete="email"
+          required>
+
+        <button type="submit">
+          Subscribe →
+        </button>
+
+      </div>
+
+      <small>
+        No noise. No unnecessary emails. Just the stories that matter.
+      </small>
+
+    </form>
+
+  </div>
+
 </section>
+
 </main>
+
+
+<!-- ================= FOOTER ================= -->
 <footer class="site-footer">
-<div class="footer-main">
-<div class="footer-brand">
-<div class="footer-mark">ANF</div>
-<h2>AI NEWS FACTORY</h2>
-<p>
-Independent digital journalism powered by intelligent technology and human editorial standards.
-</p>
-</div>
-<div class="footer-column">
-<span class="footer-title">Explore</span>
-<a href="category.html?category=all">Latest News</a>
-<a href="category.html?category=world">World</a>
-<a href="category.html?category=politics">Politics</a>
-<a href="category.html?category=technology">Technology</a>
-<a href="category.html?category=business">Business</a>
-<a href="category.html?category=science">Science</a>
-</div>
-<div class="footer-column">
-<span class="footer-title">About</span>
-<a href="search.html?q=about">About Us</a>
-<a href="search.html?q=editorial">Editorial Standards</a>
-<a href="search.html?q=corrections">Corrections</a>
-<a href="search.html?q=contact">Contact</a>
-<a href="search.html?q=privacy">Privacy</a>
-<a href="search.html?q=terms">Terms</a>
-</div>
-<div class="footer-column">
-<span class="footer-title">Follow</span>
-<a href="#" aria-label="Facebook">Facebook</a>
-<a href="#" aria-label="X / Twitter">X / Twitter</a>
-<a href="#" aria-label="YouTube">YouTube</a>
-<a href="#" aria-label="Instagram">Instagram</a>
-</div>
-</div>
-<div class="footer-bottom">
-<span>© 2026 AI News Factory. All rights reserved.</span>
-<span>Independent digital news.</span>
-</div>
+
+  <div class="footer-main">
+
+
+    <!-- BRAND -->
+    <div class="footer-brand">
+
+      <div class="brand-mark">
+        ANF
+      </div>
+
+      <h2>
+        AI NEWS FACTORY
+      </h2>
+
+      <p>
+        Intelligent news. Verified information.
+        Stories with context.
+      </p>
+
+    </div>
+
+
+    <!-- EXPLORE -->
+    <div class="footer-column">
+
+      <h3>
+        Explore
+      </h3>
+
+      <a href="category.html?category=world">
+        World
+      </a>
+
+      <a href="category.html?category=politics">
+        Politics
+      </a>
+
+      <a href="category.html?category=technology">
+        Technology
+      </a>
+
+      <a href="category.html?category=business">
+        Business
+      </a>
+
+      <a href="category.html?category=science">
+        Science
+      </a>
+
+      <a href="category.html?category=culture">
+        Culture
+      </a>
+
+    </div>
+
+
+    <!-- NEWSROOM -->
+    <div class="footer-column">
+
+      <h3>
+        Newsroom
+      </h3>
+
+      <a href="category.html?category=investigations">
+        Investigations
+      </a>
+
+      <a href="category.html?category=opinion">
+        Opinion
+      </a>
+
+      <a href="category.html?category=all">
+        Latest Stories
+      </a>
+
+      <a href="search.html">
+        Search
+      </a>
+
+    </div>
+
+
+    <!-- ABOUT -->
+    <div class="footer-column">
+
+      <h3>
+        About
+      </h3>
+
+      <a href="search.html?q=about">
+        About AI News Factory
+      </a>
+
+      <a href="search.html?q=editorial">
+        Editorial Standards
+      </a>
+
+      <a href="search.html?q=contact">
+        Contact
+      </a>
+
+    </div>
+
+
+  </div>
+
+
+  <div class="footer-bottom">
+
+    <span>
+      © <span data-current-year>2026</span>
+      AI News Factory. All rights reserved.
+    </span>
+
+    <span>
+      INDEPENDENT DIGITAL NEWS
+    </span>
+
+  </div>
+
 </footer>
+
+
 </div>
+
+
+<!-- ================= SHARED JAVASCRIPT ================= -->
 <script src="assets/js/app.js"></script>
+
+
+<!-- ================= HOMEPAGE ARTICLE CONTROLLER ================= -->
 <script>
-(function(){
 "use strict";
-const DATA_URL="data/articles.json";
-const dateElement=document.getElementById("headerDate");
-const heroStory=document.getElementById("heroStory");
-const heroTitle=document.getElementById("heroTitle");
-const heroExcerpt=document.getElementById("heroExcerpt");
-const heroCategory=document.getElementById("heroCategory");
-const heroReadTime=document.getElementById("heroReadTime");
-const heroAuthor=document.getElementById("heroAuthor");
-const heroDate=document.getElementById("heroDate");
-const heroImage=document.getElementById("heroImage");
-const heroTime=document.getElementById("heroTime");
-const sideStories=document.getElementById("sideStories");
-const latestFeed=document.getElementById("latestFeed");
-const trendList=document.getElementById("trendList");
-const breakingContent=document.getElementById("breakingContent");
-const searchButton=document.getElementById("searchButton");
-const themeButton=document.getElementById("themeButton");
-const newsletterForm=document.getElementById("newsletterForm");
-function updateDate(){
-if(!dateElement)return;
-const now=new Date();
-dateElement.textContent=now.toLocaleDateString("en-US",{
-weekday:"long",
-month:"long",
-day:"numeric",
-year:"numeric"
-});
-}
-function escapeHTML(value){
-return String(value||"")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-}
-function formatCategory(category){
-return String(category||"NEWS").toUpperCase();
-}
-function formatDate(date){
-if(!date)return"Today";
-const parsed=new Date(date+"T00:00:00");
-if(Number.isNaN(parsed.getTime()))return date;
-return parsed.toLocaleDateString("en-US",{
-month:"short",
-day:"numeric",
-year:"numeric"
-});
-}
-function articleLink(article){
-return"article.html?slug="+encodeURIComponent(article.slug);
-}
-function imageStyle(article){
-if(article&&article.image){
-return"background-image:url('"+String(article.image).replace(/'/g,"%27")+"');background-size:cover;background-position:center;";
-}
-return"";
-}
-function sortArticles(articles){
-return articles.slice().sort(function(a,b){
-const dateA=new Date((a.date||"1970-01-01")+"T"+(a.time||"00:00"));
-const dateB=new Date((b.date||"1970-01-01")+"T"+(b.time||"00:00"));
-return dateB-dateA;
-});
-}
+
+(function(){
+
+const DATA_URL = "data/articles.json";
+
+const $ = selector =>
+  document.querySelector(selector);
+
+const esc = value =>
+  String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+const formatDate = value => {
+
+  if(!value) return "Today";
+
+  const date = new Date(value);
+
+  if(isNaN(date.getTime()))
+    return "Today";
+
+  return date.toLocaleDateString(
+    "en-US",
+    {
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    }
+  );
+
+};
+
+const articleLink = article =>
+  "article.html?slug=" +
+  encodeURIComponent(article.slug || "");
+
+const categoryName = value =>
+  String(value || "NEWS").toUpperCase();
+
+const readTime = article =>
+  String(
+    article.read_time ||
+    article.readTime ||
+    article.reading_time ||
+    "5 min read"
+  ).toUpperCase();
+
+const imageStyle = article => {
+
+  const image =
+    article &&
+    (article.image || article.image_url);
+
+  if(!image)
+    return "";
+
+  return `
+    background-image:url('${String(image)
+      .replace(/'/g,"%27")}');
+    background-size:cover;
+    background-position:center;
+  `;
+
+};
+
+const sortArticles = articles => {
+
+  return articles
+    .slice()
+    .sort((a,b) =>
+      new Date(
+        b.published_at ||
+        b.date ||
+        0
+      ) -
+      new Date(
+        a.published_at ||
+        a.date ||
+        0
+      )
+    );
+
+};
+
+
+/* ================= HERO ================= */
+
 function renderHero(article){
-if(!article||!heroStory)return;
-heroStory.style.cursor="pointer";
-heroStory.setAttribute("role","link");
-heroStory.setAttribute("tabindex","0");
-heroStory.onclick=function(){
-window.location.href=articleLink(article);
-};
-heroStory.onkeydown=function(event){
-if(event.key==="Enter"||event.key===" "){
-event.preventDefault();
-window.location.href=articleLink(article);
+
+  if(!article) return;
+
+  const hero = $("#heroStory");
+
+  if(!hero) return;
+
+  const link = articleLink(article);
+
+  hero.style.cursor = "pointer";
+
+  hero.onclick = () => {
+    location.href = link;
+  };
+
+  hero.onkeydown = event => {
+
+    if(
+      event.key === "Enter" ||
+      event.key === " "
+    ){
+
+      event.preventDefault();
+
+      location.href = link;
+
+    }
+
+  };
+
+
+  const title =
+    $("#heroTitle");
+
+  const excerpt =
+    $("#heroExcerpt");
+
+  const category =
+    $("#heroCategory");
+
+  const time =
+    $("#heroReadTime");
+
+  const author =
+    $("#heroAuthor");
+
+  const date =
+    $("#heroDate");
+
+  const updated =
+    $("#heroTime");
+
+  const image =
+    $("#heroImage");
+
+
+  if(title)
+    title.textContent =
+      article.title ||
+      "Untitled story";
+
+
+  if(excerpt)
+    excerpt.textContent =
+      article.excerpt ||
+      "";
+
+
+  if(category)
+    category.textContent =
+      categoryName(article.category);
+
+
+  if(time)
+    time.textContent =
+      readTime(article);
+
+
+  if(author)
+    author.textContent =
+      article.author ||
+      "AI News Factory Desk";
+
+
+  if(date)
+    date.textContent =
+      formatDate(
+        article.published_at ||
+        article.date
+      );
+
+
+  if(updated)
+    updated.textContent =
+      article.time
+        ? "UPDATED " + article.time
+        : "JUST NOW";
+
+
+  if(image)
+    image.setAttribute(
+      "style",
+      imageStyle(article)
+    );
+
 }
-};
-heroTitle.textContent=article.title||"Untitled story";
-heroExcerpt.textContent=article.excerpt||"";
-heroCategory.textContent=formatCategory(article.category);
-heroReadTime.textContent=(article.readTime||"5 min read").toUpperCase();
-heroAuthor.textContent=article.author||"AI News Factory Desk";
-heroDate.textContent=formatDate(article.date);
-if(heroImage){
-heroImage.setAttribute("style",imageStyle(article));
-}
-if(heroTime){
-heroTime.textContent=article.time?"UPDATED "+article.time:"JUST NOW";
-}
-}
+
+
+/* ================= SIDE STORIES ================= */
+
 function renderSideStories(articles){
-if(!sideStories)return;
-const items=articles.slice(1,4);
-if(!items.length){
-sideStories.innerHTML="";
-return;
+
+  const container =
+    $("#sideStories");
+
+  if(!container) return;
+
+  const stories =
+    articles.slice(1,4);
+
+  container.innerHTML =
+    stories.map(article => {
+
+      const link =
+        articleLink(article);
+
+      return `
+
+        <article
+          class="side-story"
+          data-link="${esc(link)}"
+          tabindex="0"
+          role="link">
+
+          <div
+            class="small-image image-placeholder"
+            style="${imageStyle(article)}">
+
+            <div class="image-overlay"></div>
+
+          </div>
+
+          <div class="side-copy">
+
+            <div class="story-meta">
+
+              <span class="category">
+                ${esc(categoryName(article.category))}
+              </span>
+
+              <span>•</span>
+
+              <span>
+                ${esc(readTime(article))}
+              </span>
+
+            </div>
+
+            <h3>
+              ${esc(article.title)}
+            </h3>
+
+            <p>
+              ${esc(
+                article.author ||
+                "AI News Factory Desk"
+              )}
+              ·
+              ${esc(
+                formatDate(
+                  article.published_at ||
+                  article.date
+                )
+              )}
+            </p>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }).join("");
+
+
+  container
+    .querySelectorAll(".side-story")
+    .forEach(story => {
+
+      const go = () =>
+        location.href =
+          story.dataset.link;
+
+      story.addEventListener(
+        "click",
+        go
+      );
+
+      story.addEventListener(
+        "keydown",
+        event => {
+
+          if(
+            event.key === "Enter" ||
+            event.key === " "
+          ){
+
+            event.preventDefault();
+
+            go();
+
+          }
+
+        }
+      );
+
+    });
+
 }
-sideStories.innerHTML=items.map(function(article){
-return`
-<article class="side-story" data-link="${articleLink(article)}" tabindex="0" role="link">
-<div class="small-image image-placeholder" style="${imageStyle(article)}">
-<div class="image-overlay"></div>
-</div>
-<div class="side-copy">
-<div class="story-meta">
-<span class="category">${escapeHTML(formatCategory(article.category))}</span>
-<span>•</span>
-<span>${escapeHTML((article.readTime||"5 min read").toUpperCase())}</span>
-</div>
-<h3>${escapeHTML(article.title)}</h3>
-<p>${escapeHTML(article.author||"AI News Factory Desk")} · ${escapeHTML(formatDate(article.date))}</p>
-</div>
-</article>
-`;
-}).join("");
-sideStories.querySelectorAll(".side-story").forEach(function(card){
-const go=function(){
-window.location.href=card.getAttribute("data-link");
-};
-card.addEventListener("click",go);
-card.addEventListener("keydown",function(event){
-if(event.key==="Enter"||event.key===" "){
-event.preventDefault();
-go();
-}
-});
-});
-}
+
+
+/* ================= LATEST ================= */
+
 function renderLatest(articles){
-if(!latestFeed)return;
-const items=articles.slice(0,6);
-if(!items.length){
-latestFeed.innerHTML="<p>No stories are available yet.</p>";
-return;
+
+  const container =
+    $("#latestFeed");
+
+  if(!container) return;
+
+  container.innerHTML =
+    articles
+      .slice(0,6)
+      .map((article,index) => {
+
+        return `
+
+          <a
+            href="${articleLink(article)}"
+            class="news-card ${
+              index === 0
+                ? "featured-card"
+                : ""
+            }">
+
+            <div
+              class="card-image image-placeholder"
+              style="${imageStyle(article)}">
+
+              <div class="image-overlay"></div>
+
+            </div>
+
+            <div class="card-content">
+
+              <div class="story-meta">
+
+                <span class="category">
+                  ${esc(
+                    categoryName(
+                      article.category
+                    )
+                  )}
+                </span>
+
+                <span>•</span>
+
+                <span>
+                  ${esc(
+                    readTime(article)
+                  )}
+                </span>
+
+              </div>
+
+              <h3>
+                ${esc(article.title)}
+              </h3>
+
+              <p>
+                ${esc(
+                  article.excerpt ||
+                  ""
+                )}
+              </p>
+
+            </div>
+
+          </a>
+
+        `;
+
+      })
+      .join("");
+
 }
-latestFeed.innerHTML=items.map(function(article,index){
-return`
-<a href="${articleLink(article)}" class="news-card ${index===0?"featured-card":""}">
-<div class="card-image image-placeholder" style="${imageStyle(article)}">
-<div class="image-overlay"></div>
-</div>
-<div class="card-content">
-<div class="story-meta">
-<span class="category">${escapeHTML(formatCategory(article.category))}</span>
-<span>•</span>
-<span>${escapeHTML(article.readTime||"5 min read")}</span>
-</div>
-<h3>${escapeHTML(article.title)}</h3>
-<p>${escapeHTML(article.excerpt||"")}</p>
-</div>
-</a>
-`;
-}).join("");
-}
-function renderTrending(articles){
-if(!trendList)return;
-const items=articles.slice(0,5);
-if(!items.length){
-trendList.innerHTML="";
-return;
-}
-trendList.innerHTML=items.map(function(article,index){
-const number=String(index+1).padStart(2,"0");
-return`
-<a href="${articleLink(article)}" class="trend-item">
-<span class="trend-number">${number}</span>
-<div>
-<span class="trend-category">${escapeHTML(formatCategory(article.category))}</span>
-<h3>${escapeHTML(article.title)}</h3>
-</div>
-</a>
-`;
-}).join("");
-}
-function renderBreaking(articles){
-if(!breakingContent)return;
-const breaking=articles.filter(function(article){
-return article.breaking===true;
-});
-const items=breaking.length?breaking:articles.slice(0,3);
-breakingContent.innerHTML=items.map(function(article){
-return`
-<a href="${articleLink(article)}" style="color:inherit;text-decoration:none;">
-<span>${escapeHTML(article.title)}</span>
-</a>
-<span>•</span>
-`).join("");
-}
-async function loadArticles(){
-try{
-const response=await fetch(DATA_URL+"?v="+Date.now(),{
-cache:"no-store"
-});
-if(!response.ok){
-throw new Error("Unable to load article database.");
-}
-const data=await response.json();
-if(!Array.isArray(data)){
-throw new Error("Article database format is invalid.");
-}
-const articles=sortArticles(data);
-const featured=articles.find(function(article){
-return article.featured===true;
-})||articles[0];
-if(featured){
-renderHero(featured);
-}
-renderSideStories(articles);
-renderLatest(articles);
-renderTrending(articles);
-renderBreaking(articles);
-}catch(error){
-console.error("AI News Factory article loading error:",error);
-if(heroTitle){
-heroTitle.textContent="Newsroom temporarily unavailable";
-}
-if(heroExcerpt){
-heroExcerpt.textContent="The latest stories could not be loaded. Please try again shortly.";
-}
-if(latestFeed){
-latestFeed.innerHTML=`
-<div class="news-card">
-<div class="card-content">
-<h3>Unable to load stories</h3>
-<p>Please refresh the page and try again.</p>
-</div>
-</div>
-`;
-}
-}
-}
-updateDate();
-loadArticles();
-if(searchButton){
-searchButton.addEventListener("click",function(){
-window.location.href="search.html";
-});
-}
-if(themeButton){
-themeButton.addEventListener("click",function(){
-document.body.classList.toggle("light-mode");
-try{
-localStorage.setItem(
-"anf-theme",
-document.body.classList.contains("light-mode")?"light":"dark"
-);
-}catch(error){}
-});
-}
-try{
-if(localStorage.getItem("anf-theme")==="light"){
-document.body.classList.add("light-mode");
-}
-}catch(error){}
-if(newsletterForm){
-newsletterForm.addEventListener("submit",function(event){
-event.preventDefault();
-const input=newsletterForm.querySelector("input[type='email']");
-if(input&&input.value.trim()){
-alert("Thanks for subscribing to the AI News Factory Daily Brief.");
-input.value="";
-}
-});
-}
-})();
-</script>
-</body>
-  </html>
+
+
+  
