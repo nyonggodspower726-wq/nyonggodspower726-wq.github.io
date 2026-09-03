@@ -1,0 +1,161 @@
+[
+  {
+    "id": "ai-agents-2026",
+    "slug": "ai-agents-are-changing-how-people-work",
+    "title": "AI Agents Are Changing How People Work — And the Shift Is Only Beginning",
+    "category": "AI",
+    "author": "AI News Factory Desk",
+    "date": "2026-09-03",
+    "time": "09:30",
+    "readTime": "5 min read",
+    "featured": true,
+    "breaking": false,
+    "image": "",
+    "excerpt": "AI agents are moving beyond simple chat interfaces and becoming capable of completing increasingly complex tasks across work and business.",
+    "content": [
+      "Artificial intelligence is entering another phase of its evolution as AI agents become increasingly capable of performing multi-step tasks rather than simply responding to individual prompts.",
+      "The change matters because agents can potentially connect reasoning with actions. Instead of asking a system a question and manually carrying out the result, users can increasingly delegate parts of a workflow to software.",
+      "Businesses are watching the development closely as companies explore how agentic systems could assist with research, customer service, software development, analysis and other knowledge-intensive work.",
+      "The technology remains imperfect. Reliability, security, privacy and the ability to verify automated decisions remain important challenges.",
+      "For users, the larger story is not simply about smarter chatbots. It is about software becoming more capable of taking action on a person's behalf."
+    ],
+    "tags": [
+      "Artificial Intelligence",
+      "AI Agents",
+      "Technology",
+      "Automation"
+    ],
+    "sources": [
+      {
+        "name": "AI News Factory Research Desk",
+        "url": "#"
+      }
+    ]
+  },
+  {
+    "id": "global-technology-shift",
+    "slug": "the-global-technology-shift-to-watch",
+    "title": "The Global Technology Shift Everyone Should Be Watching",
+    "category": "Technology",
+    "author": "AI News Factory Desk",
+    "date": "2026-09-03",
+    "time": "08:45",
+    "readTime": "4 min read",
+    "featured": false,
+    "breaking": false,
+    "image": "",
+    "excerpt": "Technology is becoming increasingly embedded in everyday infrastructure, changing how people communicate, work and access information.",
+    "content": [
+      "Technology is no longer limited to the devices people carry. Increasingly, software and connected systems are becoming part of the infrastructure behind everyday life.",
+      "Cloud computing, artificial intelligence, automation and increasingly capable connected devices are reshaping the way organisations operate.",
+      "The pace of change also creates new questions around security, privacy and access.",
+      "For consumers and businesses alike, understanding these shifts may become as important as adopting the technology itself."
+    ],
+    "tags": [
+      "Technology",
+      "Innovation",
+      "Digital Transformation"
+    ],
+    "sources": [
+      {
+        "name": "AI News Factory Research Desk",
+        "url": "#"
+      }
+    ]
+  },
+  {
+    "id": "business-ai-economy",
+    "slug": "what-ai-means-for-the-next-business-cycle",
+    "title": "What AI Could Mean for the Next Business Cycle",
+    "category": "Business",
+    "author": "AI News Factory Business Desk",
+    "date": "2026-09-02",
+    "time": "17:20",
+    "readTime": "6 min read",
+    "featured": false,
+    "breaking": false,
+    "image": "",
+    "excerpt": "Companies are increasingly treating artificial intelligence as an operational technology rather than simply an experimental tool.",
+    "content": [
+      "Artificial intelligence is becoming a strategic consideration for businesses across industries.",
+      "The focus is gradually moving from experimentation toward practical questions about productivity, costs, customer experience and competitive advantage.",
+      "That transition could make the coming years important for companies deciding where AI should be deployed and where human oversight must remain central.",
+      "The strongest results may come from organisations that treat AI as part of a broader operating strategy rather than as a standalone technology."
+    ],
+    "tags": [
+      "Business",
+      "AI",
+      "Economy",
+      "Companies"
+    ],
+    "sources": [
+      {
+        "name": "AI News Factory Business Research",
+        "url": "#"
+      }
+    ]
+  },
+  {
+    "id": "science-discovery",
+    "slug": "why-new-scientific-discoveries-matter",
+    "title": "Why Scientific Discoveries Still Matter in a Fast-Moving World",
+    "category": "Science",
+    "author": "AI News Factory Science Desk",
+    "date": "2026-09-02",
+    "time": "13:10",
+    "readTime": "5 min read",
+    "featured": false,
+    "breaking": false,
+    "image": "",
+    "excerpt": "Scientific research continues to shape medicine, technology and our understanding of the world around us.",
+    "content": [
+      "Scientific progress rarely happens overnight. Many major advances emerge from years of experiments, observations and incremental discoveries.",
+      "That process can make science difficult to communicate in a world increasingly driven by rapid news cycles.",
+      "Yet the implications of scientific research can extend far beyond the original discovery, influencing medicine, engineering, environmental policy and future technologies.",
+      "Understanding the evidence behind a discovery is therefore just as important as understanding the headline."
+    ],
+    "tags": [
+      "Science",
+      "Research",
+      "Discovery"
+    ],
+    "sources": [
+      {
+        "name": "AI News Factory Science Research",
+        "url": "#"
+      }
+    ]
+  },
+  {
+    "id": "world-information",
+    "slug": "how-information-shapes-the-modern-world",
+    "title": "How Information Shapes the Modern World",
+    "category": "World",
+    "author": "AI News Factory World Desk",
+    "date": "2026-09-01",
+    "time": "19:00",
+    "readTime": "5 min read",
+    "featured": false,
+    "breaking": false,
+    "image": "",
+    "excerpt": "The speed at which information travels is changing how societies understand events as they happen.",
+    "content": [
+      "Information now travels across borders within seconds, creating unprecedented access to events happening around the world.",
+      "That speed has advantages, but it also creates challenges. Early reports can change as additional evidence becomes available.",
+      "For readers, distinguishing between confirmed information, developing reports and speculation is increasingly important.",
+      "A modern newsroom therefore has to do more than publish quickly. It must also provide context and clearly communicate uncertainty."
+    ],
+    "tags": [
+      "World",
+      "News",
+      "Information",
+      "Media"
+    ],
+    "sources": [
+      {
+        "name": "AI News Factory World Research",
+        "url": "#"
+      }
+    ]
+  }
+    ]
