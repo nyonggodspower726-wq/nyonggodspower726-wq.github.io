@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI News Factory — category news, analysis and intelligence.">
+<meta name="theme-color" content="#080808">
+<title>Category | AI News Factory</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.category-page{
+  max-width:1400px;
+  margin:0 auto;
+  padding:70px 24px 100px;
+}
+.category-header{
+  padding-bottom:40px;
+  margin-bottom:45px;
+  border-bottom:1px solid rgba(128,128,128,.25);
+}
+.category-kicker{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  opacity:.6;
+  margin-bottom:15px;
+}
+.category-title{
+  margin:0;
+  font-family:Georgia,serif;
+  font-size:clamp(46px,7vw,90px);
+  line-height:.98;
+  letter-spacing:-.05em;
+}
+.category-description{
+  max-width:700px;
+  margin:22px 0 0;
+  font-size:17px;
+  line-height:1.7;
+  opacity:.65;
+}
+.category-count{
+  margin-top:18px;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  opacity:.5;
+}
+.category-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+.category-card{
+  border:1px solid rgba(128,128,128,.25);
+  overflow:hidden;
+  transition:transform .2s ease,border-color .2s ease;
+}
+.category-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(180,0,0,.6);
+}
+.category-card-visual{
+  min-height:210px;
+  background:
+    radial-gradient(circle at 30% 30%,rgba(180,0,0,.45),transparent 38%),
+    linear-gradient(135deg,#1b1b1b,#060606);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.category-card-visual img{
+  width:100%;
+  height:100%;
+  min-height:210px;
+  object-fit:cover;
+  display:block;
+}
+.category-card-placeholder{
+  font-family:Georgia,serif;
+  font-size:35px;
+  opacity:.25;
+}
+.category-card-content{
+  padding:24px;
+}
+.category-card-category{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  opacity:.55;
+  margin-bottom:12px;
+}
+.category-card h2{
+  margin:0 0 14px;
+  font-family:Georgia,serif;
+  font-size:25px;
+  line-height:1.15;
+}
+.category-card h2 a{
+  color:inherit;
+  text-decoration:none;
+}
+.category-card-excerpt{
+  font-size:14px;
+  line-height:1.6;
+  opacity:.62;
+  margin:0 0 18px;
+}
+.category-card-meta{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  opacity:.45;
+}
+.category-empty{
+  padding:100px 20px;
+  text-align:center;
+  border:1px solid rgba(128,128,128,.2);
+}
+.category-empty h2{
+  font-family:Georgia,serif;
+  font-size:38px;
+}
+.category-empty a{
+  color:inherit;
+}
+@media(max-width:1000px){
+  .category-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+@media(max-width:650px){
+  .category-page{
+    padding:45px 18px 70px;
+  }
+  .category-grid{
+    grid-template-columns:1fr;
+  }
+  .category-title{
+    font-size:50px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+
+    <div class="live-indicator">
+      <span class="live-dot"></span>
+      LIVE NEWSROOM
+    </div>
+
+    <div class="header-date" data-current-date>
+      Loading...
+    </div>
+
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      type="button"
+      aria-label="Toggle theme">
+      ◐
+    </button>
+
+  </div>
+</header>
+
+<main id="categoryContainer">
+
+  <div class="category-page">
+
+    <div class="category-header">
+
+      <div class="category-kicker">
+        AI News Factory
+      </div>
+
+      <h1 class="category-title">
+        Loading...
+      </h1>
+
+      <p class="category-description">
+        Loading category intelligence...
+      </p>
+
+      <div class="category-count">
+        Loading stories...
+      </div>
+
+    </div>
+
+    <div class="category-grid">
+      <p>Loading stories...</p>
+    </div>
+
+  </div>
+
+</main>
+
+<footer class="site-footer">
+
+  <div class="footer-inner">
+
+    <div>
+      <strong>AI NEWS FACTORY</strong>
+      <p>INTELLIGENCE. CONTEXT. TRUTH.</p>
+    </div>
+
+    <div>
+      © <span data-current-year></span>
+      AI News Factory
+    </div>
+
+  </div>
+
+</footer>
+
+<script src="assets/js/app.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const container =
+    document.getElementById("categoryContainer");
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const requestedCategory =
+    params.get("category");
+
+  const category =
+    requestedCategory
+      ? decodeURIComponent(requestedCategory)
+      : "Latest";
+
+  try {
+
+    const response =
+      await fetch("data/articles.json");
+
+    if (!response.ok) {
+      throw new Error(
+        "Unable to load article data."
+      );
+    }
+
+    const articles =
+      await response.json();
+
+    let filteredArticles;
+
+    if (
+      category.toLowerCase() ===
+      "latest"
+    ) {
+
+      filteredArticles =
+        [...articles].sort(
+          (a,b) =>
+            new Date(b.date) -
+            new Date(a.date)
+        );
+
+    } else {
+
+      filteredArticles =
+        articles.filter(
+          article =>
+            String(
+              article.category || ""
+            ).toLowerCase() ===
+            category.toLowerCase()
+        );
+
+    }
+
+    renderCategory(
+      category,
+      filteredArticles
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Category loading error:",
+      error
+    );
+
+    container.innerHTML = `
+
+      <div class="category-page">
+
+        <div class="category-empty">
+
+          <h2>
+            Unable to load stories
+          </h2>
+
+          <p>
+            Please refresh the page and try again.
+          </p>
+
+          <p>
+            <a href="index.html">
+              ← Return home
+            </a>
+          </p>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+  function renderCategory(
+    categoryName,
+    stories
+  ) {
+
+    const description =
+      getDescription(categoryName);
+
+    if (!stories.length) {
+
+      container.innerHTML = `
+
+        <div class="category-page">
+
+          <div class="category-header">
+
+            <div class="category-kicker">
+              AI News Factory
+            </div>
+
+            <h1 class="category-title">
+              ${escapeHtml(categoryName)}
+            </h1>
+
+            <p class="category-description">
+              ${escapeHtml(description)}
+            </p>
+
+          </div>
+
+          <div class="category-empty">
+
+            <h2>
+              No stories yet
+            </h2>
+
+            <p>
+              There are currently no published
+              stories in this category.
+            </p>
+
+            <p>
+              <a href="index.html">
+                ← Return to homepage
+              </a>
+            </p>
+
+          </div>
+
+        </div>
+
+      `;
+
+      return;
+    }
+
+    container.innerHTML = `
+
+      <div class="category-page">
+
+        <div class="category-header">
+
+          <div class="category-kicker">
+            AI News Factory
+          </div>
+
+          <h1 class="category-title">
+            ${escapeHtml(categoryName)}
+          </h1>
+
+          <p class="category-description">
+            ${escapeHtml(description)}
+          </p>
+
+          <div class="category-count">
+            ${stories.length}
+            ${stories.length === 1 ? "STORY" : "STORIES"}
+          </div>
+
+        </div>
+
+        <div class="category-grid">
+
+          ${stories.map(
+            article =>
+              createCard(article)
+          ).join("")}
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+  function createCard(article) {
+
+    const visual =
+      article.image
+        ? `
+          <div class="category-card-visual">
+
+            <img
+              src="${escapeHtml(article.image)}"
+              alt="${escapeHtml(article.title)}">
+
+          </div>
+        `
+        : `
+          <div class="category-card-visual">
+
+            <div class="category-card-placeholder">
+              ${escapeHtml(article.category || "NEWS")}
+            </div>
+
+          </div>
+        `;
+
+    return `
+
+      <article class="category-card">
+
+        ${visual}
+
+        <div class="category-card-content">
+
+          <div class="category-card-category">
+            ${escapeHtml(article.category || "News")}
+          </div>
+
+          <h2>
+
+            <a
+              href="article.html?slug=${encodeURIComponent(article.slug)}">
+
+              ${escapeHtml(article.title)}
+
+            </a>
+
+          </h2>
+
+          <p class="category-card-excerpt">
+            ${escapeHtml(article.excerpt || "")}
+          </p>
+
+          <div class="category-card-meta">
+
+            <span>
+              ${formatDate(article.date)}
+            </span>
+
+            <span>
+              ${escapeHtml(article.readTime || "5 min read")}
+            </span>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    `;
+
+  }
+
+  function getDescription(name) {
+
+    const descriptions = {
+
+      "AI":
+        "Artificial intelligence, machine learning, AI agents, models and the technologies reshaping the future.",
+
+      "Technology":
+        "Technology, innovation, digital infrastructure and the developments changing how the world works.",
+
+      "Business":
+        "Markets, companies, industries, economic developments and the forces shaping global business.",
+
+      "Science":
+        "Scientific discoveries, research, breakthroughs and the evidence behind important developments.",
+
+      "World":
+        "Important developments, events and stories from around the world, with context beyond the headline.",
+
+      "Politics":
+        "Political developments, public policy, leadership and the decisions shaping societies.",
+
+      "Latest":
+        "The latest stories published by AI News Factory across our global newsroom."
+    };
+
+    return (
+      descriptions[name] ||
+      "News, analysis and intelligent reporting from the AI News Factory newsroom."
+    );
+
+  }
+
+  function formatDate(value) {
+
+    if (!value) {
+      return "";
+    }
+
+    const date =
+      new Date(value + "T00:00:00");
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return date.toLocaleDateString(
+      "en-US",
+      {
+        year:"numeric",
+        month:"short",
+        day:"numeric"
+      }
+    );
+
+  }
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+
+  }
+
+});
+
+</script>
+
+</body>
+  </html>
