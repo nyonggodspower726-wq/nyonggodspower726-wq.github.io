@@ -1,5 +1,27 @@
 [
   {
+    "id": "ai-news-factory-live-test",
+    "slug": "ai-news-factory-live-test",
+    "title": "AI News Factory Test: New Intelligence System Goes Live",
+    "category": "Technology",
+    "excerpt": "AI News Factory has successfully completed a live publication test.",
+    "content": "<p>This is a live test article published automatically by the AI News Factory.</p><p>The publishing system successfully connected to the newsroom website and delivered this story through the GitHub publishing pipeline.</p>",
+    "author": "AI News Factory",
+    "published_at": "2026-09-05T11:20:00+01:00",
+    "read_time": "5 min read",
+    "featured": false,
+    "image": "",
+    "image_url": "",
+    "image_alt": "",
+    "image_caption": "",
+    "image_credit": "",
+    "tags": [],
+    "keywords": [],
+    "sources": [],
+    "source_url": "",
+    "seo": {}
+  },
+  {
     "id": "test-news-001",
     "slug": "ai-news-factory-test-publication",
     "title": "AI News Factory Test Publication",
