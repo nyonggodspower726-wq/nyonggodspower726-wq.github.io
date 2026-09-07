@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="AI News Factory — intelligent, contextual and trustworthy news.">
 <meta name="theme-color" content="#080808">
+<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Article | AI News Factory</title>
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
@@ -21,6 +23,8 @@
 .article-layout{display:grid;grid-template-columns:minmax(0,760px) 260px;gap:70px;align-items:start}
 .article-body{font-family:Georgia,serif;font-size:19px;line-height:1.85}
 .article-body p{margin:0 0 28px}
+.article-body h2{font-family:Georgia,serif;font-size:32px;line-height:1.2;margin:55px 0 22px}
+.article-body h3{font-family:Georgia,serif;font-size:25px;line-height:1.3;margin:40px 0 18px}
 .article-body p:first-child::first-letter{float:left;font-size:70px;line-height:.8;padding:8px 10px 0 0}
 .article-sidebar{position:sticky;top:30px}
 .article-sidebar-box{padding:22px;border:1px solid rgba(128,128,128,.25);margin-bottom:20px}
@@ -52,32 +56,33 @@
 <div class="header-date" data-current-date>Loading...</div>
 <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">◐</button>
 </div>
-</header>
-<main id="articleContainer">
+</header><main id="articleContainer">
 <div class="article-page">
 <div class="article-breadcrumb"><a href="index.html">AI News Factory</a>&nbsp; / &nbsp;Article</div>
-<div id="articleLoading">Loading story...</div>
+<div id="articleLoading">Loading latest story...</div>
 </div>
-</main>
-<footer class="site-footer">
+</main><footer class="site-footer">
 <div class="footer-inner">
 <div><strong>AI NEWS FACTORY</strong><p>INTELLIGENCE. CONTEXT. TRUTH.</p></div>
 <div>© <span data-current-year></span> AI News Factory</div>
 </div>
-</footer>
-<script src="assets/js/app.js"></script>
-<script>
+</footer><script src="assets/js/app.js"></script><script>
 document.addEventListener("DOMContentLoaded",async()=>{
 const container=document.getElementById("articleContainer");
 const params=new URLSearchParams(window.location.search);
 const slug=params.get("slug");
 if(!slug){showError("No article was selected.","Return to the homepage and choose a story.");return}
 try{
-const response=await fetch("data/articles.json");
-if(!response.ok)throw new Error("Unable to load article data.");
+const cacheBuster="v="+Date.now();
+const response=await fetch("data/articles.json?"+cacheBuster,{
+cache:"no-store",
+headers:{"Cache-Control":"no-cache","Pragma":"no-cache"}
+});
+if(!response.ok)throw new Error("Unable to load the latest article data.");
 const articles=await response.json();
-const article=articles.find(item=>item.slug===slug);
-if(!article){showError("Story not found.","The article may have been moved or is no longer available.");return}
+if(!Array.isArray(articles))throw new Error("Invalid article data.");
+const article=articles.find(item=>String(item.slug||"").trim()===String(slug).trim());
+if(!article){showError("Story not found.","This article is not present in the latest newsroom data.");return}
 renderArticle(article,articles);
 }catch(error){
 console.error("Article loading error:",error);
@@ -93,7 +98,7 @@ const content=Array.isArray(rawContent)?rawContent.join("\n"):String(rawContent)
 const image=article.image||article.image_url||"";
 const publishedAt=article.published_at||article.date||"";
 const readTime=article.read_time||article.readTime||article.reading_time||"5 min read";
-const imageBlock=image?`<div class="article-visual"><img src="${escapeHtml(image)}" alt="${escapeHtml(article.image_alt||article.title||"Article image")}"></div>`:`<div class="article-visual"><div class="article-visual-placeholder">${escapeHtml(article.category||"News")}</div></div>`;
+const imageBlock=image?`<div class="article-visual"><img src="${escapeHtml(image)}" alt="${escapeHtml(article.image_alt||article.title||"Article image")}" loading="eager"></div>`:`<div class="article-visual"><div class="article-visual-placeholder">${escapeHtml(article.category||"News")}</div></div>`;
 const tagBlock=tags.length?`<div class="article-sidebar-box"><h3 class="article-sidebar-title">Topics</h3><div class="article-tags">${tags.map(tag=>`<span class="article-tag">${escapeHtml(tag)}</span>`).join("")}</div></div>`:"";
 const sourceBlock=sources.length?`<div class="article-sidebar-box"><h3 class="article-sidebar-title">Sources</h3><div class="article-source">${sources.map(source=>{
 if(source.url&&source.url!=="#")return `<div><a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.name||"Source")}</a></div>`;
@@ -121,7 +126,13 @@ ${imageBlock}
 function renderContent(value){
 if(!value)return "";
 if(value.trim().startsWith("<"))return value;
-return value.split(/\n\s*\n|\n/).filter(Boolean).map(p=>`<p>${escapeHtml(p.trim())}</p>`).join("");
+return value.split(/\n\s*\n|\n/).filter(Boolean).map(line=>{
+const text=line.trim();
+if(/^###\s+/.test(text))return `<h3>${escapeHtml(text.replace(/^###\s+/,""))}</h3>`;
+if(/^##\s+/.test(text))return `<h2>${escapeHtml(text.replace(/^##\s+/,""))}</h2>`;
+if(/^#\s+/.test(text))return `<h2>${escapeHtml(text.replace(/^#\s+/,""))}</h2>`;
+return `<p>${escapeHtml(text)}</p>`;
+}).join("");
 }
 function showError(title,message){
 container.innerHTML=`<div class="article-page article-error"><h1>${escapeHtml(title)}</h1><p>${escapeHtml(message)}</p><p><a href="index.html">← Return to AI News Factory</a></p></div>`;
@@ -136,6 +147,5 @@ function escapeHtml(value){
 return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
 });
-</script>
-</body>
+</script></body>
 </html>
