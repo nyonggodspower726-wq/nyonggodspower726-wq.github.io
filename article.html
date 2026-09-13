@@ -9,7 +9,15 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Article | AI News Factory</title>
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="canonical" href="https://nyonggodspower726-wq.github.io/article.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI News Factory">
+<meta property="og:title" content="Article | AI News Factory">
+<meta property="og:description" content="AI News Factory — intelligent, contextual and trustworthy news.">
+<meta property="og:url" content="https://nyonggodspower726-wq.github.io/article.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Article | AI News Factory">
+<meta name="twitter:description" content="AI News Factory — intelligent, contextual and trustworthy news.">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3W73D556F8"></script>
@@ -106,30 +114,59 @@ renderArticle(article,articles);
 console.error("Article loading error:",error);
 showError("Unable to load this story.","Please refresh the page and try again.");
 }
+
 function renderArticle(article,articles){
-document.title=(article.title||"Article")+" | AI News Factory";
+const title=String(article.title||"Article").trim();
+const description=String(article.excerpt||article.summary||"AI News Factory — intelligent, contextual and trustworthy news.").trim();
+const category=String(article.category||"News").trim();
+const author=String(article.author||"AI News Factory Desk").trim();
+const publishedAt=article.published_at||article.date||"";
+const modifiedAt=article.updated_at||article.modified_at||publishedAt;
+const image=article.image||article.image_url||"";
+const articleUrl=`https://nyonggodspower726-wq.github.io/article.html?slug=${encodeURIComponent(article.slug||slug)}`;
+const keywords=Array.isArray(article.keywords)?article.keywords:Array.isArray(article.tags)?article.tags:[];
+document.title=title+" | AI News Factory";
+setMeta("description",description);
+setMeta("og:title",title,"property");
+setMeta("og:description",description,"property");
+setMeta("og:url",articleUrl,"property");
+setMeta("og:type","article","property");
+setMeta("og:site_name","AI News Factory","property");
+setMeta("twitter:title",title);
+setMeta("twitter:description",description);
+setCanonical(articleUrl);
+if(image){
+setMeta("og:image",image,"property");
+setMeta("twitter:image",image);
+setMeta("twitter:card","summary_large_image");
+}else{
+setMeta("twitter:card","summary");
+}
+setMeta("article:section",category,"property");
+if(publishedAt)setMeta("article:published_time",publishedAt,"property");
+if(modifiedAt)setMeta("article:modified_time",modifiedAt,"property");
+setNewsArticleSchema(article,articleUrl,title,description,category,author,publishedAt,modifiedAt,image,keywords);
+
 const tags=Array.isArray(article.tags)?article.tags:[];
 const sources=Array.isArray(article.sources)?article.sources:[];
 const related=articles.filter(item=>item.id!==article.id&&item.category===article.category).slice(0,3);
 const rawContent=article.content||article.body||"";
 const content=Array.isArray(rawContent)?rawContent.join("\n"):String(rawContent);
-const image=article.image||article.image_url||"";
-const publishedAt=article.published_at||article.date||"";
 const readTime=article.read_time||article.readTime||article.reading_time||"5 min read";
-const imageBlock=image?`<div class="article-visual"><img src="${escapeHtml(image)}" alt="${escapeHtml(article.image_alt||article.title||"Article image")}" loading="eager"></div>`:`<div class="article-visual"><div class="article-visual-placeholder">${escapeHtml(article.category||"News")}</div></div>`;
+const imageBlock=image?`<div class="article-visual"><img src="${escapeHtml(image)}" alt="${escapeHtml(article.image_alt||title)}" loading="eager"></div>`:`<div class="article-visual"><div class="article-visual-placeholder">${escapeHtml(category)}</div></div>`;
 const tagBlock=tags.length?`<div class="article-sidebar-box"><h3 class="article-sidebar-title">Topics</h3><div class="article-tags">${tags.map(tag=>`<span class="article-tag">${escapeHtml(tag)}</span>`).join("")}</div></div>`:"";
 const sourceBlock=sources.length?`<div class="article-sidebar-box"><h3 class="article-sidebar-title">Sources</h3><div class="article-source">${sources.map(source=>{
 if(source.url&&source.url!=="#")return `<div><a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.name||"Source")}</a></div>`;
 return `<div>${escapeHtml(source.name||"Source")}</div>`;
 }).join("")}</div></div>`:"";
-const relatedBlock=related.length?`<section class="related-section"><h2 class="related-title">More from ${escapeHtml(article.category||"News")}</h2><div class="related-grid">${related.map(item=>`<article class="related-card"><a href="article.html?slug=${encodeURIComponent(item.slug)}"><div class="related-card-category">${escapeHtml(item.category||"News")}</div><h3>${escapeHtml(item.title||"Untitled")}</h3><p>${escapeHtml(item.excerpt||"")}</p></a></article>`).join("")}</div></section>`:"";
+const relatedBlock=related.length?`<section class="related-section"><h2 class="related-title">More from ${escapeHtml(category)}</h2><div class="related-grid">${related.map(item=>`<article class="related-card"><a href="article.html?slug=${encodeURIComponent(item.slug)}"><div class="related-card-category">${escapeHtml(item.category||"News")}</div><h3>${escapeHtml(item.title||"Untitled")}</h3><p>${escapeHtml(item.excerpt||"")}</p></a></article>`).join("")}</div></section>`:"";
 container.innerHTML=`<article class="article-page">
-<div class="article-breadcrumb"><a href="index.html">AI News Factory</a>&nbsp; / &nbsp;${escapeHtml(article.category||"News")}</div>
-<div class="article-category">${escapeHtml(article.category||"News")}</div>
-<h1 class="article-title">${escapeHtml(article.title||"Untitled")}</h1>
-<p class="article-excerpt">${escapeHtml(article.excerpt||"")}</p>
+<div class="article-breadcrumb"><a href="index.html">AI News Factory</a>&nbsp; / &nbsp;${escapeHtml(category)}</div>
+<div class="article-category">${escapeHtml(category)}</div>
+<h1 class="article-title">${escapeHtml(title)}</h1>
+<p class="article-excerpt">${escapeHtml(description)}</p>
 <div class="article-meta">
-<span>By ${escapeHtml(article.author||"AI News Factory Desk")}</span>
+<span>By ${escapeHtml(author)}</span>
 <span>${formatDate(publishedAt)}</span>
 <span>${escapeHtml(article.time||"")}</span>
 <span>${escapeHtml(readTime)}</span>
@@ -141,6 +178,56 @@ ${imageBlock}
 </div>
 </article>${relatedBlock}`;
 }
+
+function setMeta(name,content,attribute="name"){
+if(!content)return;
+let element=document.querySelector(`meta[${attribute}="${name}"]`);
+if(!element){
+element=document.createElement("meta");
+element.setAttribute(attribute,name);
+document.head.appendChild(element);
+}
+element.setAttribute("content",content);
+}
+
+function setCanonical(url){
+let link=document.querySelector('link[rel="canonical"]');
+if(!link){
+link=document.createElement("link");
+link.rel="canonical";
+document.head.appendChild(link);
+}
+link.href=url;
+}
+
+function setNewsArticleSchema(article,url,title,description,category,author,publishedAt,modifiedAt,image,keywords){
+const old=document.getElementById("newsArticleSchema");
+if(old)old.remove();
+const schema={
+"@context":"https://schema.org",
+"@type":"NewsArticle",
+"mainEntityOfPage":{"@type":"WebPage","@id":url},
+"headline":title,
+"description":description,
+"url":url,
+"datePublished":publishedAt||undefined,
+"dateModified":modifiedAt||publishedAt||undefined,
+"articleSection":category,
+"author":{"@type":"Organization","name":author||"AI News Factory"},
+"publisher":{"@type":"Organization","name":"AI News Factory","url":"https://nyonggodspower726-wq.github.io/"},
+"image":image?[image]:undefined,
+"keywords":keywords.length?keywords.join(", "):undefined
+};
+Object.keys(schema).forEach(key=>{
+if(schema[key]===undefined)delete schema[key];
+});
+const script=document.createElement("script");
+script.id="newsArticleSchema";
+script.type="application/ld+json";
+script.textContent=JSON.stringify(schema);
+document.head.appendChild(script);
+}
+
 function renderContent(value){
 if(!value)return "";
 if(value.trim().startsWith("<"))return value;
@@ -152,15 +239,18 @@ if(/^#\s+/.test(text))return `<h2>${escapeHtml(text.replace(/^#\s+/,""))}</h2>`;
 return `<p>${escapeHtml(text)}</p>`;
 }).join("");
 }
+
 function showError(title,message){
 container.innerHTML=`<div class="article-page article-error"><h1>${escapeHtml(title)}</h1><p>${escapeHtml(message)}</p><p><a href="index.html">← Return to AI News Factory</a></p></div>`;
 }
+
 function formatDate(value){
 if(!value)return "";
 const date=new Date(value);
 if(Number.isNaN(date.getTime()))return value;
 return date.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
 }
+
 function escapeHtml(value){
 return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
