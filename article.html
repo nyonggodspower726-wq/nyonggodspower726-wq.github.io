@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -9,6 +10,16 @@
 <meta http-equiv="Expires" content="0">
 <title>Article | AI News Factory</title>
 <link rel="stylesheet" href="assets/css/style.css">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3W73D556F8"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-3W73D556F8');
+</script>
+
 <style>
 .article-page{max-width:1100px;margin:0 auto;padding:70px 24px 100px}
 .article-breadcrumb{margin-bottom:30px;font-size:13px;text-transform:uppercase;letter-spacing:.12em;opacity:.65}
@@ -56,17 +67,24 @@
 <div class="header-date" data-current-date>Loading...</div>
 <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">◐</button>
 </div>
-</header><main id="articleContainer">
+</header>
+
+<main id="articleContainer">
 <div class="article-page">
 <div class="article-breadcrumb"><a href="index.html">AI News Factory</a>&nbsp; / &nbsp;Article</div>
 <div id="articleLoading">Loading latest story...</div>
 </div>
-</main><footer class="site-footer">
+</main>
+
+<footer class="site-footer">
 <div class="footer-inner">
 <div><strong>AI NEWS FACTORY</strong><p>INTELLIGENCE. CONTEXT. TRUTH.</p></div>
 <div>© <span data-current-year></span> AI News Factory</div>
 </div>
-</footer><script src="assets/js/app.js"></script><script>
+</footer>
+
+<script src="assets/js/app.js"></script>
+<script>
 document.addEventListener("DOMContentLoaded",async()=>{
 const container=document.getElementById("articleContainer");
 const params=new URLSearchParams(window.location.search);
@@ -147,5 +165,6 @@ function escapeHtml(value){
 return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
 });
-</script></body>
+</script>
+</body>
 </html>
