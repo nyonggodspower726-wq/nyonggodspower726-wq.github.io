@@ -68,11 +68,6 @@ gtag('config', 'G-3W73D556F8');
     font-size:13px;
 }
 
-.article-meta span{
-    display:inline-flex;
-    align-items:center;
-}
-
 .article-image{
     width:100%;
     margin:35px 0 40px;
@@ -297,7 +292,6 @@ gtag('config', 'G-3W73D556F8');
 
     <div class="container">
         <nav class="main-nav" aria-label="Main navigation">
-
             <a href="index.html">Home</a>
             <a href="category.html?category=world">World</a>
             <a href="category.html?category=politics">Politics</a>
@@ -307,7 +301,6 @@ gtag('config', 'G-3W73D556F8');
             <a href="category.html?category=health">Health</a>
             <a href="category.html?category=entertainment">Entertainment</a>
             <a href="search.html">Search</a>
-
         </nav>
     </div>
 
@@ -340,9 +333,7 @@ gtag('config', 'G-3W73D556F8');
 
         <div class="footer-brand">
             <div class="brand">AI NEWS FACTORY</div>
-            <p>
-                Automated, source-driven news and analysis.
-            </p>
+            <p>Automated, source-driven news and analysis.</p>
         </div>
 
         <div class="footer-column">
@@ -371,6 +362,7 @@ gtag('config', 'G-3W73D556F8');
 </footer>
 
 <script>
+
 const DATA_URL = "data/articles.json";
 
 function escapeHtml(value) {
@@ -383,11 +375,13 @@ function escapeHtml(value) {
 }
 
 function text(value) {
+
     if (value === null || value === undefined) {
         return "";
     }
 
     if (typeof value === "object") {
+
         if (Array.isArray(value)) {
             return value.join(" ");
         }
@@ -402,6 +396,7 @@ function text(value) {
 }
 
 function formatDate(value) {
+
     if (!value) {
         return "";
     }
@@ -413,23 +408,161 @@ function formatDate(value) {
     }
 
     return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
+        year:"numeric",
+        month:"long",
+        day:"numeric"
     });
 }
 
 function formatCategory(value) {
-    const category = text(value || "general");
 
-    return category
+    return text(value || "general")
         .replace(/-/g, " ")
         .replace(/\b\w/g, letter => letter.toUpperCase());
 }
 
-function getSlug() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("slug") || "";
+/*
+ * IMPORTANT:
+ * The article page can receive the selected article
+ * through several common URL formats.
+ */
+function getArticleReference() {
+
+    const params = new URLSearchParams(
+        window.location.search
+    );
+
+    return {
+        slug: params.get("slug") || "",
+        id: params.get("id") || "",
+        articleId: params.get("article_id") || "",
+        url: params.get("url") || ""
+    };
+}
+
+function normalizeValue(value) {
+
+    return String(value ?? "")
+        .trim()
+        .toLowerCase()
+        .replace(/\/+$/, "");
+}
+
+function findArticle(articles) {
+
+    if (!Array.isArray(articles)) {
+        return null;
+    }
+
+    const reference = getArticleReference();
+
+    const slug =
+        normalizeValue(
+            decodeURIComponent(reference.slug)
+        );
+
+    const id =
+        normalizeValue(reference.id);
+
+    const articleId =
+        normalizeValue(reference.articleId);
+
+    const sourceUrl =
+        normalizeValue(
+            decodeURIComponent(reference.url)
+        );
+
+    /*
+     * First try the exact slug.
+     */
+    if (slug) {
+
+        const match = articles.find(article => {
+
+            const articleSlug =
+                normalizeValue(
+                    article &&
+                    article.slug
+                );
+
+            return articleSlug === slug;
+        });
+
+        if (match) {
+            return match;
+        }
+    }
+
+    /*
+     * Then try id.
+     */
+    if (id) {
+
+        const match = articles.find(article => {
+
+            if (!article) {
+                return false;
+            }
+
+            return (
+                normalizeValue(article.id) === id ||
+                normalizeValue(article.article_id) === id ||
+                normalizeValue(article.articleId) === id
+            );
+        });
+
+        if (match) {
+            return match;
+        }
+    }
+
+    /*
+     * Then try article_id.
+     */
+    if (articleId) {
+
+        const match = articles.find(article => {
+
+            if (!article) {
+                return false;
+            }
+
+            return (
+                normalizeValue(article.article_id) === articleId ||
+                normalizeValue(article.articleId) === articleId ||
+                normalizeValue(article.id) === articleId
+            );
+        });
+
+        if (match) {
+            return match;
+        }
+    }
+
+    /*
+     * Finally try source URL.
+     */
+    if (sourceUrl) {
+
+        const match = articles.find(article => {
+
+            if (!article) {
+                return false;
+            }
+
+            return (
+                normalizeValue(article.source_url) === sourceUrl ||
+                normalizeValue(article.sourceUrl) === sourceUrl ||
+                normalizeValue(article.url) === sourceUrl
+            );
+        });
+
+        if (match) {
+            return match;
+        }
+    }
+
+    return null;
 }
 
 function renderContent(content) {
@@ -455,7 +588,8 @@ function renderContent(content) {
         "<h2>$1</h2>"
     );
 
-    const blocks = html.split(/\n{2,}/);
+    const blocks =
+        html.split(/\n{2,}/);
 
     return blocks.map(block => {
 
@@ -474,12 +608,19 @@ function renderContent(content) {
 
         if (/^(?:[-*] .+(?:\n|$))+/.test(block)) {
 
-            const items = block
-                .split("\n")
-                .map(line => line.replace(/^[-*]\s+/, "").trim())
-                .filter(Boolean)
-                .map(item => `<li>${item}</li>`)
-                .join("");
+            const items =
+                block
+                    .split("\n")
+                    .map(line =>
+                        line
+                            .replace(/^[-*]\s+/, "")
+                            .trim()
+                    )
+                    .filter(Boolean)
+                    .map(item =>
+                        `<li>${item}</li>`
+                    )
+                    .join("");
 
             return `<ul>${items}</ul>`;
         }
@@ -512,11 +653,12 @@ function renderSources(sources) {
         return "";
     }
 
-    const validSources = sources.filter(source =>
-        source &&
-        typeof source === "object" &&
-        source.url
-    );
+    const validSources =
+        sources.filter(source =>
+            source &&
+            typeof source === "object" &&
+            source.url
+        );
 
     if (!validSources.length) {
         return "";
@@ -528,6 +670,7 @@ function renderSources(sources) {
             <h3>Sources</h3>
 
             <ul>
+
                 ${validSources.map(source => `
                     <li>
                         <a
@@ -536,548 +679,18 @@ function renderSources(sources) {
                             rel="noopener noreferrer"
                         >
                             ${escapeHtml(
-                                text(source.name || source.publisher || source.url)
+                                text(
+                                    source.name ||
+                                    source.publisher ||
+                                    source.url
+                                )
                             )}
                         </a>
                     </li>
                 `).join("")}
+
             </ul>
 
         </section>
     `;
 }
-<script>
-function renderRelated(article, articles) {
-
-    if (!Array.isArray(articles)) {
-        return "";
-    }
-
-    const category = text(article.category).toLowerCase();
-    const currentSlug = text(article.slug);
-
-    const related = articles
-        .filter(item => {
-            if (!item || text(item.slug) === currentSlug) {
-                return false;
-            }
-
-            return text(item.category).toLowerCase() === category;
-        })
-        .slice(0, 3);
-
-    if (!related.length) {
-        return "";
-    }
-
-    return `
-        <section class="related-stories">
-
-            <h2>Related Stories</h2>
-
-            <div class="related-grid">
-
-                ${related.map(item => {
-
-                    const slug = text(item.slug);
-
-                    return `
-                        <a
-                            class="related-card"
-                            href="article.html?slug=${encodeURIComponent(slug)}"
-                        >
-
-                            <div class="related-card-category">
-                                ${escapeHtml(
-                                    formatCategory(item.category)
-                                )}
-                            </div>
-
-                            <div class="related-card-title">
-                                ${escapeHtml(
-                                    text(item.title || item.headline)
-                                )}
-                            </div>
-
-                        </a>
-                    `;
-
-                }).join("")}
-
-            </div>
-
-        </section>
-    `;
-}
-
-function setMeta(article) {
-
-    const title =
-        text(article.title || article.headline) ||
-        "AI NEWS FACTORY";
-
-    const description =
-        text(
-            article.excerpt ||
-            article.description ||
-            article.summary ||
-            article.lead
-        ) ||
-        "Latest verified news and analysis from AI NEWS FACTORY.";
-
-    const slug = text(article.slug);
-
-    const canonical =
-        slug
-        ? `https://nyonggodspower726-wq.github.io/article.html?slug=${encodeURIComponent(slug)}`
-        : "https://nyonggodspower726-wq.github.io/article.html";
-
-    document.title = `${title} | AI NEWS FACTORY`;
-
-    const descriptionMeta =
-        document.querySelector('meta[name="description"]');
-
-    if (descriptionMeta) {
-        descriptionMeta.setAttribute("content", description);
-    }
-
-    let canonicalLink =
-        document.querySelector('link[rel="canonical"]');
-
-    if (!canonicalLink) {
-
-        canonicalLink = document.createElement("link");
-
-        canonicalLink.setAttribute("rel", "canonical");
-
-        document.head.appendChild(canonicalLink);
-    }
-
-    canonicalLink.setAttribute("href", canonical);
-
-    const image = text(
-        article.image_url ||
-        article.image ||
-        article.imageUrl ||
-        ""
-    );
-
-    const metaValues = {
-        "og:title": title,
-        "og:description": description,
-        "og:url": canonical,
-        "twitter:title": title,
-        "twitter:description": description
-    };
-
-    if (image) {
-        metaValues["og:image"] = image;
-        metaValues["twitter:image"] = image;
-    }
-
-    Object.entries(metaValues).forEach(([property, value]) => {
-
-        let meta = document.querySelector(
-            `meta[property="${property}"]`
-        );
-
-        if (!meta) {
-
-            meta = document.createElement("meta");
-
-            meta.setAttribute("property", property);
-
-            document.head.appendChild(meta);
-        }
-
-        meta.setAttribute("content", value);
-    });
-
-    let schema =
-        document.getElementById("articleSchema");
-
-    if (!schema) {
-
-        schema = document.createElement("script");
-
-        schema.type = "application/ld+json";
-        schema.id = "articleSchema";
-
-        document.head.appendChild(schema);
-    }
-
-    const schemaData = {
-        "@context": "https://schema.org",
-        "@type": "NewsArticle",
-        "headline": title,
-        "description": description,
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": canonical
-        },
-        "author": {
-            "@type": "Organization",
-            "name": text(
-                article.author ||
-                "AI NEWS FACTORY"
-            )
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "AI NEWS FACTORY"
-        }
-    };
-
-    const published =
-        text(article.published_at || article.publishedAt);
-
-    const modified =
-        text(
-            article.updated_at ||
-            article.modified_at ||
-            article.modifiedAt ||
-            published
-        );
-
-    if (published) {
-        schemaData.datePublished = published;
-    }
-
-    if (modified) {
-        schemaData.dateModified = modified;
-    }
-
-    if (image) {
-        schemaData.image = [image];
-    }
-
-    schema.textContent = JSON.stringify(schemaData);
-}
-
-function renderBreaking(articles) {
-
-    const element =
-        document.getElementById("breakingContent");
-
-    if (!element || !Array.isArray(articles)) {
-        return;
-    }
-
-    const latest = articles
-        .filter(Boolean)
-        .slice(0, 1)[0];
-
-    if (!latest) {
-        return;
-    }
-
-    const title =
-        text(latest.title || latest.headline);
-
-    if (title) {
-        element.textContent = title;
-    }
-}
-
-function renderArticle(article, articles) {
-
-    const container =
-        document.getElementById("articleContainer");
-
-    if (!container) {
-        return;
-    }
-
-    const title =
-        text(article.title || article.headline) ||
-        "Untitled Story";
-
-    const excerpt =
-        text(
-            article.excerpt ||
-            article.description ||
-            article.summary ||
-            ""
-        );
-
-    const category =
-        formatCategory(article.category);
-
-    const author =
-        text(article.author || "AI NEWS FACTORY");
-
-    const published =
-        text(
-            article.published_at ||
-            article.publishedAt ||
-            article.date ||
-            ""
-        );
-
-    const image =
-        text(
-            article.image_url ||
-            article.image ||
-            article.imageUrl ||
-            ""
-        );
-
-    const content =
-        text(
-            article.content ||
-            article.body ||
-            article.text ||
-            ""
-        );
-
-    const tags =
-        Array.isArray(article.tags)
-            ? article.tags
-            : [];
-
-    container.innerHTML = `
-
-        <header class="article-header">
-
-            ${
-                category
-                    ? `
-                    <div class="article-category">
-                        ${escapeHtml(category)}
-                    </div>
-                    `
-                    : ""
-            }
-
-            <h1 class="article-title">
-                ${escapeHtml(title)}
-            </h1>
-
-            ${
-                excerpt
-                    ? `
-                    <div class="article-excerpt">
-                        ${escapeHtml(excerpt)}
-                    </div>
-                    `
-                    : ""
-            }
-
-            <div class="article-meta">
-
-                ${
-                    author
-                        ? `
-                        <span>
-                            By ${escapeHtml(author)}
-                        </span>
-                        `
-                        : ""
-                }
-
-                ${
-                    published
-                        ? `
-                        <span>
-                            ${escapeHtml(formatDate(published))}
-                        </span>
-                        `
-                        : ""
-                }
-
-            </div>
-
-        </header>
-
-        ${
-            image
-                ? `
-                <figure class="article-image">
-
-                    <img
-                        src="${escapeHtml(image)}"
-                        alt="${escapeHtml(title)}"
-                        loading="eager"
-                    >
-
-                </figure>
-                `
-                : ""
-        }
-
-        <div class="article-body">
-
-            ${renderContent(content)}
-
-        </div>
-
-        ${renderTags(tags)}
-
-        ${renderSources(article.sources)}
-
-        ${renderRelated(article, articles)}
-
-    `;
-
-    setMeta(article);
-}
-
-function showError(message) {
-
-    const container =
-        document.getElementById("articleContainer");
-
-    if (!container) {
-        return;
-    }
-
-    container.innerHTML = `
-        <div class="article-error">
-            ${escapeHtml(message)}
-        </div>
-    `;
-}
-
-async function loadArticles() {
-
-    const slug = getSlug();
-
-    try {
-
-        const response = await fetch(
-            `${DATA_URL}?cachebuster=${Date.now()}`,
-            {
-                cache: "no-store"
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-        }
-
-        const data = await response.json();
-
-        const articles =
-            Array.isArray(data)
-                ? data
-                : Array.isArray(data.articles)
-                    ? data.articles
-                    : [];
-
-        renderBreaking(articles);
-
-        if (!slug) {
-
-            showError(
-                "No article was specified."
-            );
-
-            return;
-        }
-
-        const article =
-            articles.find(item =>
-                text(item && item.slug) === slug
-            );
-
-        if (!article) {
-
-            showError(
-                "Article not found."
-            );
-
-            return;
-        }
-
-        renderArticle(article, articles);
-
-    } catch (error) {
-
-        console.error(
-            "Article loading error:",
-            error
-        );
-
-        showError(
-            "Unable to load this article right now."
-        );
-    }
-}
-
-function setupDate() {
-
-    const elements =
-        document.querySelectorAll(
-            "[data-current-date]"
-        );
-
-    const now = new Date();
-
-    const formatted =
-        now.toLocaleDateString(
-            "en-US",
-            {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric"
-            }
-        );
-
-    elements.forEach(element => {
-        element.textContent = formatted;
-    });
-}
-
-function setupTheme() {
-
-    const button =
-        document.getElementById("themeToggle");
-
-    if (!button) {
-        return;
-    }
-
-    const saved =
-        localStorage.getItem("newsroom-theme");
-
-    if (saved === "light") {
-        document.body.classList.add("light-mode");
-    }
-
-    button.addEventListener("click", () => {
-
-        document.body.classList.toggle(
-            "light-mode"
-        );
-
-        const light =
-            document.body.classList.contains(
-                "light-mode"
-            );
-
-        localStorage.setItem(
-            "newsroom-theme",
-            light ? "light" : "dark"
-        );
-    });
-}
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        setupDate();
-        setupTheme();
-        loadArticles();
-
-    }
-);
-</script>
-
-<script src="assets/js/app.js"></script>
-
-</body>
-</html>
