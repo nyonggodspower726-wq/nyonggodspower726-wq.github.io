@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nyonggodspower726-wq.github.io/sitemap.xml
