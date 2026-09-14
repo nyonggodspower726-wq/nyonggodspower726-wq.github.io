@@ -870,3 +870,238 @@ ${escapeHtml(readTime)}
 `;
 
 }
+function createEmptyState(category){
+
+return`
+
+<div class="category-empty">
+
+<h2>
+No stories yet
+</h2>
+
+<p>
+There are currently no published
+stories in
+<strong>
+${escapeHtml(category)}
+</strong>.
+</p>
+
+<p>
+<a href="index.html">
+← Return to AI News Factory
+</a>
+</p>
+
+</div>
+
+`;
+
+}
+
+function showLoading(){
+
+container.innerHTML=`
+
+<div class="category-page">
+
+<nav
+class="category-nav"
+aria-label="News categories">
+
+${buildCategoryLinks(state.category)}
+
+</nav>
+
+<section class="category-header">
+
+<div class="category-kicker">
+AI News Factory
+</div>
+
+<h1 class="category-title">
+${escapeHtml(state.category)}
+</h1>
+
+<p class="category-description">
+Loading category intelligence...
+</p>
+
+<div class="category-count">
+Loading stories...
+</div>
+
+</section>
+
+<div class="category-loading">
+Loading stories...
+</div>
+
+</div>
+
+`;
+
+}
+
+function showError(){
+
+container.innerHTML=`
+
+<div class="category-page">
+
+<div class="category-empty">
+
+<h2>
+Unable to load stories
+</h2>
+
+<p>
+The newsroom could not load the
+article database right now.
+</p>
+
+<p>
+<a href="index.html">
+← Return to homepage
+</a>
+</p>
+
+<p>
+
+<a
+href="category.html?category=${encodeURIComponent(state.category)}">
+
+Try again
+
+</a>
+
+</p>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+function setActiveNavigation(active){
+
+document
+.querySelectorAll(
+".main-nav a,.category-nav a"
+)
+.forEach(link=>{
+
+link.classList.remove("active");
+
+const href=
+link.getAttribute("href")||"";
+
+try{
+
+const url=
+new URL(
+href,
+window.location.href
+);
+
+const category=
+url.searchParams.get("category");
+
+if(
+category&&
+category.toLowerCase()===
+String(active).toLowerCase()
+){
+
+link.classList.add("active");
+
+}
+
+}catch(error){}
+
+});
+
+}
+
+function escapeTitle(value){
+
+return String(value||"")
+.replace(/\b\w/g,char=>
+char.toUpperCase()
+);
+
+}
+
+/* ================= BACK TO TOP ================= */
+
+window.addEventListener(
+"scroll",
+()=>{
+
+if(window.scrollY>500){
+
+backToTop.classList.add(
+"is-visible"
+);
+
+}else{
+
+backToTop.classList.remove(
+"is-visible"
+);
+
+}
+
+},
+{
+passive:true
+}
+);
+
+backToTop.addEventListener(
+"click",
+()=>{
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+);
+
+/* ================= CATEGORY HISTORY ================= */
+
+window.addEventListener(
+"popstate",
+()=>{
+
+const nextParams=
+new URLSearchParams(
+window.location.search
+);
+
+state.category=
+(
+nextParams.get("category")||
+"Latest"
+).trim()||
+"Latest";
+
+loadCategory();
+
+}
+);
+
+/* ================= INITIAL LOAD ================= */
+
+loadCategory();
+
+})();
+</script>
+
+</body>
+</html>
