@@ -3,730 +3,397 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <meta name="description" content="AI News Factory — category news, analysis and intelligence.">
 <meta name="theme-color" content="#080808">
-
 <title>Category | AI News Factory</title>
-
 <link rel="stylesheet" href="assets/css/style.css">
 
 <style>
-.category-page{
-  max-width:1400px;
-  margin:0 auto;
-  padding:70px 24px 100px;
-}
-
-.category-header{
-  padding:0 0 42px;
-  margin-bottom:35px;
-  border-bottom:1px solid rgba(128,128,128,.25);
-}
-
-.category-kicker{
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.18em;
-  opacity:.55;
-  margin-bottom:16px;
-}
-
-.category-title{
-  margin:0;
-  font-family:Georgia,serif;
-  font-size:clamp(48px,7vw,90px);
-  line-height:.98;
-  letter-spacing:-.05em;
-}
-
-.category-description{
-  max-width:760px;
-  margin:22px 0 0;
-  font-size:17px;
-  line-height:1.7;
-  opacity:.65;
-}
-
-.category-count{
-  margin-top:18px;
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.13em;
-  opacity:.5;
-}
-
-.category-nav{
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
-  margin-bottom:35px;
-}
-
-.category-nav a{
-  padding:9px 14px;
-  border:1px solid rgba(128,128,128,.25);
-  color:inherit;
-  text-decoration:none;
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  transition:
-    border-color .2s ease,
-    background .2s ease,
-    transform .2s ease;
-}
-
-.category-nav a:hover{
-  border-color:#b40000;
-  background:rgba(180,0,0,.08);
-  transform:translateY(-1px);
-}
-
-.category-nav a.active{
-  border-color:#b40000;
-  background:#b40000;
-  color:#fff;
-}
-
-.category-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:24px;
-}
-
-.category-card{
-  border:1px solid rgba(128,128,128,.23);
-  overflow:hidden;
-  background:rgba(128,128,128,.025);
-  transition:
-    transform .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
-}
-
-.category-card:hover{
-  transform:translateY(-6px);
-  border-color:rgba(180,0,0,.65);
-  box-shadow:0 18px 45px rgba(0,0,0,.2);
-}
-
-.category-card-link{
-  display:block;
-  color:inherit;
-  text-decoration:none;
-}
-
-.category-card-visual{
-  position:relative;
-  min-height:215px;
-  background:
-    radial-gradient(
-      circle at 30% 30%,
-      rgba(180,0,0,.45),
-      transparent 38%
-    ),
-    linear-gradient(
-      135deg,
-      #1b1b1b,
-      #060606
-    );
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-}
-
-.category-card-visual::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    to top,
-    rgba(0,0,0,.3),
-    transparent 55%
-  );
-  pointer-events:none;
-}
-
-.category-card-visual img{
-  width:100%;
-  height:215px;
-  object-fit:cover;
-  display:block;
-  transition:transform .45s ease;
-}
-
-.category-card:hover
-.category-card-visual img{
-  transform:scale(1.04);
-}
-
-.category-card-placeholder{
-  font-family:Georgia,serif;
-  font-size:34px;
-  text-transform:uppercase;
-  opacity:.28;
-  text-align:center;
-  padding:20px;
-}
-
-.category-card-content{
-  padding:24px;
-}
-
-.category-card-category{
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:.15em;
-  opacity:.55;
-  margin-bottom:12px;
-}
-
-.category-card h2{
-  margin:0 0 14px;
-  font-family:Georgia,serif;
-  font-size:25px;
-  line-height:1.16;
-  letter-spacing:-.02em;
-}
-
-.category-card-excerpt{
-  font-size:14px;
-  line-height:1.65;
-  opacity:.62;
-  margin:0 0 18px;
-}
-
-.category-card-meta{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  opacity:.45;
-}
-
-.category-empty{
-  padding:100px 20px;
-  text-align:center;
-  border:1px solid rgba(128,128,128,.2);
-}
-
-.category-empty h2{
-  margin:0 0 15px;
-  font-family:Georgia,serif;
-  font-size:38px;
-}
-
-.category-empty p{
-  opacity:.6;
-  line-height:1.6;
-}
-
-.category-empty a{
-  color:inherit;
-  text-decoration:underline;
-  text-underline-offset:4px;
-}
-
-.category-loading{
-  padding:80px 20px;
-  text-align:center;
-  opacity:.55;
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.12em;
-}
-
-.back-to-top{
-  position:fixed;
-  right:22px;
-  bottom:22px;
-  width:44px;
-  height:44px;
-  border:1px solid rgba(128,128,128,.4);
-  background:#080808;
-  color:#fff;
-  cursor:pointer;
-  opacity:0;
-  visibility:hidden;
-  transform:translateY(10px);
-  transition:.25s ease;
-  z-index:100;
-}
-
-.back-to-top.is-visible{
-  opacity:1;
-  visibility:visible;
-  transform:translateY(0);
-}
-
-.back-to-top:hover{
-  border-color:#b40000;
-  background:#b40000;
-}
+.category-page{max-width:1400px;margin:0 auto;padding:70px 24px 100px}
+.category-header{padding:0 0 42px;margin-bottom:35px;border-bottom:1px solid rgba(128,128,128,.25)}
+.category-kicker{font-size:12px;text-transform:uppercase;letter-spacing:.18em;opacity:.55;margin-bottom:16px}
+.category-title{margin:0;font-family:Georgia,serif;font-size:clamp(48px,7vw,90px);line-height:.98;letter-spacing:-.05em}
+.category-description{max-width:760px;margin:22px 0 0;font-size:17px;line-height:1.7;opacity:.65}
+.category-count{margin-top:18px;font-size:11px;text-transform:uppercase;letter-spacing:.13em;opacity:.5}
+.category-nav{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:35px}
+.category-nav a{padding:9px 14px;border:1px solid rgba(128,128,128,.25);color:inherit;text-decoration:none;font-size:10px;text-transform:uppercase;letter-spacing:.1em;transition:border-color .2s ease,background .2s ease,transform .2s ease}
+.category-nav a:hover{border-color:#b40000;background:rgba(180,0,0,.08);transform:translateY(-1px)}
+.category-nav a.active{border-color:#b40000;background:#b40000;color:#fff}
+.category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.category-card{border:1px solid rgba(128,128,128,.23);overflow:hidden;background:rgba(128,128,128,.025);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.category-card:hover{transform:translateY(-6px);border-color:rgba(180,0,0,.65);box-shadow:0 18px 45px rgba(0,0,0,.2)}
+.category-card-link{display:block;color:inherit;text-decoration:none}
+.category-card-visual{position:relative;min-height:215px;background:radial-gradient(circle at 30% 30%,rgba(180,0,0,.45),transparent 38%),linear-gradient(135deg,#1b1b1b,#060606);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.category-card-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.3),transparent 55%);pointer-events:none}
+.category-card-visual img{width:100%;height:215px;object-fit:cover;display:block;transition:transform .45s ease}
+.category-card:hover .category-card-visual img{transform:scale(1.04)}
+.category-card-placeholder{font-family:Georgia,serif;font-size:34px;text-transform:uppercase;opacity:.28;text-align:center;padding:20px}
+.category-card-content{padding:24px}
+.category-card-category{font-size:10px;text-transform:uppercase;letter-spacing:.15em;opacity:.55;margin-bottom:12px}
+.category-card h2{margin:0 0 14px;font-family:Georgia,serif;font-size:25px;line-height:1.16;letter-spacing:-.02em}
+.category-card-excerpt{font-size:14px;line-height:1.65;opacity:.62;margin:0 0 18px}
+.category-card-meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:10px;text-transform:uppercase;letter-spacing:.08em;opacity:.45}
+.category-empty{padding:100px 20px;text-align:center;border:1px solid rgba(128,128,128,.2)}
+.category-empty h2{margin:0 0 15px;font-family:Georgia,serif;font-size:38px}
+.category-empty p{opacity:.6;line-height:1.6}
+.category-empty a{color:inherit;text-decoration:underline;text-underline-offset:4px}
+.category-loading{padding:80px 20px;text-align:center;opacity:.55;font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+.back-to-top{position:fixed;right:22px;bottom:22px;width:44px;height:44px;border:1px solid rgba(128,128,128,.4);background:#080808;color:#fff;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(10px);transition:.25s ease;z-index:100}
+.back-to-top.is-visible{opacity:1;visibility:visible;transform:translateY(0)}
+.back-to-top:hover{border-color:#b40000;background:#b40000}
 
 @media(max-width:1050px){
-
-  .category-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
+.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
 @media(max-width:760px){
-
-  .category-page{
-    padding:45px 18px 70px;
-  }
-
-  .category-grid{
-    grid-template-columns:1fr;
-  }
-
-  .category-title{
-    font-size:52px;
-  }
-
-  .category-nav{
-    overflow-x:auto;
-    flex-wrap:nowrap;
-    padding-bottom:7px;
-    scrollbar-width:none;
-  }
-
-  .category-nav::-webkit-scrollbar{
-    display:none;
-  }
-
-  .category-nav a{
-    flex:0 0 auto;
-    white-space:nowrap;
-  }
-
-  .category-card-content{
-    padding:20px;
-  }
-
+.category-page{padding:45px 18px 70px}
+.category-grid{grid-template-columns:1fr}
+.category-title{font-size:52px}
+.category-nav{overflow-x:auto;flex-wrap:nowrap;padding-bottom:7px;scrollbar-width:none}
+.category-nav::-webkit-scrollbar{display:none}
+.category-nav a{flex:0 0 auto;white-space:nowrap}
+.category-card-content{padding:20px}
 }
 
 @media(max-width:430px){
-
-  .category-title{
-    font-size:43px;
-  }
-
-  .category-description{
-    font-size:15px;
-  }
-
-  .category-card h2{
-    font-size:22px;
-  }
-
+.category-title{font-size:43px}
+.category-description{font-size:15px}
+.category-card h2{font-size:22px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ================= HEADER ================= -->
-
 <header class="site-header">
 
-  <div class="header-top">
+<div class="header-top">
 
-    <div class="header-left">
+<div class="header-left">
+<span class="live-dot"></span>
+<span>LIVE NEWSROOM</span>
+</div>
 
-      <span class="live-dot"></span>
+<div class="header-date" id="headerDate">
+Loading...
+</div>
 
-      <span>
-        LIVE NEWSROOM
-      </span>
+<div class="header-right">
 
-    </div>
+<button class="icon-button" id="searchButton" type="button" aria-label="Search">
+<span>⌕</span>
+</button>
 
-    <div
-      class="header-date"
-      id="headerDate">
+<button class="icon-button" id="themeButton" type="button" aria-label="Toggle theme">
+<span>◐</span>
+</button>
 
-      Loading...
+<button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation" aria-expanded="false">
+<span></span>
+<span></span>
+<span></span>
+</button>
 
-    </div>
+</div>
+</div>
 
-    <div class="header-right">
+<div class="masthead">
 
-      <button
-        class="icon-button"
-        id="searchButton"
-        type="button"
-        aria-label="Search">
+<div class="brand-block">
 
-        <span>⌕</span>
+<div class="brand-mark">
+ANF
+</div>
 
-      </button>
+<div>
 
-      <button
-        class="icon-button"
-        id="themeButton"
-        type="button"
-        aria-label="Toggle theme">
+<h1>AI NEWS FACTORY</h1>
 
-        <span>◐</span>
+<p>
+INTELLIGENCE. CONTEXT. TRUTH.
+</p>
 
-      </button>
+</div>
+</div>
 
-      <button
-        class="menu-toggle"
-        id="menuToggle"
-        type="button"
-        aria-label="Open navigation"
-        aria-expanded="false">
+<div class="edition">
 
-        <span></span>
-        <span></span>
-        <span></span>
+<span>GLOBAL EDITION</span>
 
-      </button>
+<strong>
+24/7
+</strong>
 
-    </div>
+</div>
 
-  </div>
+</div>
 
+<nav class="main-nav" aria-label="Primary navigation">
 
-  <div class="masthead">
+<a href="index.html">
+Home
+</a>
 
-    <div class="brand-block">
+<a href="category.html?category=world">
+World
+</a>
 
-      <div class="brand-mark">
-        ANF
-      </div>
+<a href="category.html?category=politics">
+Politics
+</a>
 
-      <div>
+<a href="category.html?category=technology">
+Technology
+</a>
 
-        <h1>
-          AI NEWS FACTORY
-        </h1>
+<a href="category.html?category=business">
+Business
+</a>
 
-        <p>
-          INTELLIGENCE. CONTEXT. TRUTH.
-        </p>
+<a href="category.html?category=science">
+Science
+</a>
 
-      </div>
+<a href="category.html?category=culture">
+Culture
+</a>
 
-    </div>
+<a href="category.html?category=investigations">
+Investigations
+</a>
 
+<a href="category.html?category=opinion">
+Opinion
+</a>
 
-    <div class="edition">
-
-      <span>
-        GLOBAL EDITION
-      </span>
-
-      <strong>
-        24/7
-      </strong>
-
-    </div>
-
-  </div>
-
-
-  <nav
-    class="main-nav"
-    aria-label="Primary navigation">
-
-    <a href="index.html">
-      Home
-    </a>
-
-    <a href="category.html?category=world">
-      World
-    </a>
-
-    <a href="category.html?category=politics">
-      Politics
-    </a>
-
-    <a href="category.html?category=technology">
-      Technology
-    </a>
-
-    <a href="category.html?category=business">
-      Business
-    </a>
-
-    <a href="category.html?category=science">
-      Science
-    </a>
-
-    <a href="category.html?category=culture">
-      Culture
-    </a>
-
-    <a href="category.html?category=investigations">
-      Investigations
-    </a>
-
-    <a href="category.html?category=opinion">
-      Opinion
-    </a>
-
-  </nav>
+</nav>
 
 </header>
 
-
-<!-- ================= CATEGORY ================= -->
-
 <main id="categoryContainer">
 
-  <div class="category-page">
+<div class="category-page">
 
-    <nav
-      class="category-nav"
-      aria-label="News categories">
+<nav class="category-nav" aria-label="News categories">
 
-      <a href="category.html?category=Latest">
-        Latest
-      </a>
+<a href="category.html?category=Latest">
+Latest
+</a>
 
-      <a href="category.html?category=AI">
-        AI
-      </a>
+<a href="category.html?category=AI">
+AI
+</a>
 
-      <a href="category.html?category=Technology">
-        Technology
-      </a>
+<a href="category.html?category=Technology">
+Technology
+</a>
 
-      <a href="category.html?category=Business">
-        Business
-      </a>
+<a href="category.html?category=Business">
+Business
+</a>
 
-      <a href="category.html?category=Science">
-        Science
-      </a>
+<a href="category.html?category=Science">
+Science
+</a>
 
-      <a href="category.html?category=World">
-        World
-      </a>
+<a href="category.html?category=World">
+World
+</a>
 
-      <a href="category.html?category=Politics">
-        Politics
-      </a>
+<a href="category.html?category=Politics">
+Politics
+</a>
 
-      <a href="category.html?category=Culture">
-        Culture
-      </a>
+<a href="category.html?category=Culture">
+Culture
+</a>
 
-      <a href="category.html?category=Investigations">
-        Investigations
-      </a>
+<a href="category.html?category=Investigations">
+Investigations
+</a>
 
-      <a href="category.html?category=Opinion">
-        Opinion
-      </a>
+<a href="category.html?category=Opinion">
+Opinion
+</a>
 
-    </nav>
+</nav>
 
+<section class="category-header">
 
-    <section class="category-header">
+<div class="category-kicker">
+AI News Factory
+</div>
 
-      <div class="category-kicker">
-        AI News Factory
-      </div>
+<h1 class="category-title">
+Loading...
+</h1>
 
-      <h1 class="category-title">
-        Loading...
-      </h1>
+<p class="category-description">
+Loading category intelligence...
+</p>
 
-      <p class="category-description">
-        Loading category intelligence...
-      </p>
+<div class="category-count">
+Loading stories...
+</div>
 
-      <div class="category-count">
-        Loading stories...
-      </div>
+</section>
 
-    </section>
+<div class="category-grid">
 
+<div class="category-loading">
+Loading stories...
+</div>
 
-    <div class="category-grid">
+</div>
 
-      <div class="category-loading">
-        Loading stories...
-      </div>
-
-    </div>
-
-  </div>
+</div>
 
 </main>
 
-
-<!-- ================= FOOTER ================= -->
-
 <footer class="site-footer">
 
-  <div class="footer-main">
+<div class="footer-main">
 
-    <div class="footer-brand">
+<div class="footer-brand">
 
-      <div class="brand-mark">
-        ANF
-      </div>
+<div class="brand-mark">
+ANF
+</div>
 
-      <h2>
-        AI NEWS FACTORY
-      </h2>
+<h2>
+AI NEWS FACTORY
+</h2>
 
-      <p>
-        Intelligent news. Verified information.
-        Stories with context.
-      </p>
+<p>
+Intelligent news. Verified information.
+Stories with context.
+</p>
 
-    </div>
+</div>
 
+<div class="footer-column">
 
-    <div class="footer-column">
+<h3>
+Explore
+</h3>
 
-      <h3>
-        Explore
-      </h3>
+<a href="category.html?category=world">
+World
+</a>
 
-      <a href="category.html?category=world">
-        World
-      </a>
+<a href="category.html?category=politics">
+Politics
+</a>
 
-      <a href="category.html?category=politics">
-        Politics
-      </a>
+<a href="category.html?category=technology">
+Technology
+</a>
 
-      <a href="category.html?category=technology">
-        Technology
-      </a>
+<a href="category.html?category=business">
+Business
+</a>
 
-      <a href="category.html?category=business">
-        Business
-      </a>
+<a href="category.html?category=science">
+Science
+</a>
 
-      <a href="category.html?category=science">
-        Science
-      </a>
+<a href="category.html?category=culture">
+Culture
+</a>
 
-      <a href="category.html?category=culture">
-        Culture
-      </a>
+</div>
 
-    </div>
+<div class="footer-column">
 
+<h3>
+Newsroom
+</h3>
 
-    <div class="footer-column">
+<a href="category.html?category=investigations">
+Investigations
+</a>
 
-      <h3>
-        Newsroom
-      </h3>
+<a href="category.html?category=opinion">
+Opinion
+</a>
 
-      <a href="category.html?category=investigations">
-        Investigations
-      </a>
+<a href="category.html?category=Latest">
+Latest Stories
+</a>
 
-      <a href="category.html?category=opinion">
-        Opinion
-      </a>
+<a href="search.html">
+Search
+</a>
 
-      <a href="category.html?category=Latest">
-        Latest Stories
-      </a>
+</div>
 
-      <a href="search.html">
-        Search
-      </a>
+<div class="footer-column">
 
-    </div>
+<h3>
+About
+</h3>
 
+<a href="about.html">
+About AI News Factory
+</a>
 
-    <div class="footer-column">
+<a href="editorial-standards.html">
+Editorial Standards
+</a>
 
-      <h3>
-        About
-      </h3>
+<a href="contact.html">
+Contact
+</a>
 
-      <a href="about.html">
-        About AI News Factory
-      </a>
+<a href="privacy.html">
+Privacy Policy
+</a>
 
-      <a href="editorial-standards.html">
-        Editorial Standards
-      </a>
+<a href="terms.html">
+Terms
+</a>
 
-      <a href="contact.html">
-        Contact
-      </a>
+<a href="copyright.html">
+Copyright
+</a>
 
-      <a href="privacy.html">
-        Privacy Policy
-      </a>
+<a href="cookies.html">
+Cookies
+</a>
 
-      <a href="terms.html">
-        Terms
-      </a>
+</div>
 
-      <a href="copyright.html">
-        Copyright
-      </a>
+</div>
 
-      <a href="cookies.html">
-        Cookies
-      </a>
+<div class="footer-bottom">
 
-    </div>
+<span>
+©
+<span data-current-year>
+2026
+</span>
+AI News Factory.
+All rights reserved.
+</span>
 
-  </div>
+<span>
+INDEPENDENT DIGITAL NEWS
+</span>
 
-
-  <div class="footer-bottom">
-
-    <span>
-      ©
-      <span data-current-year>
-        2026
-      </span>
-      AI News Factory.
-      All rights reserved.
-    </span>
-
-    <span>
-      INDEPENDENT DIGITAL NEWS
-    </span>
-
-  </div>
+</div>
 
 </footer>
 
-
-<!-- ================= BACK TO TOP ================= -->
-
 <button
-  class="back-to-top"
-  id="backToTop"
-  type="button"
-  aria-label="Back to top">
-
-  ↑
-
+class="back-to-top"
+id="backToTop"
+type="button"
+aria-label="Back to top">
+↑
 </button>
 
-
-<!-- ================= SHARED APP ================= -->
-
 <script src="assets/js/app.js"></script>
-
-
-<!-- ================= CATEGORY CONTROLLER ================= -->
 
 <script>
 "use strict";
@@ -745,8 +412,8 @@ const backToTop=
 $("#backToTop");
 
 const state={
-  articles:[],
-  category:"Latest"
+articles:[],
+category:"Latest"
 };
 
 const escapeHtml=value=>
@@ -784,8 +451,8 @@ const time=
 new Date(value).getTime();
 
 return Number.isNaN(time)
-  ?0
-  :time;
+?0
+:time;
 
 };
 
@@ -801,9 +468,9 @@ return String(value);
 return date.toLocaleDateString(
 "en-US",
 {
-  year:"numeric",
-  month:"short",
-  day:"numeric"
+year:"numeric",
+month:"short",
+day:"numeric"
 }
 );
 
@@ -818,9 +485,6 @@ state.category=
 (params.get("category")||"Latest").trim()||
 "Latest";
 
-loadCategory();
-
-
 /* ================= LOAD ================= */
 
 async function loadCategory(){
@@ -833,23 +497,27 @@ const response=
 await fetch(
 DATA_URL+"?v="+Date.now(),
 {
-  cache:"no-store"
+cache:"no-store"
 }
 );
 
 if(!response.ok){
+
 throw new Error(
 "Unable to load article database."
 );
+
 }
 
 const data=
 await response.json();
 
 if(!Array.isArray(data)){
+
 throw new Error(
 "Invalid article database."
 );
+
 }
 
 state.articles=data;
@@ -887,9 +555,6 @@ showError();
 }
 
 }
-
-
-/* ================= FILTER ================= */
 
 function getStories(category){
 
@@ -930,9 +595,6 @@ getTimestamp(a)
 );
 
 }
-
-
-/* ================= DESCRIPTION ================= */
 
 function getDescription(category){
 
@@ -981,9 +643,6 @@ String(category||"")
 
 }
 
-
-/* ================= CATEGORY LINKS ================= */
-
 function buildCategoryLinks(active){
 
 const categories=[
@@ -1020,12 +679,10 @@ ${escapeHtml(name)}
 
 `;
 
-}).join("");
+}
+).join("");
 
 }
-
-
-/* ================= RENDER ================= */
 
 function renderCategory(
 category,
@@ -1052,15 +709,15 @@ AI News Factory
 
 <h1 class="category-title">
 ${escapeHtml(
-  category==="all"
-    ?"Latest"
-    :category
+category==="all"
+?"Latest"
+:category
 )}
 </h1>
 
 <p class="category-description">
 ${escapeHtml(
-  getDescription(category)
+getDescription(category)
 )}
 </p>
 
@@ -1091,7 +748,6 @@ ${stories
 ${createEmptyState(category)}
 
 `
-
 }
 
 </div>
@@ -1099,9 +755,6 @@ ${createEmptyState(category)}
 `;
 
 }
-
-
-/* ================= CARD ================= */
 
 function createCard(article){
 
@@ -1217,282 +870,3 @@ ${escapeHtml(readTime)}
 `;
 
 }
-
-
-/* ================= EMPTY ================= */
-
-function createEmptyState(category){
-
-return`
-
-<div class="category-empty">
-
-<h2>
-No stories yet
-</h2>
-
-<p>
-There are currently no published
-stories in
-<strong>
-${escapeHtml(category)}
-</strong>.
-</p>
-
-<p>
-<a href="index.html">
-← Return to AI News Factory
-</a>
-</p>
-
-</div>
-
-`;
-
-}
-
-
-/* ================= LOADING ================= */
-
-function showLoading(){
-
-container.innerHTML=`
-
-<div class="category-page">
-
-<nav
-class="category-nav"
-aria-label="News categories">
-
-${buildCategoryLinks(state.category)}
-
-</nav>
-
-<section class="category-header">
-
-<div class="category-kicker">
-AI News Factory
-</div>
-
-<h1 class="category-title">
-${escapeHtml(state.category)}
-</h1>
-
-<p class="category-description">
-Loading category intelligence...
-</p>
-
-<div class="category-count">
-Loading stories...
-</div>
-
-</section>
-
-<div class="category-loading">
-Loading stories...
-</div>
-
-</div>
-
-`;
-
-}
-
-
-/* ================= ERROR ================= */
-
-function showError(){
-
-container.innerHTML=`
-
-<div class="category-page">
-
-<div class="category-empty">
-
-<h2>
-Unable to load stories
-</h2>
-
-<p>
-The newsroom could not load the
-article database right now.
-</p>
-
-<p>
-<a href="index.html">
-← Return to homepage
-</a>
-</p>
-
-<p>
-<a
-href="category.html?category=${encodeURIComponent(state.category)}">
-
-Try again
-
-</a>
-</p>
-
-</div>
-
-</div>
-
-`;
-
-}
-
-
-/* ================= ACTIVE NAV ================= */
-
-function setActiveNavigation(active){
-
-document
-.querySelectorAll(
-".main-nav a,.category-nav a"
-)
-.forEach(link=>{
-
-link.classList.remove("active");
-
-const href=
-link.getAttribute("href")||"";
-
-try{
-
-const url=
-new URL(
-href,
-window.location.href
-);
-
-const category=
-url.searchParams.get("category");
-
-if(
-category&&
-category.toLowerCase()===
-String(active).toLowerCase()
-){
-
-link.classList.add("active");
-
-}
-
-}catch(error){}
-
-});
-
-}
-
-
-/* ================= TITLE ================= */
-
-function escapeTitle(value){
-
-return String(value||"")
-.replace(/\b\w/g,char=>
-char.toUpperCase()
-);
-
-}
-
-
-/* ================= BACK TO TOP ================= */
-
-window.addEventListener(
-"scroll",
-()=>{
-
-if(window.scrollY>500){
-
-backToTop.classList.add(
-"is-visible"
-);
-
-}else{
-
-backToTop.classList.remove(
-"is-visible"
-);
-
-}
-
-},
-{
-passive:true
-}
-);
-        
-window.addEventListener(
-"scroll",
-()=>{
-
-if(window.scrollY>500){
-
-backToTop.classList.add(
-"is-visible"
-);
-
-}else{
-
-backToTop.classList.remove(
-"is-visible"
-);
-
-}
-
-},
-{
-passive:true
-}
-);
-
-
-/* ================= BACK TO TOP ================= */
-
-backToTop.addEventListener(
-"click",
-()=>{
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
-);
-
-
-/* ================= CATEGORY HISTORY ================= */
-
-window.addEventListener(
-"popstate",
-()=>{
-
-const nextParams=
-new URLSearchParams(
-window.location.search
-);
-
-state.category=
-(
-nextParams.get("category")||
-"Latest"
-).trim()||
-"Latest";
-
-loadCategory();
-
-}
-);
-
-
-/* ================= INITIAL LOAD ================= */
-
-loadCategory();
-
-})();
-</script>
-
-</body>
-</html>
