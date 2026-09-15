@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/cern-detects-quantum-entanglement-in-particles-born-from-the.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-15T08:33:26.832609Z</news:publication_date>
+      <news:title>CERN Detects Quantum Entanglement in Particles Born From The</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/latest-news-development.html</loc>
     <news:news>
       <news:publication>
@@ -53,17 +64,6 @@
       </news:publication>
       <news:publication_date>2026-09-13T08:33:58.343642Z</news:publication_date>
       <news:title>Hull City Owner Ilıcalı Prioritizes Premier League Survival in</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/arikegold-declares-comfort-non-negotiable-folorunsho-adeolas.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-12T12:29:02.467237Z</news:publication_date>
-      <news:title>Arikegold Declares Comfort Non-Negotiable: Folorunsho Adeola’s</news:title>
     </news:news>
   </url>
 </urlset>
