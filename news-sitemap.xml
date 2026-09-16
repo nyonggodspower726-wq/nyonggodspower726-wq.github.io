@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/romano-reveals-chances-of-jj-gabriel-u-turn-at-man-utd-as-real.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-16T08:32:44.044582Z</news:publication_date>
+      <news:title>Romano reveals chances of JJ Gabriel U-turn at Man Utd as Real</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/cern-detects-quantum-entanglement-in-particles-born-from-the.html</loc>
     <news:news>
       <news:publication>
@@ -31,39 +42,6 @@
       </news:publication>
       <news:publication_date>2026-09-14T08:34:25.125079Z</news:publication_date>
       <news:title>Erling Haaland&#x27;s Man City Goal Decision vs Man Utd Called &#x27;Error</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/lady-gaga-welcomes-first-baby-with-fianc-michael-polansky-at-40.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-13T19:24:18.600941Z</news:publication_date>
-      <news:title>Lady Gaga Welcomes First Baby With Fiancé Michael Polansky at 40</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/terrorists-plot-attacks-on-osun-worship-centres-markets.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-13T12:55:33.172071Z</news:publication_date>
-      <news:title>Terrorists plot attacks on Osun worship centres, markets</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/hull-city-owner-ilcal-prioritizes-premier-league-survival-in.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-13T08:33:58.343642Z</news:publication_date>
-      <news:title>Hull City Owner Ilıcalı Prioritizes Premier League Survival in</news:title>
     </news:news>
   </url>
 </urlset>
