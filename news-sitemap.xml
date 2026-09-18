@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/nigeria-37-suspected-illegal-miners-die-in-custody-in.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-18T15:31:35.906304Z</news:publication_date>
+      <news:title>Nigeria: 37 suspected illegal miners die in custody in</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/at-least-48-dead-in-southern-nigeria-after-methanol-tainted.html</loc>
     <news:news>
       <news:publication>
@@ -108,17 +119,6 @@
       </news:publication>
       <news:publication_date>2026-09-16T15:34:18.915155Z</news:publication_date>
       <news:title>Iran official reiterates stance: No US talks until Tehran&#x27;s</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/argentina-set-for-first-friendlies-without-messi.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-16T12:31:44.766084Z</news:publication_date>
-      <news:title>Argentina Set for First Friendlies Without Messi</news:title>
     </news:news>
   </url>
 </urlset>
