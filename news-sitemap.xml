@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/harry-kane-obliterates-bundesliga-goalscoring-record-after.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-19T12:46:19.118380Z</news:publication_date>
+      <news:title>Harry Kane obliterates Bundesliga goalscoring record after</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/phyna-fires-back-at-nkechi-blessing-as-celebrity-boxing-bout.html</loc>
     <news:news>
       <news:publication>
@@ -97,17 +108,6 @@
       </news:publication>
       <news:publication_date>2026-09-17T15:31:29.829596Z</news:publication_date>
       <news:title>Sewage monitoring may provide earlier warning of pertussis</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/blake-shelton-returns-to-the-voice-in-surprise-new-teaser.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-17T12:30:47.683800Z</news:publication_date>
-      <news:title>Blake Shelton Returns to &#x27;The Voice&#x27; in Surprise New Teaser</news:title>
     </news:news>
   </url>
 </urlset>
