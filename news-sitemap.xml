@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/petrol-prices-fall-below-dangote-refinerys-1350-rate-in-three.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-19T21:33:47.976311Z</news:publication_date>
+      <news:title>Petrol Prices Fall Below Dangote Refinery’s ₦1,350 Rate in Three</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/i-dont-care-about-my-performance-defensive-colossus-jannik.html</loc>
     <news:news>
       <news:publication>
@@ -97,17 +108,6 @@
       </news:publication>
       <news:publication_date>2026-09-18T08:01:06.735477Z</news:publication_date>
       <news:title>Rainbow Coalition: APC South-east caucus backs governors, asks</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/kylian-mbappe-defends-decision-to-hide-ceuta-support-shirt-as.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-17T21:30:19.382107Z</news:publication_date>
-      <news:title>Kylian Mbappe defends decision to hide Ceuta support shirt as</news:title>
     </news:news>
   </url>
 </urlset>
