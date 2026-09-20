@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/obasanjo-reflects-on-changing-views-of-charly-boy-recalls.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-20T08:03:57.698818Z</news:publication_date>
+      <news:title>Obasanjo Reflects on Changing Views of Charly Boy, Recalls</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/petrol-prices-fall-below-dangote-refinerys-1350-rate-in-three.html</loc>
     <news:news>
       <news:publication>
@@ -97,17 +108,6 @@
       </news:publication>
       <news:publication_date>2026-09-18T12:30:34.726971Z</news:publication_date>
       <news:title>At least 48 dead in southern Nigeria after methanol-tainted</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/rainbow-coalition-apc-south-east-caucus-backs-governors-asks.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-18T08:01:06.735477Z</news:publication_date>
-      <news:title>Rainbow Coalition: APC South-east caucus backs governors, asks</news:title>
     </news:news>
   </url>
 </urlset>
