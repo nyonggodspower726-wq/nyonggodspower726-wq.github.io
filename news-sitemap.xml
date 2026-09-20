@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/most-fragile-team-in-my-career-roberto-de-zerbi-launches.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-20T18:32:31.786169Z</news:publication_date>
+      <news:title>&#x27;Most fragile team in my career!&#x27; - Roberto De Zerbi launches</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/mit-research-could-enable-refueling-depots-on-mars-advancing.html</loc>
     <news:news>
       <news:publication>
@@ -97,28 +108,6 @@
       </news:publication>
       <news:publication_date>2026-09-18T21:31:08.276751Z</news:publication_date>
       <news:title>Toyin Abraham distances herself from Lagos APC campaign council,</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/abia-governor-alex-otti-declines-to-become-political-godfather.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-18T18:31:07.983700Z</news:publication_date>
-      <news:title>Abia Governor Alex Otti Declines to Become Political Godfather,</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/nigeria-37-suspected-illegal-miners-die-in-custody-in.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-18T15:31:35.906304Z</news:publication_date>
-      <news:title>Nigeria: 37 suspected illegal miners die in custody in</news:title>
     </news:news>
   </url>
 </urlset>
