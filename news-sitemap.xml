@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/rainbow-coalition-wike-harvests-aggrieved-apc-leaders.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-20T12:30:37.469976Z</news:publication_date>
+      <news:title>Rainbow Coalition: Wike harvests aggrieved APC leaders</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/obasanjo-reflects-on-changing-views-of-charly-boy-recalls.html</loc>
     <news:news>
       <news:publication>
@@ -97,17 +108,6 @@
       </news:publication>
       <news:publication_date>2026-09-18T15:31:35.906304Z</news:publication_date>
       <news:title>Nigeria: 37 suspected illegal miners die in custody in</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/at-least-48-dead-in-southern-nigeria-after-methanol-tainted.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-18T12:30:34.726971Z</news:publication_date>
-      <news:title>At least 48 dead in southern Nigeria after methanol-tainted</news:title>
     </news:news>
   </url>
 </urlset>
