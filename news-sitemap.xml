@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/nigeria-tops-african-countries-with-most-homeless-population.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-21T15:31:17.208868Z</news:publication_date>
+      <news:title>Nigeria Tops African Countries With Most Homeless Population,</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/south-community-in-kogi-rally-support-for-tinubu-ododo-boost.html</loc>
     <news:news>
       <news:publication>
@@ -108,17 +119,6 @@
       </news:publication>
       <news:publication_date>2026-09-19T15:45:44.617709Z</news:publication_date>
       <news:title>Frequent bending at work may raise miscarriage risk - Study</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/harry-kane-obliterates-bundesliga-goalscoring-record-after.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-19T12:46:19.118380Z</news:publication_date>
-      <news:title>Harry Kane obliterates Bundesliga goalscoring record after</news:title>
     </news:news>
   </url>
 </urlset>
