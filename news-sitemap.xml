@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/un-chief-calls-for-global-financial-reform-and-permanent-african.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-21T18:30:32.332392Z</news:publication_date>
+      <news:title>UN Chief Calls for Global Financial Reform and Permanent African</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/nigeria-tops-african-countries-with-most-homeless-population.html</loc>
     <news:news>
       <news:publication>
@@ -108,17 +119,6 @@
       </news:publication>
       <news:publication_date>2026-09-19T18:31:56.554230Z</news:publication_date>
       <news:title>&#x27;I don&#x27;t care about my performance&#x27; - Defensive colossus Jannik</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/frequent-bending-at-work-may-raise-miscarriage-risk-study.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-19T15:45:44.617709Z</news:publication_date>
-      <news:title>Frequent bending at work may raise miscarriage risk - Study</news:title>
     </news:news>
   </url>
 </urlset>
