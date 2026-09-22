@@ -1,913 +1,334 @@
 from pathlib import Path
 from urllib.parse import urlparse
 from datetime import datetime, timezone
-import html
 import json
 import re
 import xml.etree.ElementTree as ET
-
 from bs4 import BeautifulSoup
 
+SITE_URL="https://nyonggodspower726-wq.github.io"
+ARTICLES_DIR=Path("articles")
+OUTPUT_FILE=Path("rss.xml")
+MAX_ITEMS=25
+MEDIA_PUBLIC_BASE_URL="https://newsfactory-production-2729.up.railway.app"
 
-SITE_URL = "https://nyonggodspower726-wq.github.io"
-ARTICLES_DIR = Path("articles")
-OUTPUT_FILE = Path("rss.xml")
-
-MAX_ITEMS = 25
-
-# Your AI News Factory public media server.
-MEDIA_PUBLIC_BASE_URL = (
-    "https://newsfactory-production-2729.up.railway.app"
+TRUSTED_SITE_IMAGE_PATHS=(
+    "/media/generated/",
+    "/generated/",
+    "/media/images/",
+    "/images/generated/",
 )
 
-
-NS_ATOM = "http://www.w3.org/2005/Atom"
-NS_CONTENT = "http://purl.org/rss/1.0/modules/content/"
-NS_DC = "http://purl.org/dc/elements/1.1/"
-NS_DCTERMS = "http://purl.org/dc/terms/"
-NS_MEDIA = "http://search.yahoo.com/mrss/"
-NS_MI = "http://schemas.microsoft.com/mi/"
-
-ET.register_namespace("atom", NS_ATOM)
-ET.register_namespace("content", NS_CONTENT)
-ET.register_namespace("dc", NS_DC)
-ET.register_namespace("dcterms", NS_DCTERMS)
-ET.register_namespace("media", NS_MEDIA)
-ET.register_namespace("mi", NS_MI)
-
-
-# ---------------------------------------------------------------------
-# TEXT HELPERS
-# ---------------------------------------------------------------------
-
-def clean_text(value):
-    if not value:
-        return ""
-
-    value = html.unescape(str(value))
-    value = re.sub(r"\s+", " ", value)
-    return value.strip()
-
-
-def clean_title(title):
-    title = clean_text(title)
-
-    title = re.sub(
-        r"\s*\|\s*AI News Factory\s*$",
-        "",
-        title,
-        flags=re.IGNORECASE,
-    )
-
-    title = re.sub(
-        r"\s*[-|–—]\s*AI News Factory\s*$",
-        "",
-        title,
-        flags=re.IGNORECASE,
-    )
-
-    title = title.strip(" |,-–—")
-
-    return title
-
-
-def absolute_url(url):
-    if not url:
-        return ""
-
-    url = url.strip()
-
-    if url.startswith("//"):
-        return "https:" + url
-
-    if url.startswith("/"):
-        return SITE_URL.rstrip("/") + url
-
-    if url.startswith("http://") or url.startswith("https://"):
-        return url
-
-    return SITE_URL.rstrip("/") + "/" + url.lstrip("/")
-
-
-# ---------------------------------------------------------------------
-# DATE HELPERS
-# ---------------------------------------------------------------------
-
-def parse_datetime(value):
-    if not value:
-        return datetime.now(timezone.utc)
-
-    value = str(value).strip()
-
-    try:
-        value = value.replace("Z", "+00:00")
-        dt = datetime.fromisoformat(value)
-
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=timezone.utc)
-
-        return dt.astimezone(timezone.utc)
-
-    except Exception:
-        pass
-
-    formats = [
-        "%Y-%m-%d %H:%M:%S",
-        "%Y-%m-%d",
-        "%a, %d %b %Y %H:%M:%S %z",
-        "%a, %d %b %Y %H:%M:%S GMT",
-    ]
-
-    for fmt in formats:
-        try:
-            dt = datetime.strptime(value, fmt)
-
-            if dt.tzinfo is None:
-                dt = dt.replace(tzinfo=timezone.utc)
-
-            return dt.astimezone(timezone.utc)
-
-        except Exception:
-            continue
-
-    return datetime.now(timezone.utc)
-
-
-def rss_date(dt):
-    return dt.strftime("%a, %d %b %Y %H:%M:%S +0000")
-
-
-# ---------------------------------------------------------------------
-# HTML / META HELPERS
-# ---------------------------------------------------------------------
-
-def get_meta(soup, attrs):
-    tag = soup.find("meta", attrs=attrs)
-
-    if tag:
-        return clean_text(
-            tag.get("content", "")
-        )
-
-    return ""
-
-
-def get_json_ld_objects(soup):
-    objects = []
-
-    for script in soup.find_all(
-        "script",
-        type="application/ld+json",
-    ):
-        raw = script.string or script.get_text()
-
-        if not raw:
-            continue
-
-        try:
-            data = json.loads(raw)
-
-        except Exception:
-            continue
-
-        if isinstance(data, list):
-            objects.extend(data)
-
-        elif isinstance(data, dict):
-            objects.append(data)
-
-    return objects
-
-
-def get_article_json_ld(soup):
-    objects = get_json_ld_objects(soup)
-
-    for obj in objects:
-        if not isinstance(obj, dict):
-            continue
-
-        obj_type = obj.get("@type", "")
-
-        if isinstance(obj_type, list):
-            types = obj_type
-        else:
-            types = [obj_type]
-
-        if any(
-            str(t).lower()
-            in {
-                "article",
-                "newsarticle",
-                "reportagenewsarticle",
-                "socialmediaposting",
-            }
-            for t in types
-        ):
-            return obj
-
-    return {}
-
-
-# ---------------------------------------------------------------------
-# ARTICLE EXTRACTION
-# ---------------------------------------------------------------------
-
-def extract_title(soup):
-    title = get_meta(
-        soup,
-        {"property": "og:title"},
-    )
-
-    if not title:
-        title = get_meta(
-            soup,
-            {"name": "twitter:title"},
-        )
-
-    if not title and soup.title:
-        title = soup.title.get_text(" ", strip=True)
-
-    return clean_title(title)
-
-
-def extract_description(soup, json_ld):
-    description = get_meta(
-        soup,
-        {"property": "og:description"},
-    )
-
-    if not description:
-        description = get_meta(
-            soup,
-            {"name": "description"},
-        )
-
-    if not description:
-        description = get_meta(
-            soup,
-            {"name": "twitter:description"},
-        )
-
-    if not description:
-        description = json_ld.get("description", "")
-
-    return clean_text(description)
-
-
-def extract_author(soup, json_ld):
-    author = json_ld.get("author", "")
-
-    if isinstance(author, dict):
-        author = author.get("name", "")
-
-    elif isinstance(author, list):
-        names = []
-
-        for item in author:
-            if isinstance(item, dict):
-                name = item.get("name", "")
-            else:
-                name = str(item)
-
-            if name:
-                names.append(name)
-
-        author = ", ".join(names)
-
-    if not author:
-        author = get_meta(
-            soup,
-            {"name": "author"},
-        )
-
-    if not author:
-        author = get_meta(
-            soup,
-            {"property": "article:author"},
-        )
-
-    return clean_text(author)
-
-
-def extract_category(soup, json_ld):
-    section = json_ld.get("articleSection", "")
-
-    if isinstance(section, list):
-        section = section[0] if section else ""
-
-    if not section:
-        section = get_meta(
-            soup,
-            {"property": "article:section"},
-        )
-
-    if not section:
-        section = get_meta(
-            soup,
-            {"name": "category"},
-        )
-
-    return clean_text(section) or "General"
-
-
-def extract_dates(soup, json_ld):
-    published = (
-        json_ld.get("datePublished")
-        or get_meta(
-            soup,
-            {"property": "article:published_time"},
-        )
-        or get_meta(
-            soup,
-            {"name": "date"},
-        )
-    )
-
-    modified = (
-        json_ld.get("dateModified")
-        or get_meta(
-            soup,
-            {"property": "article:modified_time"},
-        )
-    )
-
-    published_dt = parse_datetime(published)
-    modified_dt = parse_datetime(
-        modified or published
-    )
-
-    return published_dt, modified_dt
-
-
-def extract_article_body(soup, json_ld):
-    article_body = json_ld.get("articleBody", "")
-
-    if article_body:
-        return clean_text(article_body)
-
-    article = soup.find("article")
-
-    if article:
-        paragraphs = article.find_all("p")
-
-        if paragraphs:
-            text = "\n\n".join(
-                clean_text(p.get_text(" ", strip=True))
-                for p in paragraphs
-                if clean_text(p.get_text(" ", strip=True))
-            )
-
-            if text:
-                return text
-
-    selectors = [
-        ".article-content",
-        ".article-body",
-        ".post-content",
-        ".entry-content",
-        ".story-content",
-        "main",
-    ]
-
-    for selector in selectors:
-        container = soup.select_one(selector)
-
-        if not container:
-            continue
-
-        paragraphs = container.find_all("p")
-
-        if paragraphs:
-            text = "\n\n".join(
-                clean_text(p.get_text(" ", strip=True))
-                for p in paragraphs
-                if clean_text(p.get_text(" ", strip=True))
-            )
-
-            if text:
-                return text
-
-    paragraphs = soup.find_all("p")
-
-    text = "\n\n".join(
-        clean_text(p.get_text(" ", strip=True))
-        for p in paragraphs
-        if clean_text(p.get_text(" ", strip=True))
-    )
-
-    return text
-
-
-# ---------------------------------------------------------------------
-# IMAGE EXTRACTION
-# ---------------------------------------------------------------------
-
-def extract_image(soup, json_ld):
-    image = json_ld.get("image", "")
-
-    if isinstance(image, list):
-        image = image[0] if image else ""
-
-    if isinstance(image, dict):
-        image = (
-            image.get("url")
-            or image.get("contentUrl")
-            or ""
-        )
-
-    if not image:
-        image = get_meta(
-            soup,
-            {"property": "og:image"},
-        )
-
-    if not image:
-        image = get_meta(
-            soup,
-            {"name": "twitter:image"},
-        )
-
-    if not image:
-        image = get_meta(
-            soup,
-            {"property": "twitter:image"},
-        )
-
-    if not image:
-        image_tag = soup.find(
-            "img",
-            class_=re.compile(
-                r"(hero|featured|article)",
-                re.IGNORECASE,
-            ),
-        )
-
-        if image_tag:
-            image = (
-                image_tag.get("src")
-                or image_tag.get("data-src")
-                or ""
-            )
-
-    return absolute_url(image)
-
-
-# ---------------------------------------------------------------------
-# IMAGE RIGHTS / TRUST
-# ---------------------------------------------------------------------
+LICENSED_IMAGE_ORIGINS={}
+
+NS_ATOM="http://www.w3.org/2005/Atom"
+NS_MEDIA="http://search.yahoo.com/mrss/"
+NS_DC="http://purl.org/dc/elements/1.1/"
+NS_DCTERMS="http://purl.org/dc/terms/"
+NS_CONTENT="http://purl.org/rss/1.0/modules/content/"
+NS_MI="http://schemas.ingestion.microsoft.com/common/"
+
+ET.register_namespace("atom",NS_ATOM)
+ET.register_namespace("media",NS_MEDIA)
+ET.register_namespace("dc",NS_DC)
+ET.register_namespace("dcterms",NS_DCTERMS)
+ET.register_namespace("content",NS_CONTENT)
+ET.register_namespace("mi",NS_MI)
 
 def normalize_base_url(url):
-    return url.rstrip("/").lower()
+    if not url:return ""
+    p=urlparse(url.strip())
+    if not p.scheme or not p.netloc:return ""
+    return f"{p.scheme.lower()}://{p.netloc.lower()}".rstrip("/")
 
+MEDIA_BASE=normalize_base_url(MEDIA_PUBLIC_BASE_URL)
+SITE_HOST=urlparse(SITE_URL).netloc.lower()
 
-MEDIA_BASE = normalize_base_url(
-    MEDIA_PUBLIC_BASE_URL
-)
+def image_origin(url):
+    if not url:return ""
+    try:
+        p=urlparse(url.strip())
+        if p.scheme not in {"http","https"}:return ""
+        return normalize_base_url(f"{p.scheme}://{p.netloc}")
+    except Exception:
+        return ""
 
-SITE_HOST = urlparse(
-    SITE_URL
-).netloc.lower()
+def classify_image(url):
+    if not url:return {"status":"NONE","url":"","licensor":""}
+    url=url.strip()
+    p=urlparse(url)
+    if p.scheme not in {"http","https"}:
+        return {"status":"NONE","url":"","licensor":""}
+    origin=image_origin(url)
+    if MEDIA_BASE and origin==MEDIA_BASE:
+        return {"status":"TRUSTED_AI","url":url,"licensor":""}
+    if p.netloc.lower()==SITE_HOST:
+        path=p.path.lower()
+        if any(path.startswith(x) for x in TRUSTED_SITE_IMAGE_PATHS):
+            return {"status":"TRUSTED_SITE","url":url,"licensor":""}
+    if origin in LICENSED_IMAGE_ORIGINS:
+        return {
+            "status":"LICENSED",
+            "url":url,
+            "licensor":LICENSED_IMAGE_ORIGINS[origin]
+        }
+    return {"status":"UNKNOWN_EXTERNAL","url":"","licensor":""}
 
+def clean_text(value):
+    if value is None:return ""
+    if isinstance(value,(list,tuple)):
+        value=" ".join(str(x) for x in value if x)
+    return re.sub(r"\s+"," ",str(value)).strip()
 
-def image_is_trusted(image_url):
-    """
-    Return True only when the image clearly belongs
-    to our own generated media system.
+def clean_title(title):
+    title=clean_text(title)
+    title=re.sub(r"\s*\|\s*AI News Factory\s*$","",title,flags=re.I)
+    title=re.sub(r"\s*[-–—]\s*AI News Factory\s*$","",title,flags=re.I)
+    return title.strip(" ,|-")
 
-    Trusted sources:
-    1. Railway AI News Factory public media server.
-    2. GitHub Pages newsroom generated-image paths.
+def meta_content(soup,*names):
+    for name in names:
+        tag=soup.find("meta",attrs={"property":name})
+        if tag and tag.get("content"):return clean_text(tag["content"])
+        tag=soup.find("meta",attrs={"name":name})
+        if tag and tag.get("content"):return clean_text(tag["content"])
+    return ""
 
-    External publisher images are NOT trusted.
-    """
+def load_json_ld(soup):
+    objects=[]
+    for script in soup.find_all("script",attrs={"type":"application/ld+json"}):
+        raw=script.string or script.get_text(strip=True)
+        if not raw:continue
+        try:data=json.loads(raw)
+        except Exception:continue
+        if isinstance(data,list):objects.extend(data)
+        elif isinstance(data,dict):
+            graph=data.get("@graph")
+            if isinstance(graph,list):objects.extend(graph)
+            else:objects.append(data)
+    return objects
 
-    if not image_url:
-        return False
+def find_news_article_jsonld(soup):
+    for obj in load_json_ld(soup):
+        if not isinstance(obj,dict):continue
+        obj_type=obj.get("@type","")
+        types=[str(x).lower() for x in obj_type] if isinstance(obj_type,list) else [str(obj_type).lower()]
+        if "newsarticle" in types or "article" in types:return obj
+    return {}
 
-    image_url = image_url.strip()
-
-    parsed = urlparse(image_url)
-
-    if parsed.scheme not in {
-        "http",
-        "https",
-    }:
-        return False
-
-    normalized = normalize_base_url(
-        f"{parsed.scheme}://{parsed.netloc}"
-    )
-
-    full_url = image_url.lower()
-
-    # -------------------------------------------------------------
-    # Railway AI News Factory media server
-    # -------------------------------------------------------------
-
-    if normalized == MEDIA_BASE:
-        return True
-
-    # -------------------------------------------------------------
-    # Our own GitHub Pages generated image locations
-    # -------------------------------------------------------------
-
-    if parsed.netloc.lower() == SITE_HOST:
-
-        trusted_paths = (
-            "/media/generated/",
-            "/generated/",
-            "/media/images/",
-            "/images/generated/",
-        )
-
-        if any(
-            parsed.path.lower().startswith(path)
-            for path in trusted_paths
-        ):
-            return True
-
-    return False
-
-
-def image_rights_status(image_url):
-    if not image_url:
-        return "NONE"
-
-    if image_is_trusted(image_url):
-        return "TRUSTED"
-
-    return "UNKNOWN_EXTERNAL"
-
-
-# ---------------------------------------------------------------------
-# BUILD RSS ITEM
-# ---------------------------------------------------------------------
-
-def build_item(article_path):
-    html_text = article_path.read_text(
-        encoding="utf-8",
-        errors="ignore",
-    )
-
-    soup = BeautifulSoup(
-        html_text,
-        "html.parser",
-    )
-
-    json_ld = get_article_json_ld(soup)
-
-    title = extract_title(
-        soup
-    )
-
-    if not title:
+def extract_article(path):
+    try:raw=path.read_text(encoding="utf-8")
+    except Exception as exc:
+        print(f"[ERROR] {path}: {exc}")
         return None
+    soup=BeautifulSoup(raw,"html.parser")
+    jsonld=find_news_article_jsonld(soup)
 
-    slug = article_path.stem
+    title=clean_text(
+        jsonld.get("headline")
+        or meta_content(soup,"og:title","twitter:title")
+        or (soup.title.get_text(strip=True) if soup.title else "")
+    )
+    title=clean_title(title)
+    if not title:return None
 
-    article_url = (
-        SITE_URL.rstrip("/")
-        + "/articles/"
-        + slug
-        + ".html"
+    canonical=soup.find("link",rel="canonical")
+    url=clean_text(canonical.get("href","")) if canonical else ""
+    url=url or clean_text(jsonld.get("url",""))
+    url=url or f"{SITE_URL}/articles/{path.stem}.html"
+
+    description=clean_text(
+        jsonld.get("description")
+        or meta_content(soup,"description","og:description","twitter:description")
     )
 
-    description = extract_description(
-        soup,
-        json_ld,
-    )
+    author=""
+    ja=jsonld.get("author")
+    if isinstance(ja,dict):author=clean_text(ja.get("name"))
+    elif isinstance(ja,list):
+        names=[]
+        for x in ja:
+            if isinstance(x,dict) and x.get("name"):names.append(clean_text(x["name"]))
+            elif x:names.append(clean_text(x))
+        author=", ".join(names)
+    elif ja:author=clean_text(ja)
+    author=author or meta_content(soup,"author","article:author") or "AI News Factory"
 
-    body = extract_article_body(
-        soup,
-        json_ld,
-    )
+    category=clean_text(jsonld.get("articleSection",""))
+    category=category or meta_content(soup,"article:section","category") or "general"
 
-    author = extract_author(
-        soup,
-        json_ld,
-    )
+    published=clean_text(jsonld.get("datePublished",""))
+    published=published or meta_content(soup,"article:published_time","datePublished")
 
-    category = extract_category(
-        soup,
-        json_ld,
-    )
+    modified=clean_text(jsonld.get("dateModified",""))
+    modified=modified or meta_content(soup,"article:modified_time","dateModified") or published
 
-    published_dt, modified_dt = extract_dates(
-        soup,
-        json_ld,
-    )
+    image=""
+    ji=jsonld.get("image")
+    if isinstance(ji,list):
+        for x in ji:
+            if isinstance(x,str):image=x;break
+            if isinstance(x,dict):
+                image=x.get("url") or x.get("contentUrl","")
+                if image:break
+    elif isinstance(ji,dict):
+        image=ji.get("url") or ji.get("contentUrl","")
+    elif isinstance(ji,str):
+        image=ji
+    image=clean_text(image or meta_content(soup,"og:image","twitter:image"))
+    image_info=classify_image(image)
 
-    image_url = extract_image(
-        soup,
-        json_ld,
-    )
+    body=soup.find("article",class_="article-body")
+    body=body or soup.find("article") or soup.find("main")
+    if body is None:return None
+    for x in body.find_all(["script","style","nav","footer"]):x.decompose()
+    body_html="".join(str(x) for x in body.contents).strip()
+    if not body_html:return None
 
-    rights_status = image_rights_status(
-        image_url
-    )
-
-    item = {
-        "title": title,
-        "url": article_url,
-        "description": description,
-        "body": body,
-        "author": author or "AI News Factory",
-        "category": category,
-        "published_dt": published_dt,
-        "modified_dt": modified_dt,
-        "image_url": image_url,
-        "image_rights": rights_status,
+    return {
+        "title":title,
+        "url":url,
+        "description":description,
+        "author":author,
+        "category":category,
+        "published":published,
+        "modified":modified,
+        "body":body_html,
+        "image":image_info
     }
 
-    return item
+def parse_date(value):
+    if not value:return None
+    try:
+        dt=datetime.fromisoformat(value.strip().replace("Z","+00:00"))
+        if dt.tzinfo is None:dt=dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc)
+    except Exception:return None
 
+def rss_date(value):
+    dt=parse_date(value) or datetime.now(timezone.utc)
+    return dt.strftime("%a, %d %b %Y %H:%M:%S +0000")
 
-# ---------------------------------------------------------------------
-# RSS GENERATION
-# ---------------------------------------------------------------------
+def add_text(parent,tag,value):
+    e=ET.SubElement(parent,tag)
+    e.text=clean_text(value)
+    return e
 
-def generate_rss():
-    articles = []
-
-    if not ARTICLES_DIR.exists():
-        print(
-            f"Articles directory not found: "
-            f"{ARTICLES_DIR}"
-        )
+def add_image_metadata(item,article):
+    image=article.get("image",{})
+    status=image.get("status")
+    url=image.get("url")
+    if status=="UNKNOWN_EXTERNAL":
+        print(f"[IMAGE] EXCLUDED: {article.get('title')}")
         return
+    if not url:return
+    if status in {"TRUSTED_AI","TRUSTED_SITE"}:
+        media=ET.SubElement(item,f"{{{NS_MEDIA}}}content")
+        media.set("url",url)
+        media.set("type","image/jpeg")
+        media.set("medium","image")
+        rights=ET.SubElement(item,f"{{{NS_MI}}}HasSyndicationRights")
+        rights.text="true"
+        desc=ET.SubElement(item,f"{{{NS_MEDIA}}}description")
+        desc.text=article.get("title","News image")
+        print(f"[IMAGE] INCLUDED ({status}): {url}")
+        return
+    if status=="LICENSED":
+        media=ET.SubElement(item,f"{{{NS_MEDIA}}}content")
+        media.set("url",url)
+        media.set("type","image/jpeg")
+        media.set("medium","image")
+        rights=ET.SubElement(item,f"{{{NS_MI}}}HasSyndicationRights")
+        rights.text="false"
+        licensor=image.get("licensor","")
+        if licensor:
+            e=ET.SubElement(item,f"{{{NS_MI}}}ImageLicensorName")
+            e.text=licensor
+        print(f"[IMAGE] INCLUDED (licensed): {licensor}")
 
-    article_files = sorted(
-        ARTICLES_DIR.glob("*.html"),
-        key=lambda path: path.stat().st_mtime,
-        reverse=True,
-    )
+def main():
+    print("="*60)
+    print("AI NEWS FACTORY RSS GENERATOR")
+    print("="*60)
 
-    for article_path in article_files:
+    files=list(ARTICLES_DIR.glob("*.html"))
+    articles=[]
 
-        try:
-            article = build_item(
-                article_path
-            )
+    print(f"Found {len(files)} article file(s).")
 
-        except Exception as exc:
-            print(
-                f"ERROR parsing "
-                f"{article_path.name}: {exc}"
-            )
-            continue
-
-        if not article:
-            continue
-
-        if not article["body"]:
-            print(
-                f"SKIP no article body: "
-                f"{article_path.name}"
-            )
-            continue
-
-        articles.append(article)
+    for path in files:
+        article=extract_article(path)
+        if article:
+            articles.append(article)
+        else:
+            print(f"[SKIP] {path.name}")
 
     articles.sort(
-        key=lambda article: article["published_dt"],
-        reverse=True,
+        key=lambda x:parse_date(x.get("published","")) or datetime.min.replace(tzinfo=timezone.utc),
+        reverse=True
     )
+    articles=articles[:MAX_ITEMS]
 
-    articles = articles[:MAX_ITEMS]
+    rss=ET.Element("rss",{"version":"2.0"})
+    channel=ET.SubElement(rss,"channel")
 
-    rss = ET.Element(
-        "rss",
-        {
-            "version": "2.0",
-        },
-    )
+    add_text(channel,"title","AI News Factory")
+    add_text(channel,"link",SITE_URL)
+    add_text(channel,"description","Latest news from AI News Factory.")
 
-    channel = ET.SubElement(
-        rss,
-        "channel",
-    )
+    atom=ET.SubElement(channel,f"{{{NS_ATOM}}}link")
+    atom.set("href",f"{SITE_URL}/rss.xml")
+    atom.set("rel","self")
+    atom.set("type","application/rss+xml")
 
-    title = ET.SubElement(
-        channel,
-        "title",
-    )
-
-    title.text = "AI News Factory"
-
-    link = ET.SubElement(
-        channel,
-        "link",
-    )
-
-    link.text = SITE_URL
-
-    description = ET.SubElement(
-        channel,
-        "description",
-    )
-
-    description.text = (
-        "Latest news published by AI News Factory."
-    )
-
-    language = ET.SubElement(
-        channel,
-        "language",
-    )
-
-    language.text = "en"
-
-    atom_link = ET.SubElement(
-        channel,
-        f"{{{NS_ATOM}}}link",
-        {
-            "href": (
-                SITE_URL.rstrip("/")
-                + "/rss.xml"
-            ),
-            "rel": "self",
-            "type": "application/rss+xml",
-        },
-    )
+    included=0
+    excluded=0
 
     for article in articles:
+        item=ET.SubElement(channel,"item")
+        url=article.get("url","")
 
-        item = ET.SubElement(
-            channel,
-            "item",
-        )
+        add_text(item,"title",article.get("title","Untitled"))
+        add_text(item,"link",url)
 
-        item_title = ET.SubElement(
-            item,
-            "title",
-        )
+        guid=ET.SubElement(item,"guid")
+        guid.set("isPermaLink","true")
+        guid.text=url
 
-        item_title.text = article["title"]
+        add_text(item,"pubDate",rss_date(article.get("published","")))
 
-        item_link = ET.SubElement(
-            item,
-            "link",
-        )
+        if article.get("modified"):
+            add_text(item,f"{{{NS_DCTERMS}}}modified",article["modified"])
 
-        item_link.text = article["url"]
+        add_text(item,"description",article.get("description",""))
+        add_text(item,f"{{{NS_DC}}}creator",article.get("author","AI News Factory"))
+        add_text(item,"category",article.get("category","general"))
+        add_text(item,"category","AI-Assisted")
+        add_text(item,f"{{{NS_CONTENT}}}encoded",article.get("body",""))
 
-        guid = ET.SubElement(
-            item,
-            "guid",
-            {
-                "isPermaLink": "true",
-            },
-        )
+        before=len(item)
+        add_image_metadata(item,article)
+        after=len(item)
 
-        guid.text = article["url"]
+        if after>before:included+=1
+        elif article.get("image",{}).get("status")=="UNKNOWN_EXTERNAL":excluded+=1
 
-        pub_date = ET.SubElement(
-            item,
-            "pubDate",
-        )
+    try:ET.indent(rss,space="    ")
+    except AttributeError:pass
 
-        pub_date.text = rss_date(
-            article["published_dt"]
-        )
-
-        modified = ET.SubElement(
-            item,
-            f"{{{NS_DCTERMS}}}modified",
-        )
-
-        modified.text = (
-            article["modified_dt"]
-            .isoformat()
-        )
-
-        item_description = ET.SubElement(
-            item,
-            "description",
-        )
-
-        item_description.text = (
-            article["description"]
-            or article["body"][:500]
-        )
-
-        creator = ET.SubElement(
-            item,
-            f"{{{NS_DC}}}creator",
-        )
-
-        creator.text = article["author"]
-
-        category = ET.SubElement(
-            item,
-            "category",
-        )
-
-        category.text = article["category"]
-
-        # Explicitly identify AI-assisted content.
-        ai_category = ET.SubElement(
-            item,
-            "category",
-        )
-
-        ai_category.text = "AI-Assisted"
-
-        encoded = ET.SubElement(
-            item,
-            f"{{{NS_CONTENT}}}encoded",
-        )
-
-        encoded.text = (
-            "<p>"
-            + html.escape(
-                article["body"]
-            ).replace(
-                "\n\n",
-                "</p><p>",
-            )
-            + "</p>"
-        )
-
-        # ---------------------------------------------------------
-        # IMAGE
-        # ---------------------------------------------------------
-
-        image_url = article["image_url"]
-        rights = article["image_rights"]
-
-        if rights == "TRUSTED":
-
-            media = ET.SubElement(
-                item,
-                f"{{{NS_MEDIA}}}content",
-                {
-                    "url": image_url,
-                    "medium": "image",
-                },
-            )
-
-            ET.SubElement(
-                media,
-                f"{{{NS_MEDIA}}}title",
-            ).text = article["title"]
-
-            ET.SubElement(
-                item,
-                f"{{{NS_MI}}}HasSyndicationRights",
-            ).text = "true"
-
-            print(
-                "IMAGE INCLUDED:",
-                article["title"],
-                "->",
-                image_url,
-            )
-
-        elif rights == "UNKNOWN_EXTERNAL":
-
-            print(
-                "EXTERNAL IMAGE EXCLUDED:",
-                article["title"],
-                "->",
-                image_url,
-            )
-
-        else:
-
-            print(
-                "NO IMAGE:",
-                article["title"],
-            )
-
-    tree = ET.ElementTree(rss)
-
-    ET.indent(
-        tree,
-        space="  ",
-    )
-
-    tree.write(
+    ET.ElementTree(rss).write(
         OUTPUT_FILE,
         encoding="utf-8",
-        xml_declaration=True,
+        xml_declaration=True
     )
 
-    print()
-    print("=" * 60)
+    print("="*60)
     print("RSS GENERATION COMPLETE")
-    print("=" * 60)
-    print(
-        f"Articles included: {len(articles)}"
-    )
-    print(
-        f"Output file: {OUTPUT_FILE}"
-    )
-    print(
-        f"Media base URL: "
-        f"{MEDIA_PUBLIC_BASE_URL}"
-    )
-    print("=" * 60)
+    print(f"Articles: {len(articles)}")
+    print(f"Images included: {included}")
+    print(f"Images excluded: {excluded}")
+    print(f"Output: {OUTPUT_FILE}")
+    print("="*60)
 
-
-if __name__ == "__main__":
-    generate_rss()
+if __name__=="__main__":
+    main()
