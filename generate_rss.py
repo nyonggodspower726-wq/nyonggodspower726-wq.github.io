@@ -1,204 +1,95 @@
-import html
+from pathlib import Path
+from datetime import datetime, timezone
 import json
 import re
-from datetime import datetime, timezone
-from pathlib import Path
-from xml.etree.ElementTree import Element, SubElement, ElementTree
+import xml.etree.ElementTree as ET
 
+from bs4 import BeautifulSoup
+
+
+# ============================================================
+# CONFIGURATION
+# ============================================================
 
 SITE_URL = "https://nyonggodspower726-wq.github.io"
 ARTICLES_DIR = Path("articles")
 OUTPUT_FILE = Path("rss.xml")
 
 FEED_TITLE = "AI News Factory"
-FEED_DESCRIPTION = (
-    "Latest news and analysis from AI News Factory."
-)
+FEED_DESCRIPTION = "Latest news and analysis from AI News Factory."
 
 MAX_ITEMS = 25
 
+
+# ============================================================
+# XML NAMESPACES
+# ============================================================
+
+ATOM_NS = "http://www.w3.org/2005/Atom"
+MEDIA_NS = "http://search.yahoo.com/mrss/"
+DC_NS = "http://purl.org/dc/elements/1.1/"
+DCTERMS_NS = "http://purl.org/dc/terms/"
+CONTENT_NS = "http://purl.org/rss/1.0/modules/content/"
+MI_NS = "http://schemas.ingestion.microsoft.com/common/"
+
+ET.register_namespace("atom", ATOM_NS)
+ET.register_namespace("media", MEDIA_NS)
+ET.register_namespace("dc", DC_NS)
+ET.register_namespace("dcterms", DCTERMS_NS)
+ET.register_namespace("content", CONTENT_NS)
+ET.register_namespace("mi", MI_NS)
+
+
+# ============================================================
+# HELPERS
+# ============================================================
 
 def clean_text(value):
     if not value:
         return ""
 
-    value = html.unescape(str(value))
+    value = BeautifulSoup(str(value), "html.parser").get_text(
+        " ",
+        strip=True
+    )
+
     value = re.sub(r"\s+", " ", value)
 
     return value.strip()
 
 
-def strip_html(value):
-    if not value:
-        return ""
+def clean_title(title):
+    """
+    Cleans the article title without inventing missing words.
+    Removes the site branding suffix and obvious trailing
+    punctuation caused by the article generator.
+    """
 
-    value = re.sub(r"<[^>]+>", " ", value)
-    return clean_text(value)
+    title = clean_text(title)
 
-
-def get_meta(content, name=None, property_name=None):
-    if name:
-        pattern = (
-            r'<meta[^>]+name=["\']'
-            + re.escape(name)
-            + r'["\'][^>]+content=["\']([^"\']*)["\']'
-        )
-    else:
-        pattern = (
-            r'<meta[^>]+property=["\']'
-            + re.escape(property_name)
-            + r'["\'][^>]+content=["\']([^"\']*)["\']'
-        )
-
-    match = re.search(
-        pattern,
-        content,
-        re.IGNORECASE
-    )
-
-    if match:
-        return html.unescape(match.group(1)).strip()
-
-    return ""
-
-
-def get_title(content):
-    match = re.search(
-        r"<title[^>]*>(.*?)</title>",
-        content,
-        re.IGNORECASE | re.DOTALL
-    )
-
-    if match:
-        return clean_text(match.group(1))
-
-    match = re.search(
-        r"<h1[^>]*>(.*?)</h1>",
-        content,
-        re.IGNORECASE | re.DOTALL
-    )
-
-    if match:
-        return strip_html(match.group(1))
-
-    return ""
-
-
-def get_jsonld(content):
-    matches = re.findall(
-        r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>'
-        r'(.*?)'
-        r'</script>',
-        content,
-        re.IGNORECASE | re.DOTALL
-    )
-
-    for raw in matches:
-        raw = raw.strip()
-
-        try:
-            data = json.loads(raw)
-
-            if isinstance(data, dict):
-                return data
-
-            if isinstance(data, list):
-                for item in data:
-                    if isinstance(item, dict):
-                        return item
-
-        except Exception:
-            continue
-
-    return {}
-
-
-def get_article_body(content):
-    match = re.search(
-        r'<article[^>]*class=["\'][^"\']*article-body[^"\']*["\'][^>]*>'
-        r'(.*?)'
-        r'</article>',
-        content,
-        re.IGNORECASE | re.DOTALL
-    )
-
-    if not match:
-        return ""
-
-    body = match.group(1).strip()
-
-    # Remove scripts and styles if present.
-    body = re.sub(
-        r"<script\b[^>]*>.*?</script>",
+    # Remove site branding added to HTML <title>
+    title = re.sub(
+        r"\s*\|\s*AI News Factory\s*$",
         "",
-        body,
-        flags=re.IGNORECASE | re.DOTALL
+        title,
+        flags=re.IGNORECASE
     )
 
-    body = re.sub(
-        r"<style\b[^>]*>.*?</style>",
-        "",
-        body,
-        flags=re.IGNORECASE | re.DOTALL
-    )
+    # Remove repeated trailing separators
+    title = re.sub(r"\s*\|\s*$", "", title)
 
-    return body.strip()
+    # Remove an accidental trailing comma
+    title = re.sub(r",\s*$", "", title)
 
-
-def get_category(content, jsonld):
-    category = ""
-
-    if isinstance(jsonld, dict):
-        category = jsonld.get(
-            "articleSection",
-            ""
-        )
-
-    if not category:
-        match = re.search(
-            r'<div[^>]+class=["\']category["\'][^>]*>'
-            r'(.*?)</div>',
-            content,
-            re.IGNORECASE | re.DOTALL
-        )
-
-        if match:
-            category = strip_html(
-                match.group(1)
-            )
-
-    return clean_text(category) or "general"
+    return title.strip()
 
 
-def get_author(jsonld):
-    if not isinstance(jsonld, dict):
-        return "AI News Factory"
+def parse_datetime(value):
+    """
+    Converts common ISO date formats into a timezone-aware
+    datetime object.
+    """
 
-    author = jsonld.get("author")
-
-    if isinstance(author, dict):
-        return clean_text(
-            author.get(
-                "name",
-                "AI News Factory"
-            )
-        )
-
-    if isinstance(author, list):
-        for item in author:
-            if isinstance(item, dict):
-                name = item.get("name")
-
-                if name:
-                    return clean_text(name)
-
-    if isinstance(author, str):
-        return clean_text(author)
-
-    return "AI News Factory"
-
-
-def parse_date(value):
     if not value:
         return None
 
@@ -211,401 +102,719 @@ def parse_date(value):
         dt = datetime.fromisoformat(value)
 
         if dt.tzinfo is None:
-            dt = dt.replace(
-                tzinfo=timezone.utc
-            )
+            dt = dt.replace(tzinfo=timezone.utc)
 
-        return dt.astimezone(
-            timezone.utc
-        )
+        return dt.astimezone(timezone.utc)
 
     except Exception:
         return None
 
 
 def rss_date(dt):
-    return dt.strftime(
-        "%a, %d %b %Y %H:%M:%S GMT"
+    """
+    Converts datetime to RFC 822 format used by RSS.
+    """
+
+    if not dt:
+        dt = datetime.now(timezone.utc)
+
+    return dt.strftime("%a, %d %b %Y %H:%M:%S GMT")
+
+
+def get_meta(soup, *names):
+    """
+    Finds meta content using name/property variants.
+    """
+
+    for name in names:
+        tag = soup.find(
+            "meta",
+            attrs={"property": name}
+        )
+
+        if tag and tag.get("content"):
+            return tag.get("content").strip()
+
+        tag = soup.find(
+            "meta",
+            attrs={"name": name}
+        )
+
+        if tag and tag.get("content"):
+            return tag.get("content").strip()
+
+    return ""
+
+
+def get_json_ld(soup):
+    """
+    Returns the first useful NewsArticle JSON-LD object.
+    """
+
+    scripts = soup.find_all(
+        "script",
+        attrs={"type": "application/ld+json"}
     )
 
+    for script in scripts:
+        raw = script.string or script.get_text()
 
-def absolute_url(filename):
-    return (
-        SITE_URL
-        + "/articles/"
-        + filename
+        if not raw:
+            continue
+
+        try:
+            data = json.loads(raw)
+        except Exception:
+            continue
+
+        candidates = []
+
+        if isinstance(data, dict):
+            if "@graph" in data and isinstance(
+                data["@graph"],
+                list
+            ):
+                candidates.extend(data["@graph"])
+            else:
+                candidates.append(data)
+
+        elif isinstance(data, list):
+            candidates.extend(data)
+
+        for item in candidates:
+            if not isinstance(item, dict):
+                continue
+
+            item_type = item.get("@type", "")
+
+            if isinstance(item_type, list):
+                item_type = " ".join(item_type)
+
+            if (
+                "NewsArticle" in str(item_type)
+                or "Article" in str(item_type)
+            ):
+                return item
+
+    return {}
+
+
+def extract_article_body(soup):
+    """
+    Extracts the main article body as HTML.
+
+    The preferred selector is:
+    <article class="article-body">
+    """
+
+    article = soup.find(
+        "article",
+        class_=re.compile(r"\barticle-body\b")
     )
 
+    if not article:
+        article = soup.find("article")
 
-def extract_article(path):
-    content = path.read_text(
-        encoding="utf-8",
-        errors="ignore"
+    if not article:
+        return ""
+
+    # Remove elements that should not be syndicated
+    for tag in article.find_all(
+        ["script", "style", "noscript"]
+    ):
+        tag.decompose()
+
+    return "".join(
+        str(child)
+        for child in article.contents
+    ).strip()
+
+
+def extract_image(soup, json_ld):
+    """
+    Finds the article image using OpenGraph, Twitter,
+    JSON-LD, or the first large article image.
+    """
+
+    image = get_meta(
+        soup,
+        "og:image",
+        "twitter:image"
     )
 
-    jsonld = get_jsonld(content)
+    if image:
+        return image.strip()
 
-    title = get_title(content)
+    json_image = json_ld.get("image")
+
+    if isinstance(json_image, str):
+        return json_image.strip()
+
+    if isinstance(json_image, list):
+        for item in json_image:
+            if isinstance(item, str) and item.strip():
+                return item.strip()
+
+            if isinstance(item, dict):
+                url = item.get("url")
+
+                if url:
+                    return str(url).strip()
+
+    if isinstance(json_image, dict):
+        url = json_image.get("url")
+
+        if url:
+            return str(url).strip()
+
+    article = soup.find("article")
+
+    if article:
+        img = article.find("img")
+
+        if img and img.get("src"):
+            return img.get("src").strip()
+
+    return ""
+
+
+def extract_author(json_ld, soup):
+    """
+    Extracts author from JSON-LD or common metadata.
+    """
+
+    author = json_ld.get("author")
+
+    if isinstance(author, dict):
+        name = author.get("name")
+
+        if name:
+            return clean_text(name)
+
+    if isinstance(author, list):
+        for item in author:
+            if isinstance(item, dict):
+                name = item.get("name")
+
+                if name:
+                    return clean_text(name)
+
+            elif isinstance(item, str):
+                if item.strip():
+                    return clean_text(item)
+
+    author = get_meta(
+        soup,
+        "author",
+        "article:author"
+    )
+
+    if author:
+        return clean_text(author)
+
+    return "AI News Factory"
+
+
+def extract_category(json_ld, soup):
+    """
+    Extracts article category/section.
+    """
+
+    category = json_ld.get("articleSection")
+
+    if isinstance(category, list):
+        if category:
+            category = category[0]
+        else:
+            category = ""
+
+    if category:
+        return clean_text(category)
+
+    category = get_meta(
+        soup,
+        "article:section",
+        "category"
+    )
+
+    if category:
+        return clean_text(category)
+
+    category_tag = soup.find(
+        class_=re.compile(
+            r"\b(category|article-category|post-category)\b",
+            re.IGNORECASE
+        )
+    )
+
+    if category_tag:
+        category = clean_text(
+            category_tag.get_text(" ", strip=True)
+        )
+
+        if category:
+            return category
+
+    return "general"
+
+
+# ============================================================
+# ARTICLE PARSER
+# ============================================================
+
+def parse_article(path):
+    """
+    Parses one article HTML file.
+    """
+
+    try:
+        html = path.read_text(
+            encoding="utf-8"
+        )
+    except Exception as exc:
+        print(
+            f"WARNING: Could not read {path}: {exc}"
+        )
+        return None
+
+    soup = BeautifulSoup(
+        html,
+        "html.parser"
+    )
+
+    json_ld = get_json_ld(soup)
+
+    # --------------------------------------------------------
+    # TITLE
+    # --------------------------------------------------------
+
+    title = ""
+
+    h1 = soup.find("h1")
+
+    if h1:
+        title = clean_title(
+            h1.get_text(" ", strip=True)
+        )
+
+    if not title:
+        title = clean_title(
+            get_meta(
+                soup,
+                "og:title",
+                "twitter:title"
+            )
+        )
+
+    if not title and soup.title:
+        title = clean_title(
+            soup.title.get_text(
+                " ",
+                strip=True
+            )
+        )
+
+    if not title:
+        title = clean_title(
+            json_ld.get("headline", "")
+        )
+
+    # --------------------------------------------------------
+    # DESCRIPTION
+    # --------------------------------------------------------
 
     description = get_meta(
-        content,
-        name="description"
+        soup,
+        "description",
+        "og:description",
+        "twitter:description"
     )
 
-    if not description and isinstance(
-        jsonld,
-        dict
-    ):
-        description = clean_text(
-            jsonld.get(
-                "description",
-                ""
-            )
-        )
-
-    canonical = get_meta(
-        content,
-        property_name="og:url"
-    )
-
-    if not canonical:
-        match = re.search(
-            r'<link[^>]+rel=["\']canonical["\']'
-            r'[^>]+href=["\']([^"\']+)["\']',
-            content,
-            re.IGNORECASE
-        )
-
-        if match:
-            canonical = match.group(1).strip()
-
-    if not canonical:
-        canonical = absolute_url(
-            path.name
-        )
-
-    image_url = get_meta(
-        content,
-        property_name="og:image"
-    )
-
-    if not image_url and isinstance(
-        jsonld,
-        dict
-    ):
-        image = jsonld.get("image")
-
-        if isinstance(image, list):
-            if image:
-                image_url = str(image[0])
-
-        elif isinstance(image, dict):
-            image_url = image.get(
-                "url",
-                ""
-            )
-
-        elif isinstance(image, str):
-            image_url = image
-
-    published_at = ""
-
-    if isinstance(jsonld, dict):
-        published_at = jsonld.get(
-            "datePublished",
+    if not description:
+        description = json_ld.get(
+            "description",
             ""
         )
 
-    if not published_at:
-        match = re.search(
-            r"Published\s+([^<·]+)",
-            content,
-            re.IGNORECASE
-        )
+    description = clean_text(description)
 
-        if match:
-            published_at = (
-                match.group(1)
-                .strip()
-            )
+    # Keep RSS description reasonably short
+    if len(description) > 500:
+        description = description[:497].rstrip() + "..."
 
-    modified_at = ""
+    # --------------------------------------------------------
+    # URL
+    # --------------------------------------------------------
 
-    if isinstance(jsonld, dict):
-        modified_at = jsonld.get(
-            "dateModified",
+    canonical = soup.find(
+        "link",
+        rel="canonical"
+    )
+
+    if canonical and canonical.get("href"):
+        url = canonical.get("href").strip()
+    else:
+        url = json_ld.get(
+            "url",
             ""
         )
 
-    published_dt = parse_date(
+    if not url:
+        url = (
+            SITE_URL.rstrip("/")
+            + "/"
+            + path.as_posix()
+        )
+
+    # --------------------------------------------------------
+    # IMAGE
+    # --------------------------------------------------------
+
+    image_url = extract_image(
+        soup,
+        json_ld
+    )
+
+    # --------------------------------------------------------
+    # BODY
+    # --------------------------------------------------------
+
+    content_html = extract_article_body(
+        soup
+    )
+
+    if not content_html:
+        # Fallback to main element
+        main = soup.find("main")
+
+        if main:
+            for tag in main.find_all(
+                ["script", "style", "noscript"]
+            ):
+                tag.decompose()
+
+            content_html = "".join(
+                str(child)
+                for child in main.contents
+            ).strip()
+
+    if not content_html:
+        content_html = (
+            f"<p>{description}</p>"
+            if description
+            else ""
+        )
+
+    # --------------------------------------------------------
+    # DATE
+    # --------------------------------------------------------
+
+    published_at = (
+        json_ld.get("datePublished")
+        or get_meta(
+            soup,
+            "article:published_time",
+            "datePublished"
+        )
+    )
+
+    modified_at = (
+        json_ld.get("dateModified")
+        or get_meta(
+            soup,
+            "article:modified_time",
+            "dateModified"
+        )
+        or published_at
+    )
+
+    published_dt = parse_datetime(
         published_at
     )
 
-    modified_dt = parse_date(
+    modified_dt = parse_datetime(
         modified_at
     )
 
     if not published_dt:
-        return None
+        published_dt = datetime.fromtimestamp(
+            path.stat().st_mtime,
+            tz=timezone.utc
+        )
 
     if not modified_dt:
         modified_dt = published_dt
 
-    body = get_article_body(content)
+    # --------------------------------------------------------
+    # AUTHOR
+    # --------------------------------------------------------
 
-    if not title or not body:
+    author = extract_author(
+        json_ld,
+        soup
+    )
+
+    # --------------------------------------------------------
+    # CATEGORY
+    # --------------------------------------------------------
+
+    category = extract_category(
+        json_ld,
+        soup
+    )
+
+    # --------------------------------------------------------
+    # RESULT
+    # --------------------------------------------------------
+
+    if not title:
+        print(
+            f"WARNING: Skipping {path} because "
+            "no title was found."
+        )
         return None
 
-    category = get_category(
-        content,
-        jsonld
-    )
-
-    author = get_author(
-        jsonld
-    )
+    if not url:
+        print(
+            f"WARNING: Skipping {path} because "
+            "no URL was found."
+        )
+        return None
 
     return {
-        "title": clean_text(title),
-        "description": clean_text(
-            description
-        ),
-        "url": canonical,
-        "image": clean_text(
-            image_url
-        ),
-        "published": published_dt,
-        "modified": modified_dt,
-        "body": body,
-        "category": category,
+        "title": title,
+        "url": url,
+        "description": description,
+        "content_html": content_html,
+        "image_url": image_url,
+        "published_dt": published_dt,
+        "modified_dt": modified_dt,
         "author": author,
+        "category": category,
     }
 
+
+# ============================================================
+# LOAD ARTICLES
+# ============================================================
 
 def load_articles():
     articles = []
 
     if not ARTICLES_DIR.exists():
         print(
-            "ERROR: articles directory not found."
+            f"WARNING: {ARTICLES_DIR} does not exist."
         )
         return articles
 
-    for path in ARTICLES_DIR.glob(
-        "*.html"
-    ):
-        try:
-            article = extract_article(
-                path
-            )
+    files = sorted(
+        ARTICLES_DIR.glob("*.html")
+    )
 
-            if article:
-                articles.append(article)
+    print(
+        f"Found {len(files)} article HTML file(s)."
+    )
 
-        except Exception as exc:
-            print(
-                f"WARNING: Could not parse "
-                f"{path}: {exc}"
-            )
+    for path in files:
+        article = parse_article(path)
+
+        if article:
+            articles.append(article)
 
     articles.sort(
-        key=lambda item: item["published"],
+        key=lambda item: item["published_dt"],
         reverse=True
     )
 
     return articles[:MAX_ITEMS]
 
 
-def add_text(parent, tag, value):
-    element = SubElement(
-        parent,
-        tag
-    )
+# ============================================================
+# BUILD RSS
+# ============================================================
 
-    element.text = value or ""
-
-    return element
-
-
-def build_feed(articles):
-    rss = Element(
+def build_rss(articles):
+    rss = ET.Element(
         "rss",
         {
-            "version": "2.0",
-            "xmlns:atom":
-                "http://www.w3.org/2005/Atom",
-            "xmlns:media":
-                "http://search.yahoo.com/mrss/",
-            "xmlns:dc":
-                "http://purl.org/dc/elements/1.1/",
-            "xmlns:dcterms":
-                "http://purl.org/dc/terms/",
-            "xmlns:mi":
-                "http://schemas.ingestion.microsoft.com/common/",
+            "version": "2.0"
         }
     )
 
-    channel = SubElement(
+    channel = ET.SubElement(
         rss,
         "channel"
     )
 
-    add_text(
+    ET.SubElement(
         channel,
-        "title",
-        FEED_TITLE
+        "title"
+    ).text = FEED_TITLE
+
+    ET.SubElement(
+        channel,
+        "link"
+    ).text = SITE_URL
+
+    ET.SubElement(
+        channel,
+        "description"
+    ).text = FEED_DESCRIPTION
+
+    ET.SubElement(
+        channel,
+        "language"
+    ).text = "en"
+
+    ET.SubElement(
+        channel,
+        "lastBuildDate"
+    ).text = rss_date(
+        datetime.now(timezone.utc)
     )
 
-    add_text(
+    # Atom self-reference
+    ET.SubElement(
         channel,
-        "link",
-        SITE_URL
-    )
-
-    add_text(
-        channel,
-        "description",
-        FEED_DESCRIPTION
-    )
-
-    add_text(
-        channel,
-        "language",
-        "en"
-    )
-
-    now = datetime.now(
-        timezone.utc
-    )
-
-    add_text(
-        channel,
-        "lastBuildDate",
-        rss_date(now)
-    )
-
-    atom_link = SubElement(
-        channel,
-        "{http://www.w3.org/2005/Atom}link",
+        f"{{{ATOM_NS}}}link",
         {
-            "href":
-                SITE_URL + "/rss.xml",
+            "href": f"{SITE_URL}/rss.xml",
             "rel": "self",
-            "type":
-                "application/rss+xml",
+            "type": "application/rss+xml",
         }
     )
 
+    # --------------------------------------------------------
+    # ITEMS
+    # --------------------------------------------------------
+
     for article in articles:
-        item = SubElement(
+        item = ET.SubElement(
             channel,
             "item"
         )
 
+        title = article["title"]
         url = article["url"]
 
-        # Stable unique ID.
-        guid = SubElement(
+        ET.SubElement(
             item,
             "guid",
             {
                 "isPermaLink": "true"
             }
-        )
+        ).text = url
 
-        guid.text = url
-
-        add_text(
+        ET.SubElement(
             item,
-            "title",
-            article["title"]
-        )
+            "title"
+        ).text = title
 
-        add_text(
+        ET.SubElement(
             item,
-            "link",
-            url
-        )
+            "link"
+        ).text = url
 
-        add_text(
+        ET.SubElement(
             item,
-            "pubDate",
-            rss_date(
-                article["published"]
-            )
+            "pubDate"
+        ).text = rss_date(
+            article["published_dt"]
         )
 
-        modified = SubElement(
+        ET.SubElement(
             item,
-            "{http://purl.org/dc/terms/}"
-            "modified"
-        )
+            f"{{{DCTERMS_NS}}}modified"
+        ).text = article[
+            "modified_dt"
+        ].isoformat()
 
-        modified.text = (
-            article["modified"]
-            .isoformat()
-        )
-
-        add_text(
+        ET.SubElement(
             item,
-            "description",
-            article["description"]
-        )
+            "description"
+        ).text = article[
+            "description"
+        ]
 
-        author = SubElement(
+        ET.SubElement(
             item,
-            "{http://purl.org/dc/elements/1.1/}"
-            "creator"
-        )
+            f"{{{DC_NS}}}creator"
+        ).text = article[
+            "author"
+        ]
 
-        author.text = article["author"]
-
-        add_text(
+        # Normal topical category
+        ET.SubElement(
             item,
-            "category",
-            article["category"]
-        )
+            "category"
+        ).text = article[
+            "category"
+        ]
 
-        # MSN allows HTML in article bodies.
-        encoded = SubElement(
+        # MSN AI-assisted content indicator
+        ET.SubElement(
             item,
-            "{http://purl.org/rss/1.0/modules/"
-            "content/}"
-            "encoded"
-        )
+            "category"
+        ).text = "AI-Assisted"
 
-        encoded.text = article["body"]
+        # Full article HTML
+        ET.SubElement(
+            item,
+            f"{{{CONTENT_NS}}}encoded"
+        ).text = article[
+            "content_html"
+        ]
 
-        if article["image"]:
-            media_content = SubElement(
+        # Article image
+        if article["image_url"]:
+            media_content = ET.SubElement(
                 item,
-                "{http://search.yahoo.com/mrss/}"
-                "content",
+                f"{{{MEDIA_NS}}}content",
                 {
-                    "url":
-                        article["image"],
-                    "medium":
-                        "image",
+                    "url": article["image_url"],
+                    "medium": "image",
                 }
             )
 
-            media_content.set(
-                "type",
-                "image/jpeg"
-            )
+            # Try to preserve a sensible MIME type
+            image_url = article[
+                "image_url"
+            ].lower()
 
-            media_description = SubElement(
+            if ".png" in image_url:
+                media_content.set(
+                    "type",
+                    "image/png"
+                )
+            elif ".webp" in image_url:
+                media_content.set(
+                    "type",
+                    "image/webp"
+                )
+            else:
+                media_content.set(
+                    "type",
+                    "image/jpeg"
+                )
+
+            ET.SubElement(
                 media_content,
-                "{http://search.yahoo.com/mrss/}"
-                "description"
-            )
+                f"{{{MEDIA_NS}}}description"
+            ).text = title
 
-            media_description.text = (
-                article["title"]
-            )
+    return rss
 
-    tree = ElementTree(
-        rss
+
+# ============================================================
+# WRITE RSS
+# ============================================================
+
+def write_rss(root):
+    tree = ET.ElementTree(root)
+
+    ET.indent(
+        tree,
+        space="  "
     )
 
     tree.write(
@@ -615,26 +824,45 @@ def build_feed(articles):
     )
 
 
+# ============================================================
+# MAIN
+# ============================================================
+
 def main():
+    print("=" * 60)
+    print("AI NEWS FACTORY RSS GENERATOR")
+    print("=" * 60)
+
     articles = load_articles()
 
     print(
-        f"Found {len(articles)} article(s)."
+        f"Valid articles loaded: {len(articles)}"
     )
 
     if not articles:
         print(
-            "WARNING: No articles found."
+            "No valid articles found."
         )
+        return
 
-    build_feed(
+    rss = build_rss(
         articles
     )
 
+    write_rss(
+        rss
+    )
+
     print(
-        f"RSS feed generated: "
+        f"RSS feed generated successfully: "
         f"{OUTPUT_FILE}"
     )
+
+    print(
+        f"Articles included: {len(articles)}"
+    )
+
+    print("=" * 60)
 
 
 if __name__ == "__main__":
