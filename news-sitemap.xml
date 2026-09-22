@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/treasury-bills-bank-customers-show-growing-interest-despite.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-22T18:30:47.218657Z</news:publication_date>
+      <news:title>Treasury Bills: Bank customers show growing interest despite</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/satellite-expansion-drives-push-to-curb-radio-interference.html</loc>
     <news:news>
       <news:publication>
@@ -108,17 +119,6 @@
       </news:publication>
       <news:publication_date>2026-09-20T18:32:31.786169Z</news:publication_date>
       <news:title>&#x27;Most fragile team in my career!&#x27; - Roberto De Zerbi launches</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/mit-research-could-enable-refueling-depots-on-mars-advancing.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-20T15:30:43.553125Z</news:publication_date>
-      <news:title>MIT Research Could Enable Refueling Depots on Mars, Advancing</news:title>
     </news:news>
   </url>
 </urlset>
