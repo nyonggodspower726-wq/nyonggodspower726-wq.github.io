@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/2027-adc-urges-probe-of-attacks-on-opposition-members.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-22T12:34:04.350599Z</news:publication_date>
+      <news:title>2027: ADC urges probe of attacks on opposition members</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/infantino-proposes-external-review-of-fifa-governance-as-reform.html</loc>
     <news:news>
       <news:publication>
@@ -97,28 +108,6 @@
       </news:publication>
       <news:publication_date>2026-09-20T15:30:43.553125Z</news:publication_date>
       <news:title>MIT Research Could Enable Refueling Depots on Mars, Advancing</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/rainbow-coalition-wike-harvests-aggrieved-apc-leaders.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-20T12:30:37.469976Z</news:publication_date>
-      <news:title>Rainbow Coalition: Wike harvests aggrieved APC leaders</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/obasanjo-reflects-on-changing-views-of-charly-boy-recalls.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-20T08:03:57.698818Z</news:publication_date>
-      <news:title>Obasanjo Reflects on Changing Views of Charly Boy, Recalls</news:title>
     </news:news>
   </url>
 </urlset>
