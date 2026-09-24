@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/dr-tony-ojukwu-declares-older-persons-right-holders-entitled-to.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-24T21:33:14.688079Z</news:publication_date>
+      <news:title>Dr Tony Ojukwu Declares Older Persons Right Holders Entitled To</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/el-rufai-laments-silence-of-friends-ex-colleagues-amid-his.html</loc>
     <news:news>
       <news:publication>
@@ -97,17 +108,6 @@
       </news:publication>
       <news:publication_date>2026-09-23T08:00:43.400960Z</news:publication_date>
       <news:title>This super-cold microscope could spur a quantum revolution</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/lassa-fever-deaths-hit-258-as-fatality-rate-rises-to-24.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-22T21:30:54.305042Z</news:publication_date>
-      <news:title>Lassa fever deaths hit 258 as fatality rate rises to 24%</news:title>
     </news:news>
   </url>
 </urlset>
