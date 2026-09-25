@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/hafiz-oyetoro-shares-his-first-pay-from-femi-adebayo-before.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-25T21:30:32.849916Z</news:publication_date>
+      <news:title>Hafiz Oyetoro Shares His First Pay From Femi Adebayo Before</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/peter-obi-counters-anambras-debt-claims-details-what-he-left.html</loc>
     <news:news>
       <news:publication>
@@ -97,28 +108,6 @@
       </news:publication>
       <news:publication_date>2026-09-24T08:03:20.174460Z</news:publication_date>
       <news:title>‘The Trials of Brother Jero - The Opera’ returns to Lagos stage</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/one-after-another-they-started-dying-survivors-recount.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-23T21:30:35.294098Z</news:publication_date>
-      <news:title>&#x27;One after another, they started dying&#x27;: survivors recount</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/integrate-kidney-care-into-phc-vc-urges-fg.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-23T18:31:18.361699Z</news:publication_date>
-      <news:title>Integrate kidney care into PHC, VC urges FG</news:title>
     </news:news>
   </url>
 </urlset>
