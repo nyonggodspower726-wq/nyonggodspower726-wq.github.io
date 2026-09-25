@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/stigma-gbv-threaten-hiv-control-lagos-agency-warns.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-25T12:45:27.555740Z</news:publication_date>
+      <news:title>Stigma, GBV threaten HIV control, Lagos agency warns</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/super-eagles-coach-eric-chelle-reveals-udinese-blocking-okoyes.html</loc>
     <news:news>
       <news:publication>
@@ -97,17 +108,6 @@
       </news:publication>
       <news:publication_date>2026-09-23T15:30:46.263936Z</news:publication_date>
       <news:title>Egwuekwe warns Nigeria against underestimating AFCON opponents</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/nscdc-tragedy-rulaac-seeks-early-legal-access-for-detainees-in.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-23T12:40:40.459122Z</news:publication_date>
-      <news:title>NSCDC Tragedy: RULAAC Seeks Early Legal Access For Detainees In</news:title>
     </news:news>
   </url>
 </urlset>
