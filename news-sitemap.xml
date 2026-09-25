@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://nyonggodspower726-wq.github.io/articles/lg-smart-tvs-put-nigerians-in-control-with-smarter.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>AI News Factory</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-25T15:36:37.366103Z</news:publication_date>
+      <news:title>LG Smart TVs Put Nigerians in Control with Smarter</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://nyonggodspower726-wq.github.io/articles/stigma-gbv-threaten-hiv-control-lagos-agency-warns.html</loc>
     <news:news>
       <news:publication>
@@ -97,17 +108,6 @@
       </news:publication>
       <news:publication_date>2026-09-23T18:31:18.361699Z</news:publication_date>
       <news:title>Integrate kidney care into PHC, VC urges FG</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://nyonggodspower726-wq.github.io/articles/egwuekwe-warns-nigeria-against-underestimating-afcon-opponents.html</loc>
-    <news:news>
-      <news:publication>
-        <news:name>AI News Factory</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-23T15:30:46.263936Z</news:publication_date>
-      <news:title>Egwuekwe warns Nigeria against underestimating AFCON opponents</news:title>
     </news:news>
   </url>
 </urlset>
